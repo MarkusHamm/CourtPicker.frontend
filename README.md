@@ -1,4 +1,4 @@
 CourtPicker.frontend
 ====================
 
-Configurable court reservation system
+Frontend code for CourtPicker the configurable court reservation system
