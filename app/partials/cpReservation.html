@@ -1,0 +1,12 @@
+<div id="courtTypeSelect">
+    <ul>
+        <li ng-repeat="cc in courtCategories"
+            ng-class="{selectedCourtType: (cc == selectedCourtCategory)}" ng-click="selectCourtCategory(cc)">
+            {{cc.name}}
+        </li>
+    </ul>
+</div>
+
+<div id="paddedContent">
+    TODO
+</div>

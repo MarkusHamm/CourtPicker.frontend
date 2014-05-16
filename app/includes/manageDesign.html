@@ -1,0 +1,186 @@
+<div ng-controller="ConfigureDesignController">
+    <div class="page-header" style="margin-top: 0;">
+        <h1>Design Configuration</h1>
+    </div>
+
+    <!-- DESIGN CONFIGURATION -->
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#header" data-toggle="tab" onclick="return false;">Header</a></li>
+        <li><a href="#basics" data-toggle="tab" onclick="return false;">Basics</a></li>
+        <li><a href="#controls" data-toggle="tab" onclick="return false;">Controls</a></li>
+        <li><a href="#content" data-toggle="tab" onclick="return false;">Content</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="header" style="margin-top: 15px;">
+            <form id="designLogoForm" name="designLogoForm" action="/tck-roger/upload/webdesignfile" method="post" enctype="multipart/form-data"
+                  target="logo_upload" class="form-horizontal" style="height: 49px;">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="col-xs-2 control-label">Logo</label>
+                    <div class="col-xs-5" style="padding: 0;">
+                        <div class="fileinputs">
+                            <input type="file" name="logofile" id="logofile" size="50" accept="image/*"
+                                   class="file form-control" onchange="$('#designLogoForm').submit();"/>
+                            <div class="fakefile">
+                                <button class="btn btn-default" style="transition: none">
+                                    <span class="glyphicon glyphicon-upload"></span> Upload Logo
+                                </button>
+                                &nbsp;&nbsp;(Empfohlenes Format: 100x100 Pixel)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="logowebdesignid" id="logowebdesignid" value="{{webdesign.id}}"/>
+                <input type="hidden" name="logotype" id="logotype" value="logo"/>
+                <iframe id="logo_upload" name="logo_upload" src="" style="width:0;height:0;border:0px solid #fff" onload="fileUploadDone();">
+                </iframe>
+            </form>
+            <form name="designHeaderForm" novalidate class="form-horizontal">
+                <div class="form-group">
+                    <label for="headerbackgroundcolor" class="col-xs-2 control-label">Hintergrund</label>
+                    <div class="input-group col-xs-2" style="float: left;">
+                        <input id="headerbackgroundcolor" type="text" name="headerbackgroundcolor" required ng-change="submitWebdesignIfValid()"
+                               ng-model="webdesign.headerBackgroundColor" class="form-control" my-colorpicker/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-tint"></i></span>
+                    </div>
+                    <label for="headercolor" class="col-xs-2 control-label">Schrift</label>
+                    <div class="input-group col-xs-2" style="float: left;">
+                        <input id="headercolor" type="text" name="headercolor" ng-model="webdesign.headerColor"
+                               class="form-control" required my-colorpicker ng-change="submitWebdesignIfValid()"/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-tint"></i></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="tab-pane" id="basics" style="margin-top: 15px;">
+            <form name="designBasicsForm" novalidate class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">Hintergrund</label>
+                    <div class="col-xs-2">
+                        <button type="button" ng-click="webdesign.backgroundStyle='SOLID'; submitWebdesignIfValid();"
+                                class="btn btn-default" ng-class="{'btn-primary': (webdesign.backgroundStyle=='SOLID')}">
+                            Einfach
+                        </button>
+                        &nbsp;
+                        <button type="button" ng-click="webdesign.backgroundStyle='TEXTURED'; submitWebdesignIfValid();"
+                                class="btn btn-default" ng-class="{'btn-primary': (webdesign.backgroundStyle=='TEXTURED')}">
+                            Struktur
+                        </button>
+                    </div>
+                    <label for="backgroundcolor" class="col-xs-2 control-label" ng-show="webdesign.backgroundStyle=='SOLID'">
+                        Farbe
+                    </label>
+                    <div class="input-group col-xs-2" style="float: left;" ng-show="webdesign.backgroundStyle=='SOLID'">
+                        <input id="backgroundcolor" type="text" name="backgroundcolor" required ng-change="submitWebdesignIfValid()"
+                               ng-model="webdesign.backgroundColor" class="form-control" my-colorpicker/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-tint"></i></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="linkcolor" class="col-xs-2 control-label">Links</label>
+                    <div class="input-group col-xs-2" style="float: left;">
+                        <input id="linkcolor" type="text" name="linkcolor" required ng-change="submitWebdesignIfValid()"
+                               ng-model="webdesign.linkColor" class="form-control" my-colorpicker ng-change="submitWebdesignIfValid()"/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-tint"></i></span>
+                    </div>
+                    <label for="footercolor" class="col-xs-2 control-label">Fußzeile</label>
+                    <div class="input-group col-xs-2" style="float: left;">
+                        <input id="footercolor" type="text" name="footercolor" required ng-change="submitWebdesignIfValid()"
+                               ng-model="webdesign.footerColor" class="form-control" my-colorpicker/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-tint"></i></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="tab-pane" id="controls" style="margin-top: 15px;">
+            <form name="designControlsForm" novalidate class="form-horizontal">
+                <div class="form-group">
+                    <label for="controlscolor" class="col-xs-2 control-label">Button Background</label>
+                    <div class="input-group col-xs-2" style="float: left;">
+                        <input id="controlscolor" type="text" name="controlscolor" required ng-change="submitWebdesignIfValid()"
+                               ng-model="webdesign.controlsColor" class="form-control" my-colorpicker/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-tint"></i></span>
+                    </div>
+                    <label for="controlstextcolor" class="col-xs-2 control-label">Button Text</label>
+                    <div class="input-group col-xs-2" style="float: left;">
+                        <input id="controlstextcolor" type="text" name="controlstextcolor" required ng-change="submitWebdesignIfValid()"
+                               ng-model="webdesign.controlsTextColor" class="form-control" my-colorpicker/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-tint"></i></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ctselectbackgroundcolor" class="col-xs-2 control-label">Platzwahl Hintergrund</label>
+                    <div class="input-group col-xs-2" style="float: left;">
+                        <input id="ctselectbackgroundcolor" type="text" name="ctselectbackgroundcolor" required ng-change="submitWebdesignIfValid()"
+                               ng-model="webdesign.ctSelectBackgroundColor" class="form-control" my-colorpicker/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-tint"></i></span>
+                    </div>
+                    <label for="ctselectcolor" class="col-xs-2 control-label">Platzwahl Schrift</label>
+                    <div class="input-group col-xs-2" style="float: left;">
+                        <input id="ctselectcolor" type="text" name="ctselectcolor" required ng-change="submitWebdesignIfValid()"
+                               ng-model="webdesign.ctSelectColor" class="form-control" my-colorpicker/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-tint"></i></span>
+                    </div>
+                    <label for="ctselectfocuscolor" class="col-xs-2 control-label">Platzwahl Focus</label>
+                    <div class="input-group col-xs-2" style="float: left;">
+                        <input id="ctselectfocuscolor" type="text" name="ctselectfocuscolor" required ng-change="submitWebdesignIfValid()"
+                               ng-model="webdesign.ctSelectFocusColor" class="form-control" my-colorpicker/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-tint"></i></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="tab-pane" id="content" style="margin-top: 15px;">
+            <form name="designContentForm" novalidate class="form-horizontal">
+                <div class="form-group">
+                    <label for="contentbackgroundcolor" class="col-xs-2 control-label">Hintergrund</label>
+                    <div class="input-group col-xs-2" style="float: left;">
+                        <input id="contentbackgroundcolor" type="text" name="contentbackgroundcolor" required ng-change="submitWebdesignIfValid()"
+                               ng-model="webdesign.contentBackgroundColor" class="form-control" my-colorpicker/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-tint"></i></span>
+                    </div>
+                    <label for="contentcolor" class="col-xs-2 control-label">Schrift</label>
+                    <div class="input-group col-xs-2" style="float: left;">
+                        <input id="contentcolor" type="text" name="contentcolor" required ng-change="submitWebdesignIfValid()"
+                               ng-model="webdesign.contentColor" class="form-control" my-colorpicker/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-tint"></i></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="nonreservablehourcolor" class="col-xs-2 control-label">Vergangene Stunden</label>
+                    <div class="input-group col-xs-2" style="float: left;">
+                        <input id="nonreservablehourcolor" type="text" name="nonreservablehourcolor" required ng-change="submitWebdesignIfValid()"
+                               ng-model="webdesign.nonReservableHourColor" class="form-control" my-colorpicker/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-tint"></i></span>
+                    </div>
+                    <label for="reservablehourcolor" class="col-xs-2 control-label">Reservierbare Stunden</label>
+                    <div class="input-group col-xs-2" style="float: left;">
+                        <input id="reservablehourcolor" type="text" name="reservablehourcolor" required ng-change="submitWebdesignIfValid()"
+                               ng-model="webdesign.reservableHourColor" class="form-control" my-colorpicker/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-tint"></i></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- DESIGN PREVIEW -->
+
+    <div class="page-header" style="margin-top: 0;">
+        <h1>Design Preview</h1>
+    </div>
+
+    <iframe src="{{previewWindowUrl}}" width="100%" height="810" id="designpreview" name="designpreview" style="border: 1px solid #dddddd;">
+        <p>Ihr Browser kann leider keine eingebetteten Frames anzeigen</p>
+    </iframe>
+
+    <div ng-show="showConfiguratorNavigation">
+        <div class="spacer20"></div>
+        <a href="#/configureRates" class="btn btn-lg btn-default">Previous</a>
+        <a href="#/courtpicker" class="btn btn-lg btn-primary">Next</a>
+    </div>
+</div>

@@ -1,0 +1,145 @@
+<div ng-controller="HeaderController">
+
+    <div id="header">
+        <div id="headerContent">
+            <div id="headerLogo">
+                <!-- TODO -->
+                <a href="addReservation.htm"><img src='/tck-roger/resources/css/images/tckLogoScaled.png' /></a>
+            </div>
+
+            <!-- authentication -->
+            <div id="headerLogin">
+                {{userInfo.statusMessage}}
+                <!-- login -->
+                <div ng-show="!userInfo.isLoggedIn">
+                    <div id="loginbutton" class="button" style="width: 100px; margin: 4px auto; margin-bottom: 0;" ng-click="showLoginForm()">Login</div>
+                    <div id="loginmenu" ng-show="displayLoginForm">
+                        <form name="loginform" novalidate>
+                            <table align="center">
+                                <tr height="50px">
+                                    <td colspan=2>
+                                        <h2>Login</h2>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Username
+                                    </td>
+                                    <td>
+                                        <input type="text" name="username" size="10" style="width:120px;" tabindex="1" ng-model="loginForm.username" my-focus-on="displayLoginForm" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Passwort
+                                    </td>
+                                    <td>
+                                        <input type="password" name="password" size="10" style="width:120px;" tabindex="2" ng-model="loginForm.password" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="smallFont"><a href="" id="forgotPasswordMenuItem" ng-click="showForgotPasswordForm()">Passwort vergessen?</a></td>
+                                </tr>
+                                <tr height="40px" valign="top">
+                                    <td>
+                                        <button type="submit" class="button" style="width: 100%;" ng-click="login()">Login</button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="button" style="width: 100%;" ng-click="resetLoginForm()">Cancel</button>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </form>
+                    </div>
+                </div>
+
+                <!-- password forgotten -->
+                <div id="forgotpasswordmenu" ng-show="displayForgotPasswordForm">
+                    <form name="forgotpasswordform" novalidate>
+                        <table align="center">
+                            <tr height="50px">
+                                <td colspan=2>Bitte geben Sie folgende Daten ein, <br>um Ihr Passwort zu erfahren!
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Vorname:
+                                </td>
+                                <td>
+                                    <input type="text" id="pwdFirstName" name="vorname" style="width:100px;" ng-model="forgotPasswordForm.firstname" my-focus-on="displayForgotPasswordForm" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Nachname
+                                </td>
+                                <td>
+                                    <input type="text" id="pwdLastName" name="nachname" style="width:100px;" ng-model="forgotPasswordForm.lastname" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>E-Mail Adresse:
+                                </td>
+                                <td>
+                                    <input type="text" id="pwdEmail" name="email" style="width:100px;" ng-model="forgotPasswordForm.email" />
+                                </td>
+                            </tr>
+                            <tr height="50px">
+                                <td colspan="2">
+                                    <button type="submit" class="button" ng-click="forgotPasswordRequest()">Senden</button>
+                                    <button type="button" class="button" ng-click="resetForgotPasswordForm()">Abbrechen</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+
+                <!-- password forgotten status -->
+                <div id="forgotpasswordmenu" ng-show="displayForgotPasswordRequestStatus">
+                    <div style="padding: 5px; margin-bottom: 0;" class="ui-state-success ui-corner-all smallFont">
+                        {{forgotPasswordRequestStatus}}
+                    </div>
+                    <button type="button" ng-click="resetForgotPasswordRequestStatus()">Close</button>
+                </div>
+
+                <!-- logout -->
+                <div ng-show="userInfo.isLoggedIn">
+                    <form name="logoutform" novalidate>
+                        <div style="width: 120px; padding: 0; margin: 4px auto; margin-bottom: 0;">
+                            <button type="button" class="button" style="width: 100%; height: 100%;" ng-click="logout()">Abmelden</button>
+                            <br/>
+                            <span class="smallFont">{{userInfo.loggedInUser.userName}}</span>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- user registration -->
+                <div ng-show="!userInfo.isLoggedIn">
+                    <a href="#" id="registrationMenuItem" style="margin-left: 22px;" class="smallFont">Neuer Benutzer?</a>
+                    <div id="registrationmenu" style="display:none">
+                        <!-- TODO registration form -->
+                    </div>
+                </div>
+            </div>
+
+            <div id="headerText">
+                <h1 style="display: inline;">{{cpInstance.name}}</h1>
+            </div>
+        </div>
+    </div>
+
+    <div id="customerLinks">
+        <a href="customer.htm" ng-show="userInfo.authorities.indexOf('CUSTOMER')>-1">
+            <div class="buttonThinRound mediumFont" style="margin-top: 3px;">
+                Kundenbereich <b>&gt;</b>
+            </div>
+        </a>
+        <a href="admin.htm" ng-show="userInfo.authorities.indexOf('ADMIN')>-1">
+            <div class="buttonThinRound mediumFont" style="margin-top: 3px;">
+                Adminbereich <b>&gt;</b>
+            </div>
+        </a>
+    </div>
+
+    <div style="clear: both;"></div>
+
+</div>

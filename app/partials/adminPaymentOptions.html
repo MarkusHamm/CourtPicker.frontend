@@ -1,0 +1,48 @@
+<ng-include src="'includes/headerAdminArea.html'" onload="selectedView='PAYMENTOPTIONS'"></ng-include>
+
+<div class="container" ng-controller="AdminPaymentOptionsController">
+    <div class="page-header" style="margin-top: 0;">
+        <h1>Zahlungsoptionen</h1>
+    </div>
+
+    <table id="poTable" class="table table-hover" style="width: 800px;">
+        <tbody>
+        <tr ng-repeat="paymentOption in paymentOptions">
+            <td>{{paymentOption.name}}</td>
+            <td>
+                <button type="button" ng-click="showPaymentOptionForm(paymentOption)" class="btn btn-xs btn-default">
+                    <span class="glyphicon glyphicon-pencil"></span> Edit
+                </button>
+            </td>
+            <td>
+                <button type="button" ng-click="deletePaymentOption(paymentOption)" class="btn btn-xs btn-default">
+                    <span class="glyphicon glyphicon-remove"></span> Delete
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <button ng-click="showPaymentOptionForm()" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span> Zahlungsoption hinzufügen
+    </button>
+
+    <div ng-show="displayPaymentOptionForm">
+        <div class="spacer10"></div>
+        <form name="paymentOptionForm" ng-submit="savePaymentOption()" novalidate class="form-horizontal">
+            <fieldset>
+                <legend>Zahlungsoption</legend>
+                <div class="form-group">
+                    <label class="col-xs-1 control-label">Name</label>
+                    <div class="col-xs-3">
+                        <input type="text" name="name" placeholder="name" ng-model="formPaymentOption.name" ng-trim="true" required
+                               my-focus-on="displayPaymentOptionForm" class="form-control"/>
+                        <span class="error" ng-show="paymentOptionForm.name.$invalid && paymentOptionForm.name.$dirty">Required!</span>
+                    </div>
+                </div>
+                <button type="submit" name="paymentOptionSubmit" ng-disabled="paymentOptionForm.$invalid" class="btn btn-primary">Speichern</button>
+                <button type="button" ng-click="hidePaymentOptionForm()" class="btn btn-default">Abbrechen</button>
+            </fieldset>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,99 @@
+/* vertical spacing */
+.spacer5 { height: 5px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
+.spacer10 { height: 10px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
+.spacer15 { height: 15px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
+.spacer20 { height: 20px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
+.spacer25 { height: 25px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
+.spacer30 { height: 30px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
+.spacer35 { height: 35px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
+.spacer40 { height: 40px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
+.spacer45 { height: 45px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
+.spacer50 { height: 50px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
+.spacer100 { height: 100px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
+.spacer200 { height: 200px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
+
+/* helper classes to style file inputs */
+div.fileinputs {
+    position: relative;
+}
+
+div.fakefile {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
+
+input.file {
+    position: relative;
+    text-align: right;
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+}
+
+.btn-default-wohover {
+    color: #333333;
+    background-color: #ffffff;
+    border-color: #cccccc;
+    cursor: default;
+}
+
+/* custom sub navbar customized */
+.custom-sub-navbar {
+    border-radius: 10px;
+    border: 0;
+}
+
+.custom-sub-navbar .navbar-nav > .active > a {
+    border-radius: 10px;
+}
+
+.custom-sub-navbar .navbar-nav > li > a:hover {
+    color: #777777;
+}
+
+.custom-sub-navbar .navbar-nav > li {
+    margin-right: 50px;
+}
+
+.input-glyphicon {
+    padding-right: 30px;
+}
+
+.input-glyphicon + .glyphicon {
+    position: absolute;
+    right: 0;
+    padding: 8px 27px;
+}
+
+.small-dialog {
+    width: 500px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -120px;
+    margin-left: -250px;
+}
+
+.strikeText {
+    text-decoration:line-through;
+}
+
+.selectItemContainer {
+    height: 600px;
+    width: 500px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    overflow: auto;
+}
+
+.selectItem {
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+.selectItem:hover {
+    background-color: #f5f5f5;
+}

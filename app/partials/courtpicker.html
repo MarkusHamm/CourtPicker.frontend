@@ -1,0 +1,164 @@
+<ng-include src="'includes/headerCourtpicker.html'"></ng-include>
+
+<div ng-controller="ReservationController">
+    <div id="mainframe">
+        <div id="courtTypeSelect">
+            <ul>
+                <li ng-repeat="cc in courtCategories"
+                    ng-class="{selectedCourtType: (cc == selectedCourtCategory)}" ng-click="selectCourtCategory(cc)">
+                    {{cc.name}}
+                </li>
+            </ul>
+        </div>
+
+        <div id="paddedContent">
+            <div id="reservationViewSelection">
+                <button type="button" style="float: left;" ng-click="selectedView = viewTypes.WEEKVIEW; loadUtilization();"
+                        ng-class="{'buttonLight': selectedView != viewTypes.WEEKVIEW, 'buttonLightSelected': selectedView == viewTypes.WEEKVIEW}">
+                    Wochenübersicht
+                </button>
+                <button type="button" style="float: right;" ng-click="selectedView = viewTypes.COURTVIEW; loadUtilization();"
+                        ng-class="{'buttonLight': selectedView != viewTypes.COURTVIEW, 'buttonLightSelected': selectedView == viewTypes.COURTVIEW}">
+                    Tagesdetail
+                </button>
+                <button type="button" class="button" style="margin-left: 125px;" ng-click="previousDate()">&lt;</button>
+                <input type="text" style="text-align: center;" ng-model="selectedDate" ng-change="loadUtilization()"
+                       data-date-format="dd.mm.yyyy" my-datepicker/>
+                <button type="button" class="button" ng-click="nextDate()">&gt;</button>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div ng-show="selectedView == viewTypes.WEEKVIEW">
+                <b>Courts:</b> &nbsp;&nbsp;
+                <select ng-model="weekViewSelectedCourt" ng-options="court.name for court in courts" ng-change="selectWeekViewCourt()">
+                    <option value="">ALL COURTS</option>
+                </select>
+            </div>
+
+            <div ng-show="selectedView == viewTypes.COURTVIEW">
+                <b>Courts:</b> &nbsp;&nbsp;
+                <button ng-repeat="court in courts" type="button"
+                        ng-class="{'buttonLight': !isCourtSelectedInCourtView(court), 'buttonLightSelected': isCourtSelectedInCourtView(court)}"
+                        ng-click="toggleCourtViewCourtSelection(court)" style="margin-right: 15px;">
+                    {{court.name}}
+                </button>
+            </div>
+
+            <div class="time-column">
+                <div class="not-selected-day-label">&nbsp;</div>
+                <div ng-repeat="timeSlot in timeSlots">
+                    <div class="times">{{timeSlot.fromTime}}</div>
+                    <div class="timeslot-spacer"></div>
+                </div>
+            </div>
+
+            <div class="day-column" ng-repeat="utilization in utilizations">
+                <div ng-class="{'selected-day-label': utilization.isCurrentDate,
+                                'not-selected-day-label': !utilization.isCurrentDate}">
+                    {{utilization.name}}
+                </div>
+                <div ng-repeat="timeSlot in utilization.timeSlots">
+                    <div ng-class="{'past-color': timeSlot.isPast,
+                                    'reserved-color': !timeSlot.isPast && timeSlot.occupied,
+                                    'notreserved-color': !timeSlot.isPast && !timeSlot.occupied && timeSlot.utilization < 0.33,
+                                    'one-third-reserved-color': !timeSlot.isPast && !timeSlot.occupied && timeSlot.utilization >= 0.33 && timeSlot.utilization < 0.66,
+                                    'two-third-reserved-color': !timeSlot.isPast && !timeSlot.occupied && timeSlot.utilization >= 0.66,
+                                    'notreserved-color-clickable': !timeSlot.isPast && !timeSlot.occupied && userInfo.isLoggedIn}"
+                         ng-click="clickTimeSlot(timeSlot, utilization.timeSlots, utilization.date)">
+                        <span ng-show="userInfo.hasAuthority('ADMIN')">{{timeSlot.caption}}</span>
+                    </div>
+                    <div ng-class="{'timeslot-spacer': timeSlot.maxSlots <= 1 || timeSlot.isPast,
+                                    'timeslot-spacer-two-reservable': timeSlot.maxSlots > 1 && !timeSlot.isPast}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer">
+        Das ist mein supertoller footer-text <a href="">testlink</a>
+    </div>
+
+    <div id="reservationModal" class="modal fade cpModal">
+        <div class="modal-dialog reservation-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h2 class="modal-title">Platz buchen</h2>
+                </div>
+                <div class="modal-body">
+                    <form name="reservationForm">
+                        <div class="row">
+                            <div class="col-xs-2"><b>Platz</b></div>
+                            <button ng-repeat="freeCourt in freeCourts" type="button"
+                                    ng-class="{'buttonLight': freeCourtSelected != freeCourt, 'buttonLightSelected': freeCourtSelected == freeCourt}"
+                                    ng-click="selectFreeCourt(freeCourt)" style="margin-right: 15px;">
+                                {{freeCourt.name}}
+                            </button>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><b>Datum</b></div>
+                            <div class="col-xs-2">{{scopeDate}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><b>Von</b></div>
+                            <div class="col-xs-2">{{selectedTimeSlots[0].fromTime}}</div>
+                            <div class="col-xs-2">
+                                <button type="button" class="button" ng-click="setFromTimeLater()" ng-disabled="!fromTimeLaterButtonEnabled()">+</button>
+                                <button type="button" class="button" ng-click="setFromTimeEarlier()" ng-disabled="!fromTimeEarlierButtonEnabled()">-</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><b>Bis</b></div>
+                            <div class="col-xs-2">{{selectedTimeSlots[selectedTimeSlots.length-1].toTime}}</div>
+                            <div class="col-xs-2">
+                                <button type="button" class="button" ng-click="setToTimeLater()" ng-disabled="!toTimeLaterButtonEnabled()">+</button>
+                                <button type="button" class="button" ng-click="setToTimeEarlier()" ng-disabled="!toTimeEarlierButtonEnabled()">-</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><b>Preis</b></div>
+                            <div class="col-xs-2" ng-class="{'strikeText': overrideReservationPrice}">{{calculatedReservationPrice}}</div>
+                            <div class="col-xs-2" ng-show="userInfo.hasAuthority('ADMIN')"><input type="checkbox" ng-model="overrideReservationPrice" ng-change="changeReservationPriceOverride()"/> Override</div>
+                            <div class="col-xs-2" ng-show="overrideReservationPrice">
+                                <input type="text" ng-model="reservationPrice" name="overrideReservationPrice" ng-pattern="/^[0-9]+(|\.[0-9]|\.[0-9][0-9])$/" required />
+                                <span class="error" ng-show="reservationForm.overrideReservationPrice.$error.required">Required!</span>
+                                <span class="error" ng-show="reservationForm.overrideReservationPrice.$error.pattern">pattern</span>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="userInfo.hasAuthority('ADMIN')">
+                            <div class="col-xs-1"><b>Kunde</b></div> <br/>
+                            <div class="col-xs-10">
+                                <input type="text" ng-model="reservationCustomerName" size="50" name="reservationCustomer"
+                                       typeahead="user as user.firstName + ' ' + user.lastName + ', ' + user.city + ', ' + user.street for user in users | filter:{$: $viewValue}"
+                                       typeahead-on-select="selectReservationCustomer()"
+                                       ng-disabled="reservationCustomerSelected" ng-required="userInfo.hasAuthority('ADMIN')" />
+                                <span class="glyphicon glyphicon-remove" style="cursor: default" ng-show="reservationCustomerSelected" ng-click="deselectReservationCustomer()"></span>
+                                <span class="error" ng-show="reservationForm.reservationCustomer.$error.required && reservationForm.reservationCustomer.$dirty">Required!</span>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="userInfo.hasAuthority('ADMIN') && !reservationCustomerSelected && !reservationForm.reservationCustomer.$error.required">
+                            <div class="col-xs-10">
+                                <div class="col-xs-4">Create User Account <input type="checkbox" ng-model="createReservationCustomer"/></div>
+                                <div class="col-xs-6" ng-show="createReservationCustomer">
+                                    EMail: <input type="email" ng-model="createReservationCustomerEmail" name="createReservationCustomerEmail" ng-required="createReservationCustomer" />
+                                    <span class="error" ng-show="reservationForm.createReservationCustomerEmail.$error.required && reservationForm.createReservationCustomerEmail.$dirty">Required!</span>
+                                    <span class="error" ng-show="reservationForm.createReservationCustomerEmail.$error.email && reservationForm.createReservationCustomerEmail.$dirty">invalid email</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-1"><b>Kommentar</b></div>
+                            <div class="col-xs-10">
+                                <textarea ng-model="comment" name="comment" cols="50" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="button" ng-click="makeSingleReservation()" ng-disabled="reservationForm.$invalid">Buchen</button>
+                    <button type="button" class="button" data-dismiss="modal">Abbrechen</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</div>

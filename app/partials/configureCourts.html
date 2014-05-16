@@ -1,0 +1,12 @@
+<ng-include src="'includes/headerConfigurator.html'"></ng-include>
+
+<div ng-show="cpInstance == null">
+    no cpInstance
+</div>
+
+<div ng-show="cpInstance != null">
+    <div class="container">
+        <ng-include src="'includes/configuratorSteps.html'" onload="stepNr=1"></ng-include>
+        <ng-include src="'includes/manageCourts.html'" onload="showConfiguratorNavigation=true"></ng-include>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" ng-app="courtpickerApp">
+  <head>
+      <meta charset="utf-8">
+      <meta http-equiv="cache-control" content="no-cache">
+      <meta http-equiv="expires" content="0">
+      <title ng-if="styleIncludeDone">{{title}}</title>
+      <ng-include src="includeStyle"></ng-include>
+      <style id="cpInstanceStyle" type="text/css" ng-if="applyInstanceStyle">
+          {{cpInstanceStyle.css}}
+      </style>
+  </head>
+
+  <body ng-show="ngIncludesOpen == 0" ng-cloak class="ng-cloak">
+      <ng-view></ng-view>
+  </body>
+
+  <!-- bootstrap -->
+  <script src="lib/jQuery/jquery-1.10.2.min.js"></script>
+  <script src="lib/bootstrap/bootstrap.min.js"></script>
+  <!-- jQuery UI -->
+  <!-- <script src="lib/jQuery/jquery-ui-1.10.4.custom.js"></script> -->
+  <!-- bootstrap plugins -->
+  <script src="lib/bootstrap/bootstrap-datepicker.js"></script>
+  <script src="lib/bootstrap/bootstrap-timepicker.js"></script>
+  <script src="lib/bootstrap/bootstrap-colorpicker.js"></script>
+  <!-- In production use:
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+  -->
+  <script src="lib/angular/angular.js"></script>
+  <script src="lib/angular/angular-resource.min.js"></script>
+  <script src="lib/angular/angular-cookies.min.js"></script>
+  <script src="lib/angular/angular-route.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/directives.js"></script>
+  <!-- bootstrap ui -->
+  <script src="lib/bootstrap/ui-bootstrap-custom-0.10.0.js"></script>
+  <script src="lib/bootstrap/ui-bootstrap-custom-tpls-0.10.0.js"></script>
+</html>

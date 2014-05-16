@@ -1,0 +1,87 @@
+<ng-include src="'includes/headerAdminArea.html'" onload="selectedView='USERGROUPS'"></ng-include>
+
+<div class="container" ng-controller="AdminUserGroupsController">
+    <div class="page-header" style="margin-top: 0;">
+        <h1>Benutzergruppen</h1>
+    </div>
+
+    <h2>Benutzergruppen</h2>
+
+    <table id="ugTable" class="table table-hover" style="width: 800px;">
+        <tbody>
+        <tr ng-repeat="userGroup in userGroups" ng-click="selectUserGroup(userGroup)"
+            ng-class="{active: isUserGroupSelected(userGroup)}">
+            <td>{{userGroup.name}}</td>
+            <td>
+                <button type="button" ng-click="showUserGroupForm(userGroup)" class="btn btn-xs btn-default">
+                    <span class="glyphicon glyphicon-pencil"></span> Edit
+                </button>
+            </td>
+            <td>
+                <button type="button" ng-click="deleteUserGroup(userGroup)" class="btn btn-xs btn-default">
+                    <span class="glyphicon glyphicon-remove"></span> Delete
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <button ng-click="showUserGroupForm()" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span> Benutzergruppe hinzufügen
+    </button>
+
+    <div ng-show="displayUserGroupForm">
+        <div class="spacer10"></div>
+        <form name="userGroupForm" ng-submit="saveUserGroup()" novalidate class="form-horizontal">
+            <fieldset>
+                <legend>Benutzergruppe</legend>
+            </fieldset>
+            <div class="form-group">
+                <label class="col-xs-1 control-label">Name</label>
+                <div class="col-xs-3">
+                    <input type="text" name="userGroupName" placeholder="name" ng-model="formUserGroup.name" ng-trim="true" required
+                           my-focus-on="displayUserGroupForm" class="form-control"/>
+                    <span class="error" ng-show="userGroupForm.userGroupName.$invalid && userGroupForm.userGroupName.$dirty">Required!</span>
+                </div>
+            </div>
+            <button type="submit" name="userGroupSubmit" ng-disabled="userGroupForm.$invalid" class="btn btn-primary">Speichern</button>
+            <button type="button" ng-click="hideUserGroupForm()" class="btn btn-default">Abbrechen</button>
+        </form>
+    </div>
+
+    <div ng-show="selectedUserGroup != null">
+        <div class="spacer20"></div>
+        <h2>Benutzergruppe {{selectedUserGroup.name}}</h2>
+        <div class="spacer10"></div>
+
+        <div style="float: left;">
+            <label for="userGroupUserFilter" class="control-label">Benutzergruppen User</label>
+            <input id="userGroupUserFilter" type="text" placeholder="suche" ng-model="userGroupUserFilter" class="form-control" style="width: 500px; margin-bottom: 5px;">
+            <div class="selectItemContainer">
+                <div class="selectItem" ng-repeat="user in userGroupUser | filter:userGroupUserFilter | orderBy:'lastName'">{{user.firstName}} {{user.lastName}} ({{user.userName}}), {{user.street}}, {{user.city}}
+                    <button type="button" ng-click="removeUserFromUserGroup(user)" class="btn btn-xs btn-danger" style="float: right;">
+                        <span class="glyphicon glyphicon-remove"></span> Entfernen
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div style="float: left; margin: 320px 15px;"><button class="btn btn-primary">&lt; ADD</button></div> -->
+
+        <div style="margin-left: 550px;">
+            <label for="allUserFilter" class="control-label">Alle User</label>
+            <input id="allUserFilter" type="text" placeholder="suche" ng-model="allUserFilter" class="form-control" style="width: 500px; margin-bottom: 5px;">
+            <div class="selectItemContainer">
+                <div class="selectItem" ng-repeat="user in allUser | filter:allUserFilter | orderBy:'lastName'">
+                    {{user.firstName}} {{user.lastName}} ({{user.userName}}), {{user.street}}, {{user.city}}
+                    <button type="button" ng-click="addUserToUserGroup(user)" class="btn btn-xs btn-success" style="float: right;" ng-disabled="isUserInSelectedUserGroup(user)">
+                        <span class="glyphicon glyphicon-plus"></span> Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="spacer10"></div>
+
+</div>
