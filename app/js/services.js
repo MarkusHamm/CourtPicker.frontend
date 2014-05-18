@@ -444,6 +444,14 @@ angular.module('myApp.services', ['ngResource'])
       validateUniqueCpShortName: function(shortName, excludeCurrentCpInstanceId) {
         return $http({method: 'GET', url: '/tck-roger/api/validateUniqueCpShortName',
                       params: {'shortName': shortName, 'excludeCurrentCpInstanceId': excludeCurrentCpInstanceId}});
+      },
+      validateUniqueUserName: function(userName, excludeCurrentUserId) {
+        return $http({method: 'GET', url: '/tck-roger/api/validateUniqueUserName',
+            params: {'userName': userName, 'excludeCurrentUserId': excludeCurrentUserId}});
+      },
+      validateUniqueUserEmail: function(userEmail, excludeCurrentUserId) {
+        return $http({method: 'GET', url: '/tck-roger/api/validateUniqueUserEmail',
+            params: {'userEmail': userEmail, 'excludeCurrentUserId': excludeCurrentUserId}});
       }
     };
   });

@@ -148,10 +148,11 @@
                         <div class="row">
                             <div class="col-xs-3">Benutzername</div>
                             <div class="col-xs-3">
-                                <input type="text" ng-model="registerForm.userName" name="userName" required />
+                                <input type="text" ng-model="registerForm.userName" name="userName" required my-validate-unique-user-name/>
                             </div>
                             <div class="col-xs-4">
-                                <span class="error" ng-show="registrationForm.userName.$invalid && registrationForm.userName.$dirty">Required!</span>
+                                <span class="error" ng-show="registrationForm.userName.$error.required && registrationForm.userName.$dirty">Required!</span>
+                                <span class="error" ng-show="registrationForm.userName.$error.unique && registrationForm.userName.$dirty">Username vergeben</span>
                             </div>
                         </div>
                         <div class="spacer10"></div>
@@ -178,10 +179,11 @@
                         <div class="row">
                             <div class="col-xs-3">E-Mail</div>
                             <div class="col-xs-3">
-                                <input type="email" ng-model="registerForm.email" name="email" required />
+                                <input type="email" ng-model="registerForm.email" name="email" required my-validate-unique-user-email/>
                             </div>
                             <div class="col-xs-4">
-                                <span class="error" ng-show="registrationForm.email.$invalid && registrationForm.email.$dirty">E-Mail Adresse ungütlig</span>
+                                <span class="error" ng-show="registrationForm.email.$error.required && registrationForm.email.$dirty">E-Mail Adresse ungütlig</span>
+                                <span class="error" ng-show="registrationForm.email.$error.unique && registrationForm.email.$dirty">E-Mail vergeben</span>
                             </div>
                         </div>
                         <div class="spacer10"></div>

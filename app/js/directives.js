@@ -168,6 +168,74 @@ angular.module('myApp.directives', []).
     };
   })
 
+  .directive('myValidateUniqueUserName', function(ValidationService, UserService) {
+    return {
+      restrict: 'A',
+      require: '?ngModel',
+      link: function(scope, element, attrs, ngModel) {
+        element.on('keyup', function(evt) {
+          scope.$apply(function() {
+            var userName = element.val();
+            if (userName == '') {
+              ngModel.$setValidity('unique', true);
+            }
+            else {
+              var serviceCallback = function(result) {
+                if (result.data == 'VALID') {
+                  ngModel.$setValidity('unique', true);
+                }
+                else {
+                  ngModel.$setValidity('unique', false);
+                }
+              }
+
+              if (UserService.isLoggedIn) {
+                ValidationService.validateUniqueUserName(userName, UserService.loggedInUser.id).then(serviceCallback);
+              }
+              else {
+                ValidationService.validateUniqueUserName(userName).then(serviceCallback);
+              }
+            }
+          })
+        });
+      }
+    };
+  })
+
+  .directive('myValidateUniqueUserEmail', function(ValidationService, UserService) {
+    return {
+      restrict: 'A',
+      require: '?ngModel',
+      link: function(scope, element, attrs, ngModel) {
+        element.on('keyup', function(evt) {
+          scope.$apply(function() {
+            var userEmail = element.val();
+            if (userEmail == '') {
+              ngModel.$setValidity('unique', true);
+            }
+            else {
+              var serviceCallback = function(result) {
+                if (result.data == 'VALID') {
+                  ngModel.$setValidity('unique', true);
+                }
+                else {
+                  ngModel.$setValidity('unique', false);
+                }
+              }
+
+              if (UserService.isLoggedIn) {
+                ValidationService.validateUniqueUserEmail(userEmail, UserService.loggedInUser.id).then(serviceCallback);
+              }
+              else {
+                ValidationService.validateUniqueUserEmail(userEmail).then(serviceCallback);
+              }
+            }
+          })
+        });
+      }
+    };
+  })
+
   .directive('myOnBlur', function(ValidationService) {
     return {
       restrict: 'A',
