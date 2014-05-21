@@ -430,7 +430,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.callRestrictorFollowUp = false;
     $scope.iFrameLoadedTheFirstTime = true;
 
-    $scope.previewWindowUrl = 'http://localhost:8080/app/cp.html?uid=xx#/courtpicker?name=' + $rootScope.cpInstance.shortName;
+    $scope.previewWindowUrl = 'http://mycourtpicker.com/app/cp.html?uid=xx#/courtpicker?name=' + $rootScope.cpInstance.shortName;
 
     $scope.submitWebdesignIfValid = function() {
       if (!$scope.designHeaderForm.$valid || !$scope.designBasicsForm.$valid || !$scope.designControlsForm.$valid || !$scope.designContentForm.$valid) {
@@ -527,6 +527,53 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     init();
+  }])
+
+  .controller('ConfigureRegistrationController', ['$scope', '$rootScope', '$location', 'CpService', function($scope, $rootScope, $location, CpService) {
+    $scope.registrationTypes = { NEWUSER: 0, EXISTINGUSER: 1 };
+    $scope.registrationType = $scope.registrationTypes.NEWUSER;
+    $scope.formExistingUser = {};
+    $scope.formNewUser = {};
+    $scope.errorMessageNewUser = '';
+    $scope.errorMessageExistingUser = '';
+
+    $scope.isNextButtonEnabled = function() {
+      if ($scope.registrationType == $scope.registrationTypes.NEWUSER &&
+          $scope.newUserForm.$valid ||
+          $scope.registrationType == $scope.registrationTypes.EXISTINGUSER &&
+          $scope.existingUserForm.$valid) {
+          return true;
+      }
+      return false;
+    }
+
+    $scope.processRegistration = function() {
+      if ($scope.registrationType == $scope.registrationTypes.EXISTINGUSER) {
+        CpService.getUserByCredentials($scope.formExistingUser.userName, $scope.formExistingUser.password).then(function(response) {
+          if (response.data == null || response.data == '') {
+            $scope.errorMessageExistingUser = 'Ungültige Login Daten';
+          }
+          else {
+            var user = response.data;
+            CpService.associateUserWithCpInstance($rootScope.cpInstance.id, user.id).then(function(resp) {
+              $location.path('/courtpicker');
+            })
+          }
+        });
+      }
+      else {
+        CpService.registerUser($scope.formNewUser.userName, $scope.formNewUser.password, $scope.formNewUser.email,
+          $scope.formNewUser.firstName, $scope.formNewUser.lastName).then(function(response) {
+            var user = response.data;
+            CpService.associateUserWithCpInstance($rootScope.cpInstance.id, user.id).then(function(resp) {
+              $location.path('/courtpicker');
+            })
+          },
+          function(error) {
+            $scope.errorMessageNewUser = 'Fehler beim anlegen des Benutzers';
+          })
+      }
+    }
   }])
 
   /* ------------------------ COURTPICKER ----------------------- */

@@ -387,6 +387,10 @@ angular.module('myApp.services', ['ngResource'])
         return $http({method: 'GET', url: '/tck-roger/api/getAuthorities',
                       params: {'userId': userId, 'cpInstanceId': cpInstanceId}});
       },
+      associateUserWithCpInstance: function(cpInstanceId, userId) {
+        return $http({method: 'POST', url: '/tck-roger/api/associateUserWithCpInstance',
+          params: {'cpInstanceId': cpInstanceId, 'userId': userId}});
+      },
       forgotPasswordRequest: function(email, firstName, lastName) {
         return $http({method: 'GET', url: '/tck-roger/api/forgotPasswordRequest',
           params: {'email': email, 'firstName': firstName, 'lastName': lastName}});
