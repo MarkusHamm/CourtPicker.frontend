@@ -439,6 +439,9 @@ angular.module('myApp.services', ['ngResource'])
       paySingleReservation: function(reservationId, paymentOptionId, overridePrice, customPrice) {
         return $http({method: 'POST', url: '/tck-roger/api/paySingleReservation',
           params: {'reservationId': reservationId, 'paymentOptionId': paymentOptionId, 'overridePrice': overridePrice, 'customPrice': customPrice}});
+      },
+      getMonthlyFee: function(cpInstanceId) {
+        return $http({method: 'GET', url: '/tck-roger/api/getMonthlyFee', params: {'cpInstanceId': cpInstanceId}});
       }
 		};
 	})

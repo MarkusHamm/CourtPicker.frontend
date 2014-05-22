@@ -105,7 +105,29 @@
         </form>
     </div>
 
+    <div class="page-header" style="margin-top: 0;">
+        <h1>30 Tage kostenlos testen</h1>
+    </div>
+    <p>
+        Sie können CourtPicker 30 Tage lang gratis testen. <br/>
+        Danach würde Ihre konfigurierte Instanz {{monthlyFee}}€ pro Monat kosten (<a href="" ng-click="showPriceTable()">Preistabelle</a>). <br/>
+    </p>
+
     <div class="spacer20"></div>
     <a href="#/configureDesign" class="btn btn-lg btn-default">Previous</a>
     <button class="btn btn-lg btn-primary" ng-disabled="!isNextButtonEnabled()" ng-click="processRegistration()">CourtPicker starten</button>
 </div>
+
+<div id="priceTableModal" class="modal fade cpModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 class="modal-title">CourtPicker Preise</h2>
+            </div>
+            <div class="modal-body">
+                TO BE FILLED
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

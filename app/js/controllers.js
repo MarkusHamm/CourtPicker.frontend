@@ -574,6 +574,18 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
           })
       }
     }
+
+    $scope.showPriceTable = function() {
+      $('#priceTableModal').modal('show');
+    }
+
+    var init = function() {
+      CpService.getMonthlyFee($rootScope.cpInstance.id).then(function(response) {
+        $scope.monthlyFee = response.data;
+      })
+    }
+
+    init();
   }])
 
   /* ------------------------ COURTPICKER ----------------------- */
