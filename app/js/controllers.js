@@ -1244,6 +1244,29 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     init();
   }])
 
+  .controller('CustomerUserDataController', ['$scope', '$rootScope', '$timeout', 'CpService', 'UserService', function($scope, $rootScope, $timeout, CpService, UserService) {
+    $scope.updateUserSuccessMsg = '';
+    $scope.updateUserErrorMsg = '';
+
+    $scope.updateUser = function() {
+      CpService.updateUser($scope.formUser).success(function(data, status) {
+        angular.copy(data, UserService.loggedInUser);
+        $scope.updateUserSuccessMsg = 'Benutzerdaten erfolgreich geändert';
+        $timeout(function() { $scope.updateUserSuccessMsg = ''; }, 5000);
+      })
+      .error(function(data, status) {
+          $scope.updateUserErrorMsg = 'Fehler beim ändern der Benutzerdaten. Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut.';
+          $timeout(function() { $scope.updateUserErrorMsg = ''; }, 5000);
+      });
+    }
+
+    var init = function() {
+      $scope.formUser = angular.copy(UserService.loggedInUser);
+    }
+
+    init();
+  }])
+
   .controller('AdminReservationsController', ['$scope', '$rootScope', 'CpService', 'RESTCourtCategory', 'RESTCourt', 'RESTPaymentOption', 'DateService', function($scope, $rootScope, CpService, RESTCourtCategory, RESTCourt, RESTPaymentOption, DateService) {
     $scope.dateService = DateService;
 

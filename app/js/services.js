@@ -376,6 +376,9 @@ angular.module('myApp.services', ['ngResource'])
         return $http({method: 'POST', url: '/tck-roger/api/activateUser',
           params: {'userId': userId, 'activationCode': activationCode}});
       },
+      updateUser: function(user) {
+        return $http({method: 'POST', url: '/tck-roger/api/updateUser', data: user});
+      },
       getUserByCredentials: function(username, password) {
         return $http({method: 'GET', url: '/tck-roger/api/getUserByCredentials',
                       params: {'username': username, 'password': password}});
