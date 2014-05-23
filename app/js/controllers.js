@@ -1247,6 +1247,9 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
   .controller('CustomerUserDataController', ['$scope', '$rootScope', '$timeout', 'CpService', 'UserService', function($scope, $rootScope, $timeout, CpService, UserService) {
     $scope.updateUserSuccessMsg = '';
     $scope.updateUserErrorMsg = '';
+    $scope.updatePasswordSuccessMsg = '';
+    $scope.updatePasswordErrorMsg = '';
+    $scope.formPassword = {};
 
     $scope.updateUser = function() {
       CpService.updateUser($scope.formUser).success(function(data, status) {
@@ -1255,9 +1258,38 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
         $timeout(function() { $scope.updateUserSuccessMsg = ''; }, 5000);
       })
       .error(function(data, status) {
-          $scope.updateUserErrorMsg = 'Fehler beim ändern der Benutzerdaten. Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut.';
-          $timeout(function() { $scope.updateUserErrorMsg = ''; }, 5000);
+        $scope.updateUserErrorMsg = 'Fehler beim ändern der Benutzerdaten. Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut.';
+        $timeout(function() { $scope.updateUserErrorMsg = ''; }, 5000);
       });
+    }
+
+    $scope.changePassword = function() {
+      CpService.changeUserPassword(UserService.loggedInUser.id, $scope.formPassword.oldPassword, $scope.formPassword.newPassword)
+        .success(function(data, status) {
+          if (data == null || data.length == 0) {
+            $scope.updatePasswordErrorMsg = 'Ihr eingegebenes aktuelles Passwort stimmt nicht. Bitte versuchen Sie es erneut.';
+            $timeout(function() { $scope.updatePasswordErrorMsg = ''; }, 5000);
+            resetChangePasswordForm();
+          }
+          else {
+            var newPasswordMd5 = data;
+            $scope.formUser.password = newPasswordMd5; // update application stored password for furhter updates
+            UserService.loggedInUser.password = newPasswordMd5; // update application stored password for furhter updates
+            $scope.updatePasswordSuccessMsg = 'Passwort erfolgreich geändert.';
+            $timeout(function() { $scope.updatePasswordSuccessMsg = ''; }, 5000);
+            resetChangePasswordForm();
+          }
+        })
+        .error(function(data, status) {
+          $scope.updatePasswordErrorMsg = 'Fehler beim ändern des Passworts. Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut.';
+          $timeout(function() { $scope.updatePasswordErrorMsg = ''; }, 5000);
+          resetChangePasswordForm();
+        });
+    }
+
+    var resetChangePasswordForm = function() {
+      $scope.formPassword = {};
+      $scope.passwordForm.$setPristine();
     }
 
     var init = function() {

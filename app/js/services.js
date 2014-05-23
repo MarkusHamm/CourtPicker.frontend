@@ -383,6 +383,10 @@ angular.module('myApp.services', ['ngResource'])
         return $http({method: 'GET', url: '/tck-roger/api/getUserByCredentials',
                       params: {'username': username, 'password': password}});
       },
+      changeUserPassword: function(userId, oldPassword, newPassword) {
+        return $http({method: 'POST', url: '/tck-roger/api/changeUserPassword',
+          params: {'userId': userId, 'oldPassword': oldPassword, 'newPassword': newPassword}});
+      },
       getAllUserExtract: function() {
         return $http({method: 'GET', url: '/tck-roger/api/getAllUserExtract'});
       },

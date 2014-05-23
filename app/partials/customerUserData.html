@@ -2,7 +2,7 @@
 
 <div class="container" ng-controller="CustomerUserDataController">
     <div class="page-header" style="margin-top: 0;">
-        <h1>Benutzerdaten</h1>
+        <h1>Benutzerdaten ändern</h1>
     </div>
 
     <form name="userForm" class="form-horizontal" novalidate>
@@ -75,24 +75,39 @@
                 </div>
             </div>
         </fieldset>
-        <div class="spacer20"></div>
+        <div class="spacer10"></div>
         <button type="button" class="btn btn-lg btn-primary" ng-disabled="userForm.$invalid" ng-click="updateUser()">Benutzerdaten ändern</button>
     </form>
-</div>
 
-<div style="display: none;">
-    <div class="form-group">
-        <label class="col-xs-2 control-label">Passwort</label>
-        <div class="col-xs-3">
-            <input type="password" ng-model="formUser.password" class="form-control" name="password" required />
-        </div>
-        <span class="error" ng-show="userForm.password.$invalid && userForm.password.$dirty">Required!</span>
+    <div class="page-header" style="margin-top: 0;">
+        <h1>Passwort ändern</h1>
     </div>
-    <div class="form-group">
-        <label class="col-xs-2 control-label">Passwort bestätigen</label>
-        <div class="col-xs-3">
-            <input type="password" ng-model="formUser.passwordConfirmation" class="form-control" name="passwordConfirmation" my-pw-match password-match="formUser.password" />
+
+    <form name="passwordForm" class="form-horizontal" novalidate>
+        <div class="alert alert-success" ng-show="updatePasswordSuccessMsg.length > 0">{{updatePasswordSuccessMsg}}</div>
+        <div class="alert alert-danger" ng-show="updatePasswordErrorMsg.length > 0">{{updatePasswordErrorMsg}}</div>
+        <div class="form-group">
+            <label class="col-xs-2 control-label">Aktuelles Passwort</label>
+            <div class="col-xs-3">
+                <input type="password" ng-model="formPassword.oldPassword" name="oldPassword" class="form-control" required />
+            </div>
+            <span class="error" ng-show="passwordForm.oldPassword.$invalid && passwordForm.oldPassword.$dirty">Required!</span>
         </div>
-        <span class="error" ng-show="userForm.passwordConfirmation.$invalid && userForm.passwordConfirmation.$dirty">Passwörter ungleich</span>
-    </div>
+        <div class="form-group">
+            <label class="col-xs-2 control-label">Neues Passwort</label>
+            <div class="col-xs-3">
+                <input type="password" ng-model="formPassword.newPassword" name="newPassword" class="form-control" required />
+            </div>
+            <span class="error" ng-show="passwordForm.newPassword.$invalid && passwordForm.newPassword.$dirty">Required!</span>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 control-label">Neues Passwort Whg</label>
+            <div class="col-xs-3">
+                <input type="password" ng-model="formPassword.newPasswordAgain" name="newPasswordAgain" class="form-control" my-pw-match password-match="formPassword.newPassword"/>
+            </div>
+            <span class="error" ng-show="passwordForm.newPasswordAgain.$error.pwmatch && passwordForm.newPasswordAgain.$dirty">Passwörter nicht gleich</span>
+        </div>
+        <div class="spacer10"></div>
+        <button type="button" class="btn btn-lg btn-primary" ng-disabled="passwordForm.$invalid" ng-click="changePassword()">Passwort ändern</button>
+    </form>
 </div>
