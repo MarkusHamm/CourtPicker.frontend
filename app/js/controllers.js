@@ -1655,4 +1655,48 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     init();
+  }])
+
+  .controller('AdminPermissionsController', ['$scope', 'CpService', 'UtilService', '$rootScope', function($scope, CpService, UtilService, $rootScope) {
+    $scope.allUser = [];
+    $scope.adminUser = [];
+
+    $scope.getAllUser = function () {
+      CpService.getAllUserExtract().then(function(result) {
+        $scope.allUser = result.data;
+      })
+    };
+
+    $scope.getAdminUser = function () {
+      CpService.getAdminUserExtract($rootScope.cpInstance.id).then(function(result) {
+        $scope.adminUser = result.data;
+      })
+    };
+
+    $scope.addAdminUser = function(user) {
+      CpService.authorizeUser($rootScope.cpInstance.id, user.id, 'ADMIN').then(function() {
+        $scope.adminUser.push(user);
+      })
+    }
+
+    $scope.removeAdminUser = function(user) {
+      CpService.deAuthorizeUser($rootScope.cpInstance.id, user.id, 'ADMIN').then(function() {
+        var removeIndex = $scope.adminUser.indexOf(user);
+        $scope.adminUser.splice(removeIndex, 1);
+      })
+    }
+
+    $scope.isUserAdminUser = function(user) {
+      if (UtilService.getObjectById(user.id, $scope.adminUser) != null) {
+        return true;
+      }
+      return false;
+    }
+
+    var init = function() {
+      $scope.getAllUser();
+      $scope.getAdminUser();
+    }
+
+    init();
   }]);

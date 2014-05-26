@@ -1,0 +1,35 @@
+<ng-include src="'includes/headerAdminArea.html'" onload="selectedView='PERMISSIONS'"></ng-include>
+
+<div class="container" ng-controller="AdminPermissionsController">
+    <div class="page-header" style="margin-top: 0;">
+        <h1>Berechtigungen</h1>
+    </div>
+
+    <div style="float: left;">
+        <label for="adminUserFilter" class="control-label">Admin User</label>
+        <input id="adminUserFilter" type="text" placeholder="suche" ng-model="adminUserFilter" class="form-control" style="width: 500px; margin-bottom: 5px;">
+        <div class="selectItemContainer">
+            <div class="selectItem" ng-repeat="user in adminUser | filter:adminUserFilter | orderBy:'lastName'">{{user.firstName}} {{user.lastName}} ({{user.userName}}), {{user.street}}, {{user.city}}
+                <button type="button" ng-click="removeAdminUser(user)" class="btn btn-xs btn-danger" style="float: right;">
+                    <span class="glyphicon glyphicon-remove"></span> Entfernen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-left: 550px;">
+        <label for="allUserFilter" class="control-label">Alle User</label>
+        <input id="allUserFilter" type="text" placeholder="suche" ng-model="allUserFilter" class="form-control" style="width: 500px; margin-bottom: 5px;">
+        <div class="selectItemContainer">
+            <div class="selectItem" ng-repeat="user in allUser | filter:allUserFilter | orderBy:'lastName'">
+                {{user.firstName}} {{user.lastName}} ({{user.userName}}), {{user.street}}, {{user.city}}
+                <button type="button" ng-click="addAdminUser(user)" class="btn btn-xs btn-success" style="float: right;" ng-disabled="isUserAdminUser(user)">
+                    <span class="glyphicon glyphicon-plus"></span> Add
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="spacer10"></div>
+
+</div>

@@ -390,6 +390,9 @@ angular.module('myApp.services', ['ngResource'])
       getAllUserExtract: function() {
         return $http({method: 'GET', url: '/tck-roger/api/getAllUserExtract'});
       },
+      getAdminUserExtract: function(cpInstanceId) {
+        return $http({method: 'GET', url: '/tck-roger/api/getAdminUserExtract', params: {'cpInstanceId': cpInstanceId}});
+      },
       getAuthorities: function(userId, cpInstanceId) {
         return $http({method: 'GET', url: '/tck-roger/api/getAuthorities',
                       params: {'userId': userId, 'cpInstanceId': cpInstanceId}});
@@ -397,6 +400,14 @@ angular.module('myApp.services', ['ngResource'])
       associateUserWithCpInstance: function(cpInstanceId, userId) {
         return $http({method: 'POST', url: '/tck-roger/api/associateUserWithCpInstance',
           params: {'cpInstanceId': cpInstanceId, 'userId': userId}});
+      },
+      authorizeUser: function(cpInstanceId, userId, authority) {
+        return $http({method: 'POST', url: '/tck-roger/api/authorizeUser',
+          params: {'cpInstanceId': cpInstanceId, 'userId': userId, 'authority': authority}});
+      },
+      deAuthorizeUser: function(cpInstanceId, userId, authority) {
+        return $http({method: 'POST', url: '/tck-roger/api/deAuthorizeUser',
+          params: {'cpInstanceId': cpInstanceId, 'userId': userId, 'authority': authority}});
       },
       forgotPasswordRequest: function(email, firstName, lastName) {
         return $http({method: 'GET', url: '/tck-roger/api/forgotPasswordRequest',
