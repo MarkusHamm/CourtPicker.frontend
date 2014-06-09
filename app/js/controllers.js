@@ -161,43 +161,79 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.getAllCourtCategories();
   }])
 
-  .controller('ConfigureRatesController', ['$scope', 'RESTCourtCategory', 'RESTRate', 'RESTUserGroup',
-    'RESTSubscriptionRatePeriod', '$rootScope', function($scope, RESTCourtCategory, RESTRate, RESTUserGroup,
-                                                         RESTSubscriptionRatePeriod, $rootScope) {
+  .controller('ConfigureRatesController', ['$scope', 'RESTCourtCategory', 'RESTRate', 'RESTUserGroup', 'RESTSubscription', 'RESTSubscriptionRate', '$rootScope',
+                                   function($scope, RESTCourtCategory, RESTRate, RESTUserGroup, RESTSubscription, RESTSubscriptionRate, $rootScope) {
     $scope.courtCategories = [];
     $scope.selectedCourtCategory = null;
-    // can be either 'RATE' or 'SUBSCRIPTIONRATEPERIOD'
+    // can be either 'RATE' or 'SUBSCRIPTIONRATE'
     $scope.selectedRateType = 'RATE';
 
     $scope.rates = [];
-    $scope.subscriptionRatesPeriod = [];
-
-    $scope.userGroups = [];
+    $scope.subscriptions = [];
+    $scope.subscriptionRates = [];
+    $scope.selectedSubscription = null;
 
     $scope.formRate = null;
-    $scope.formSubscriptionRatePeriod = null;
+    $scope.formSubscription = null;
+    $scope.formSubscriptionRate = null;
     $scope.displayRateForm = false;
-    $scope.displaySubscriptionRatePeriodForm = false;
+    $scope.displaySubscriptionForm = false;
+    $scope.displaySubscriptionRateForm = false;
+
+    $scope.userGroups = [];
 
     $scope.selectTypeRate = function() {
       $scope.selectedRateType = 'RATE';
       $scope.rates = RESTRate.getAll({courtCategoryId: $scope.selectedCourtCategory.id});
-      $scope.subscriptionRatesPeriod = [];
+      $scope.displayRateForm = false;
     }
 
-    $scope.selectTypeSubscriptionRatePeriod = function() {
-      $scope.selectedRateType = 'SUBSCRIPTIONRATEPERIOD';
-      $scope.subscriptionRatesPeriod = RESTSubscriptionRatePeriod.getAll({courtCategoryId: $scope.selectedCourtCategory.id});
-      $scope.rates = [];
+    $scope.selectTypeSubscriptionRate = function() {
+      $scope.selectedRateType = 'SUBSCRIPTIONRATE';
+      $scope.subscriptions = RESTSubscription.getAll({courtCategoryId: $scope.selectedCourtCategory.id});
+      $scope.displaySubscriptionRateForm = false;
+      $scope.selectedSubscription = null;
+      $scope.subscriptionRates = [];
     }
 
     $scope.selectCourtCategory = function(courtCategory) {
       $scope.selectedCourtCategory = courtCategory;
       switch($scope.selectedRateType) {
-        case 'SUBSCRIPTIONRATEPERIOD': $scope.selectTypeSubscriptionRatePeriod(); break;
-        //case 'SUBSCRIPTIONRATEQUANTITY': $scope.selectTypeSubscriptionRateQuantity(); break;
+        case 'SUBSCRIPTIONRATE': $scope.selectTypeSubscriptionRate(); break;
         default: $scope.selectTypeRate();
       }
+    }
+
+    $scope.clickConstrainDate = function(rate) {
+      if (rate.constrainDate) {
+       rate.cDateFrom = '';
+       rate.cDateTo = '';
+     }
+    }
+
+    $scope.clickConstrainTime = function(rate) {
+     if (rate.constrainTime) {
+       rate.cTimeFrom = '';
+       rate.cTimeTo = '';
+     }
+    }
+
+    $scope.clickConstrainWeekDay = function(rate) {
+     if (rate.constrainWeekDay) {
+       rate.cMon = false;
+       rate.cTue = false;
+       rate.cWed = false;
+       rate.cThu = false;
+       rate.cFri = false;
+       rate.cSat = false;
+       rate.cSun = false;
+     }
+    }
+
+    $scope.clickConstrainUserGroup = function(rate) {
+     if (rate.constrainUserGroup) {
+       rate.cUserGroupIds = [];
+     }
     }
 
     // -- rate --
@@ -279,84 +315,116 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       }
     }
 
-    $scope.clickRateConstrainDate = function() {
-      if (!$scope.formRate.constrainDate) {
-        $scope.formRate.cDateFrom = '';
-        $scope.formRate.cDateTo = '';
+    // -- subscription rates --
+
+    $scope.selectSubscription = function(subscription) {
+      $scope.selectedSubscription = subscription;
+      $scope.subscriptionRates = RESTSubscriptionRate.getAll({subscriptionId: $scope.selectedSubscription.id});
+    };
+
+    $scope.isSubscriptionSelected = function(subscription) {
+      if (subscription == $scope.selectedSubscription) {
+        return true;
       }
+      return false;
     }
 
-    $scope.clickRateConstrainTime = function() {
-      if (!$scope.formRate.constrainTime) {
-        $scope.formRate.cTimeFrom = '';
-        $scope.formRate.cTimeTo = '';
-      }
-    }
-
-    $scope.clickRateConstrainWeekDay = function() {
-      if (!$scope.formRate.constrainWeekDay) {
-        $scope.formRate.cMon = false;
-        $scope.formRate.cTue = false;
-        $scope.formRate.cWed = false;
-        $scope.formRate.cThu = false;
-        $scope.formRate.cFri = false;
-        $scope.formRate.cSat = false;
-        $scope.formRate.cSun = false;
-      }
-    }
-
-    $scope.clickRateConstrainUserGroup = function() {
-      if (!$scope.formRate.constrainUserGroup) {
-        $scope.formRate.cUserGroupIds = [];
-      }
-    }
-
-    // -- subscriptionrate period --
-
-    $scope.showSubscriptionRatePeriodForm = function(rate) {
-      if (rate == null) {
-        $scope.formSubscriptionRatePeriod = createNewSubscriptionRatePeriod();
+    $scope.showSubscriptionForm = function(subscription) {
+      if (subscription == null) {
+        $scope.formSubscription = createNewSubscription();
       }
       else {
-        $scope.formSubscriptionRatePeriod = angular.copy(rate);
-        $scope.subscriptionRatePeriodUnderEdit = rate;
+        $scope.formSubscription = angular.copy(subscription);
+        $scope.subscriptionUnderEdit = subscription;
       }
-      $scope.displaySubscriptionRatePeriodForm = true;
+      $scope.displaySubscriptionForm = true;
     }
 
-    $scope.saveSubscriptionRatePeriod = function(rate) {
-      var isAdd = ($scope.formSubscriptionRatePeriod.id == null);
+    $scope.saveSubscription = function(subscription) {
+      $scope.formSubscription = RESTSubscription.save($scope.formSubscription);
+      $scope.displaySubscriptionForm = false;
 
-      $scope.formRate = RESTSubscriptionRatePeriod.save($scope.formSubscriptionRatePeriod);
-      $scope.displaySubscriptionRatePeriodForm = false;
-
+      var isAdd = ($scope.formSubscription.id == null);
       // new
       if (isAdd) {
-        $scope.subscriptionRatesPeriod.push($scope.formSubscriptionRatePeriod);
+        $scope.subscriptions.push($scope.formSubscription);
       }
       // edit existing
       else {
-        angular.copy($scope.formSubscriptionRatePeriod, $scope.subscriptionRatePeriodUnderEdit);
+        angular.copy($scope.formSubscription, $scope.subscriptionUnderEdit);
       }
     }
 
-    $scope.deleteSubscriptionRatePeriod = function(rate) {
-      RESTSubscriptionRatePeriod.remove({id: rate.id}, '');
-      var removeIndex = $scope.subscriptionRatesPeriod.indexOf(rate);
-      $scope.subscriptionRatesPeriod.splice(removeIndex, 1);
+    $scope.deleteSubscription = function(subscription) {
+      if (subscription == $scope.selectedSubscription) {
+        $scope.selectedSubscription = null;
+        $scope.subscriptionRates = [];
+      }
+
+      RESTSubscription.remove({id: subscription.id}, '');
+      var removeIndex = $scope.subscriptions.indexOf(subscription);
+      $scope.subscriptions.splice(removeIndex, 1);
     };
 
-    $scope.hideSubscriptionRatePeriodForm = function() {
-      $scope.displaySubscriptionRatePeriodForm = false;
+    $scope.hideSubscriptionForm = function() {
+      $scope.displaySubscriptionForm = false;
     }
 
-    var createNewSubscriptionRatePeriod = function() {
+    $scope.showSubscriptionRateForm = function(rate) {
+      if (rate == null) {
+        $scope.formSubscriptionRate = createNewSubscriptionRate();
+      }
+      else {
+        $scope.formSubscriptionRate = angular.copy(rate);
+        $scope.subscriptionRateUnderEdit = rate;
+      }
+      $scope.displaySubscriptionRateForm = true;
+    }
+
+    $scope.saveSubscriptionRate = function(rate) {
+      var isAdd = ($scope.formSubscriptionRate.id == null);
+
+      $scope.formSubscriptionRate = RESTSubscriptionRate.save($scope.formSubscriptionRate);
+      $scope.displaySubscriptionRateForm = false;
+
+      // new
+      if (isAdd) {
+        $scope.subscriptionRates.push($scope.formSubscriptionRate);
+      }
+      // edit existing
+      else {
+        angular.copy($scope.formSubscriptionRate, $scope.subscriptionRateUnderEdit);
+      }
+    }
+
+    $scope.deleteSubscriptionRate = function(rate) {
+      RESTSubscriptionRate.remove({id: rate.id}, '');
+      var removeIndex = $scope.subscriptionRates.indexOf(rate);
+      $scope.subscriptionRates.splice(removeIndex, 1);
+    };
+
+    $scope.hideSubscriptionRateForm = function() {
+      $scope.displaySubscriptionRateForm = false;
+    }
+
+    var createNewSubscription = function() {
       return {
         id: null,
         courtCategoryId: $scope.selectedCourtCategory.id,
         name: '',
         periodStart: '',
         periodEnd: '',
+        bookableFrom: '',
+        bookableTo: '',
+        orderNr: 1
+      }
+    }
+
+    var createNewSubscriptionRate = function() {
+      return {
+        id: null,
+        subscriptionId: $scope.selectedSubscription.id,
+        name: '',
         price: '',
         constrainTime: false,
         constrainWeekDay: false,
@@ -370,22 +438,20 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
         cFri: false,
         cSat: false,
         cSun: false,
-        cUserGroupIds: [],
-        active: true,
-        orderNr: 1
+        cUserGroupIds: []
       }
     }
 
-    $scope.addUserGroupToSubscriptionRatePeriod = function(userGroup) {
-      if($scope.formSubscriptionRatePeriod.cUserGroupIds.indexOf(userGroup.id) == -1) {
-        $scope.formSubscriptionRatePeriod.cUserGroupIds.push(userGroup.id);
+    $scope.addUserGroupToSubscriptionRate = function(userGroup) {
+      if($scope.formSubscriptionRate.cUserGroupIds.indexOf(userGroup.id) == -1) {
+        $scope.formSubscriptionRate.cUserGroupIds.push(userGroup.id);
       }
     }
 
-    $scope.removeUserGroupFromSubscriptionRatePeriod = function(id) {
-      var removeIndex = $scope.formSubscriptionRatePeriod.cUserGroupIds.indexOf(id);
+    $scope.removeUserGroupFromSubscriptionRate = function(id) {
+      var removeIndex = $scope.formSubscriptionRate.cUserGroupIds.indexOf(id);
       if(removeIndex != -1) {
-        $scope.formSubscriptionRatePeriod.cUserGroupIds.splice(removeIndex, 1);
+        $scope.formSubscriptionRate.cUserGroupIds.splice(removeIndex, 1);
       }
     }
 

@@ -313,6 +313,25 @@ angular.module('myApp.services', ['ngResource'])
 		});
 	})
 
+  .factory('RESTSubscription', function($resource){
+    return $resource('/tck-roger/api/:action', {},
+      {
+        getAll: {method:'GET', params:{action:'getSubscriptions', courtCategoryId: 1}, isArray:true},
+        save: {method:'POST', params:{action:'saveSubscription'}, isArray:false},
+        remove: {method:'POST', params:{action:'deleteSubscription', id: -1}, isArray:false}
+      });
+  })
+
+  .factory('RESTSubscriptionRate', function($resource){
+    return $resource('/tck-roger/api/:action', {},
+      {
+        getAll: {method:'GET', params:{action:'getSubscriptionRates', subscriptionId: 1}, isArray:true},
+        save: {method:'POST', params:{action:'saveSubscriptionRate'}, isArray:false},
+        remove: {method:'POST', params:{action:'deleteSubscriptionRate', id: -1}, isArray:false}
+      });
+  })
+
+  /*
   .factory('RESTSubscriptionRatePeriod', function($resource){
     return $resource('/tck-roger/api/:action', {},
       {
@@ -321,6 +340,7 @@ angular.module('myApp.services', ['ngResource'])
         remove: {method:'POST', params:{action:'deleteSubscriptionPeriodRate', id: -1}, isArray:false}
       });
   })
+  */
 
   .factory('RESTUserGroup', function($resource){
     return $resource('/tck-roger/api/:action', {},
