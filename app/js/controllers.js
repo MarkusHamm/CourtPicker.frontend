@@ -161,8 +161,8 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.getAllCourtCategories();
   }])
 
-  .controller('ConfigureRatesController', ['$scope', 'RESTCourtCategory', 'RESTRate', 'RESTUserGroup', 'RESTSubscription', 'RESTSubscriptionRate', '$rootScope',
-                                   function($scope, RESTCourtCategory, RESTRate, RESTUserGroup, RESTSubscription, RESTSubscriptionRate, $rootScope) {
+  .controller('ConfigureRatesController', ['$scope', 'RESTCourtCategory', 'RESTSingleRate', 'RESTUserGroup', 'RESTSubscription', 'RESTSubscriptionRate', '$rootScope',
+                                   function($scope, RESTCourtCategory, RESTSingleRate, RESTUserGroup, RESTSubscription, RESTSubscriptionRate, $rootScope) {
     $scope.courtCategories = [];
     $scope.selectedCourtCategory = null;
     // can be either 'RATE' or 'SUBSCRIPTIONRATE'
@@ -184,7 +184,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
 
     $scope.selectTypeRate = function() {
       $scope.selectedRateType = 'RATE';
-      $scope.rates = RESTRate.getAll({courtCategoryId: $scope.selectedCourtCategory.id});
+      $scope.rates = RESTSingleRate.getAll({courtCategoryId: $scope.selectedCourtCategory.id});
       $scope.displayRateForm = false;
     }
 
@@ -252,7 +252,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.saveRate = function(rate) {
       var isAdd = ($scope.formRate.id == null);
 
-      $scope.formRate = RESTRate.save($scope.formRate);
+      $scope.formRate = RESTSingleRate.save($scope.formRate);
       $scope.displayRateForm = false;
 
       // new
@@ -266,7 +266,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     $scope.deleteRate = function(rate) {
-      RESTRate.remove({id: rate.id}, '');
+      RESTSingleRate.remove({id: rate.id}, '');
       var removeIndex = $scope.rates.indexOf(rate);
       $scope.rates.splice(removeIndex, 1);
     };

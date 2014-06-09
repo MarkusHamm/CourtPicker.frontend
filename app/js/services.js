@@ -304,12 +304,12 @@ angular.module('myApp.services', ['ngResource'])
       });
   })
 
-	.factory('RESTRate', function($resource){
+	.factory('RESTSingleRate', function($resource){
 		return $resource('/tck-roger/api/:action', {}, 
 		{
-			getAll: {method:'GET', params:{action:'getRates', courtCategoryId: 1}, isArray:true},
-      save: {method:'POST', params:{action:'saveRate'}, isArray:false},
-      remove: {method:'POST', params:{action:'deleteRate', id: -1}, isArray:false}
+			getAll: {method:'GET', params:{action:'getSingleRates', courtCategoryId: 1}, isArray:true},
+      save: {method:'POST', params:{action:'saveSingleRate'}, isArray:false},
+      remove: {method:'POST', params:{action:'deleteSingleRate', id: -1}, isArray:false}
 		});
 	})
 
