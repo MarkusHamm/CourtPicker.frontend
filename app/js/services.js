@@ -448,6 +448,9 @@ angular.module('myApp.services', ['ngResource'])
       getCourtUtilization: function(courtIdsCsv, date) {
         return $http({method: 'GET', url: '/tck-roger/api/getCourtUtilization', params: {'courtIdsCsv': courtIdsCsv, 'date': date}});
       },
+      getSubscriptionAvailability: function(subscriptionId, bookingUnits) {
+        return $http({method: 'GET', url: '/tck-roger/api/getSubscriptionAvailability', params: {'subscriptionId': subscriptionId, 'bookingUnits': bookingUnits}});
+      },
       getSingleReservationPrice: function(customerId, courtId, fromDateTime, toDateTime) {
         return $http({method: 'GET', url: '/tck-roger/api/getSingleReservationPrice',
           params: {'customerId': customerId, 'courtId': courtId, 'fromDateTime': fromDateTime, 'toDateTime': toDateTime}});
@@ -477,6 +480,10 @@ angular.module('myApp.services', ['ngResource'])
       paySingleReservation: function(reservationId, paymentOptionId, overridePrice, customPrice) {
         return $http({method: 'POST', url: '/tck-roger/api/paySingleReservation',
           params: {'reservationId': reservationId, 'paymentOptionId': paymentOptionId, 'overridePrice': overridePrice, 'customPrice': customPrice}});
+      },
+      getCurrentSubscriptions: function(courtCategoryId) {
+        return $http({method: 'GET', url: '/tck-roger/api/getCurrentSubscriptions',
+          params: {'courtCategoryId': courtCategoryId}});
       },
       getMonthlyFee: function(cpInstanceId) {
         return $http({method: 'GET', url: '/tck-roger/api/getMonthlyFee', params: {'cpInstanceId': cpInstanceId}});

@@ -35,6 +35,10 @@
                 </select>
             </div>
 
+            <div ng-show="subscriptions.length > 0">
+                <button class="button" ng-click="showSubscriptionModal()">Abo buchen</button>
+            </div>
+
             <div ng-show="selectedView == viewTypes.COURTVIEW">
                 <b>Courts:</b> &nbsp;&nbsp;
                 <button ng-repeat="court in courts" type="button"
@@ -161,4 +165,100 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <div id="subscriptionReservationModal" class="modal fade cpModal">
+        <div class="modal-dialog reservation-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h2 class="modal-title">Abo buchen</h2>
+                </div>
+                <div class="modal-body">
+                    <form name="subscriptionReservationForm">
+                        <div class="row">
+                            <div class="col-xs-2"><b>Abo</b></div>
+                            <button ng-repeat="subscription in subscriptions" type="button"
+                                    ng-class="{'buttonLight': selectedSubscription != subscription, 'buttonLightSelected': selectedSubscription == subscription}"
+                                    ng-click="selectSubscription(subscription)" style="margin-right: 15px;">
+                                {{subscription.name}}
+                            </button>
+                        </div>
+                        <div class="spacer20"></div>
+                        <div class="row">
+                            <div class="col-xs-2"><b>Von</b></div>
+                            <div class="col-xs-4">{{selectedSubscription.periodStart}} - {{selectedSubscription.periodEnd}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><b>Stunden</b></div>
+                            <div class="col-xs-2">{{subscriptionUnits * selectedCourtCategory.bookingUnit / 60}}</div>
+                            <div class="col-xs-2">
+                                <button type="button" class="button" ng-click="increaseSubscriptionUnits()">+</button>
+                                <button type="button" class="button" ng-click="decreaseSubscriptionUnits()" ng-disabled="subscriptionUnits < 2">-</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><b>Wochentag</b></div>
+                            <button type="button" ng-class="{'buttonLight': selectedSubWeekDay != 0, 'buttonLightSelected': selectedSubWeekDay == 0}" ng-click="selectSubWeekDay(0)" style="margin-right: 15px;">Mo</button>
+                            <button type="button" ng-class="{'buttonLight': selectedSubWeekDay != 1, 'buttonLightSelected': selectedSubWeekDay == 1}" ng-click="selectSubWeekDay(1)" style="margin-right: 15px;">Di</button>
+                            <button type="button" ng-class="{'buttonLight': selectedSubWeekDay != 2, 'buttonLightSelected': selectedSubWeekDay == 2}" ng-click="selectSubWeekDay(2)" style="margin-right: 15px;">Mi</button>
+                            <button type="button" ng-class="{'buttonLight': selectedSubWeekDay != 3, 'buttonLightSelected': selectedSubWeekDay == 3}" ng-click="selectSubWeekDay(3)" style="margin-right: 15px;">Do</button>
+                            <button type="button" ng-class="{'buttonLight': selectedSubWeekDay != 4, 'buttonLightSelected': selectedSubWeekDay == 4}" ng-click="selectSubWeekDay(4)" style="margin-right: 15px;">Fr</button>
+                            <button type="button" ng-class="{'buttonLight': selectedSubWeekDay != 5, 'buttonLightSelected': selectedSubWeekDay == 5}" ng-click="selectSubWeekDay(5)" style="margin-right: 15px;">Sa</button>
+                            <button type="button" ng-class="{'buttonLight': selectedSubWeekDay != 6, 'buttonLightSelected': selectedSubWeekDay == 6}" ng-click="selectSubWeekDay(6)" style="margin-right: 15px;">So</button>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><b>Startzeit</b></div>
+                            <div class="col-xs-4"><select ng-model="selectedSubStartTime" ng-options="startTime for startTime in availableSubStartTimes" ng-change="selectSubStartTime(selectedSubStartTime)" required></select></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><b>Platz</b></div>
+                            <div class="col-xs-4"><select ng-model="selectedSubCourt" ng-options="court.name for court in availableSubCourts" required></select></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><b>Preis</b></div>
+                            <div class="col-xs-2" ng-class="{'strikeText': overrideReservationPrice}">{{calculatedReservationPrice}}</div>
+                            <div class="col-xs-2" ng-show="userInfo.hasAuthority('ADMIN')"><input type="checkbox" ng-model="overrideReservationPrice" ng-change="changeReservationPriceOverride()"/> Override</div>
+                            <div class="col-xs-2" ng-show="overrideReservationPrice">
+                                <input type="text" ng-model="reservationPrice" name="overrideReservationPrice" ng-pattern="/^[0-9]+(|\.[0-9]|\.[0-9][0-9])$/" required />
+                                <span class="error" ng-show="subscriptionReservationForm.overrideReservationPrice.$error.required">Required!</span>
+                                <span class="error" ng-show="subscriptionReservationForm.overrideReservationPrice.$error.pattern">pattern</span>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="userInfo.hasAuthority('ADMIN')">
+                            <div class="col-xs-1"><b>Kunde</b></div> <br/>
+                            <div class="col-xs-10">
+                                <input type="text" ng-model="reservationCustomerName" size="50" name="reservationCustomer"
+                                       typeahead="user as user.firstName + ' ' + user.lastName + ', ' + user.city + ', ' + user.street for user in users | filter:{$: $viewValue}"
+                                       typeahead-on-select="selectReservationCustomer()"
+                                       ng-disabled="reservationCustomerSelected" ng-required="userInfo.hasAuthority('ADMIN')" />
+                                <span class="glyphicon glyphicon-remove" style="cursor: default" ng-show="reservationCustomerSelected" ng-click="deselectReservationCustomer()"></span>
+                                <span class="error" ng-show="subscriptionReservationForm.reservationCustomer.$error.required && reservationForm.reservationCustomer.$dirty">Required!</span>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="userInfo.hasAuthority('ADMIN') && !reservationCustomerSelected && !reservationForm.reservationCustomer.$error.required">
+                            <div class="col-xs-10">
+                                <div class="col-xs-4">Create User Account <input type="checkbox" ng-model="createReservationCustomer"/></div>
+                                <div class="col-xs-6" ng-show="createReservationCustomer">
+                                    EMail: <input type="email" ng-model="createReservationCustomerEmail" name="createReservationCustomerEmail" ng-required="createReservationCustomer" />
+                                    <span class="error" ng-show="subscriptionReservationForm.createReservationCustomerEmail.$error.required && reservationForm.createReservationCustomerEmail.$dirty">Required!</span>
+                                    <span class="error" ng-show="subscriptionReservationForm.createReservationCustomerEmail.$error.email && reservationForm.createReservationCustomerEmail.$dirty">invalid email</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-1"><b>Kommentar</b></div>
+                            <div class="col-xs-10">
+                                <textarea ng-model="comment" name="comment" cols="50" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="button" ng-click="makeSingleReservation()" ng-disabled="reservationForm.$invalid">Buchen</button>
+                    <button type="button" class="button" data-dismiss="modal">Abbrechen</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 </div>

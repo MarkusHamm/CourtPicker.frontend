@@ -1103,6 +1103,107 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       });
     }
 
+    // ----- subscriptions -----
+
+    // subscriptions
+    $scope.subscriptions = [];
+    $scope.subscriptionAvailability = [];
+    $scope.selectedSubscription = null;
+    $scope.subscriptionUnits = 1;
+    $scope.selectedSubWeekDay = null;
+    $scope.availableSubStartTimes = [];
+    $scope.selectedSubStartTime = null;
+    $scope.availableSubCourts = [];
+    $scope.selectedSubCourt = null;
+
+    $scope.showSubscriptionModal = function() {
+      $scope.selectSubscription($scope.subscriptions[0]);
+      $scope.subscriptionUnits = 1;
+
+      $scope.calculatedReservationPrice = null;
+      $scope.reservationPrice = null;
+      $scope.overrideReservationPrice = false;
+      $scope.reservationCustomerId = null;
+      $scope.reservationCustomerName = '';
+      $scope.reservationCustomerSelected = false;
+      $scope.createReservationCustomer = false;
+      $scope.createReservationCustomerEmail = '';
+      $scope.comment = '';
+
+      $('#subscriptionReservationModal').modal('show');
+    }
+
+    $scope.selectSubscription = function(subscription) {
+      $scope.selectedSubscription = subscription;
+      $scope.selectedSubWeekDay = null;
+      $scope.availableSubStartTimes = [];
+      $scope.selectedSubStartTime = null;
+      $scope.availableSubCourts = [];
+      $scope.selectedSubCourt = null;
+
+      CpService.getSubscriptionAvailability($scope.selectedSubscription.id, $scope.subscriptionUnits).then(function(result) {
+        $scope.subscriptionAvailability = result.data;
+      });
+    }
+
+    $scope.selectSubWeekDay = function(weekDayIndex) {
+      $scope.selectedSubWeekDay = weekDayIndex;
+      $scope.availableSubStartTimes = [];
+
+      var availability = $scope.subscriptionAvailability[$scope.selectedSubWeekDay];
+      for (var i=0; i<availability.detail.length; i++) {
+        $scope.availableSubStartTimes.push(availability.detail[i].startTime);
+      }
+      if ($scope.availableSubStartTimes.indexOf($scope.selectedSubStartTime) == -1) {
+        $scope.selectedSubStartTime = null;
+      }
+
+      if ($scope.selectedSubStartTime != null) {
+        $scope.selectSubStartTime($scope.selectedSubStartTime);
+      }
+      else {
+        $scope.availableSubCourts = [];
+        $scope.selectedSubCourt = null;
+      }
+    }
+
+    $scope.selectSubStartTime = function(startTime) {
+      $scope.availableSubCourts = [];
+      var availableSubCourtIds = [];
+
+      var availability = $scope.subscriptionAvailability[$scope.selectedSubWeekDay];
+      for (var i=0; i<availability.detail.length; i++) {
+        if (availability.detail[i].startTime == startTime) {
+          for (var j=0; j<availability.detail[i].freeCourtIds.length; j++) {
+            availableSubCourtIds.push(availability.detail[i].freeCourtIds[j]);
+          }
+        }
+      }
+
+      // court ids to courts
+      for (var i=0; i<availableSubCourtIds.length; i++) {
+        $scope.availableSubCourts.push(UtilService.getObjectById(availableSubCourtIds[i], $scope.courts));
+      }
+
+      if ($scope.availableSubCourts.indexOf($scope.selectedSubCourt) == -1) {
+        $scope.selectedSubCourt = null;
+      }
+    }
+
+    $scope.selectSubCourt = function(courtId) {
+
+    }
+
+    $scope.increaseSubscriptionUnits = function() {
+      $scope.subscriptionUnits++;
+    }
+
+    $scope.decreaseSubscriptionUnits = function() {
+      if ($scope.subscriptionUnits > 1) {
+        $scope.subscriptionUnits--;
+      }
+    }
+
     // ----------------------------
 
     $scope.selectCourtCategory = function(courtCategory) {
@@ -1114,6 +1215,10 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       });
       $scope.courts = RESTCourt.getAll({courtCategoryId: courtCategory.id});
       $scope.loadUtilization();
+
+      CpService.getCurrentSubscriptions(courtCategory.id).then(function(result) {
+        $scope.subscriptions = result.data;
+      });
     }
 
     $scope.nextDate = function() {
