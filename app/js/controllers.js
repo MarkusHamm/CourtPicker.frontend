@@ -1107,42 +1107,40 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
 
     // subscriptions
     $scope.subscriptions = [];
-    $scope.subscriptionAvailability = [];
-    $scope.selectedSubscription = null;
-    $scope.subscriptionUnits = 1;
-    $scope.selectedSubWeekDay = null;
-    $scope.availableSubStartTimes = [];
-    $scope.selectedSubStartTime = null;
-    $scope.availableSubCourts = [];
-    $scope.selectedSubCourt = null;
 
-    $scope.showSubscriptionModal = function() {
-      $scope.selectSubscription($scope.subscriptions[0]);
+    var initSubscriptionDialog = function() {
+      $scope.subscriptionAvailability = [];
+      $scope.selectedSubscription = null;
       $scope.subscriptionUnits = 1;
-
-      $scope.calculatedReservationPrice = null;
-      $scope.reservationPrice = null;
-      $scope.overrideReservationPrice = false;
-      $scope.reservationCustomerId = null;
-      $scope.reservationCustomerName = '';
-      $scope.reservationCustomerSelected = false;
-      $scope.createReservationCustomer = false;
-      $scope.createReservationCustomerEmail = '';
-      $scope.comment = '';
-
-      $('#subscriptionReservationModal').modal('show');
-    }
-
-    $scope.selectSubscription = function(subscription) {
-      $scope.selectedSubscription = subscription;
       $scope.selectedSubWeekDay = null;
       $scope.availableSubStartTimes = [];
       $scope.selectedSubStartTime = null;
       $scope.availableSubCourts = [];
       $scope.selectedSubCourt = null;
+      $scope.subComment = '';
+      $scope.calculatedSubReservationPrice = null;
+      $scope.overrideSubReservationPrice = false;
+      $scope.subReservationPrice = null;
+      $scope.subReservationCustomerId = null;
+      $scope.subReservationCustomerName = '';
+      $scope.subRservationCustomerSelected = false;
+      $scope.createSubReservationCustomer = false;
+      $scope.createSubReservationCustomerEmail = '';
+    }
+
+    $scope.showSubscriptionModal = function() {
+      initSubscriptionDialog()
+      $scope.selectSubscription($scope.subscriptions[0]);
+      $('#subscriptionReservationModal').modal('show');
+    }
+
+    $scope.selectSubscription = function(subscription) {
+      initSubscriptionDialog();
+      $scope.selectedSubscription = subscription;
 
       CpService.getSubscriptionAvailability($scope.selectedSubscription.id, $scope.subscriptionUnits).then(function(result) {
         $scope.subscriptionAvailability = result.data;
+        $scope.calculateSubscriptionReservationPrice();
       });
     }
 
@@ -1165,6 +1163,8 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
         $scope.availableSubCourts = [];
         $scope.selectedSubCourt = null;
       }
+
+      $scope.calculateSubscriptionReservationPrice();
     }
 
     $scope.selectSubStartTime = function(startTime) {
@@ -1188,19 +1188,109 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       if ($scope.availableSubCourts.indexOf($scope.selectedSubCourt) == -1) {
         $scope.selectedSubCourt = null;
       }
+
+      $scope.calculateSubscriptionReservationPrice();
     }
 
-    $scope.selectSubCourt = function(courtId) {
-
+    $scope.selectSubCourt = function() {
+      $scope.calculateSubscriptionReservationPrice();
     }
 
     $scope.increaseSubscriptionUnits = function() {
       $scope.subscriptionUnits++;
+      $scope.calculateSubscriptionReservationPrice();
     }
 
     $scope.decreaseSubscriptionUnits = function() {
       if ($scope.subscriptionUnits > 1) {
         $scope.subscriptionUnits--;
+        $scope.calculateSubscriptionReservationPrice();
+      }
+    }
+
+    var convertIntWeekDayToString = function(intWeekDay) {
+      switch (intWeekDay) {
+        case 0: return 'MON'; break;
+        case 1: return 'TUE'; break;
+        case 2: return 'WED'; break;
+        case 3: return 'THU'; break;
+        case 4: return 'FRI'; break;
+        case 5: return 'SAT'; break;
+        case 6: return 'SUN'; break;
+      }
+    }
+
+    $scope.makeSubscriptionReservation = function() {
+      if (UserService.hasAuthority("ADMIN")) {
+        var customerInputType = $scope.reservationCustomerId == null ? "NAME" : "ID";
+        var reservingUser = getUser($scope.reservationCustomerId);
+        CpService.singleReservationAdmin(customerInputType, $scope.reservationCustomerId, $scope.reservationCustomerName,
+          $scope.createReservationCustomer, $scope.createReservationCustomerEmail, UserService.loggedInUser.id,
+          $scope.freeCourtSelected.id,
+          $scope.scopeDate + ' ' + $scope.selectedTimeSlots[0].fromTime,
+          $scope.scopeDate + ' ' + $scope.selectedTimeSlots[$scope.selectedTimeSlots.length-1].toTime,
+          $scope.overrideReservationPrice, $scope.reservationPrice,
+          reservingUser.firstName + ' ' + reservingUser.lastName, $scope.comment
+        ).then(processSubscriptionReservationResult);
+      }
+      else {
+        var reservingUser = getUser(UserService.loggedInUser.id);
+        CpService.subscriptionReservation($scope.selectedSubscription.id,
+          UserService.loggedInUser.id, $scope.selectedSubCourt.id,
+          convertIntWeekDayToString($scope.selectedSubWeekDay),
+          $scope.selectedSubStartTime, $scope.subscriptionUnits,
+          reservingUser.firstName + ' ' + reservingUser.lastName, $scope.subComment
+        ).then(processSubscriptionReservationResult);
+      }
+    }
+
+    var processSubscriptionReservationResult = function(result) {
+      if (result.data != 'false') {
+        $scope.loadUtilization(); // reload
+        $('#subscriptionReservationModal').modal('hide');
+      }
+      else {
+        alert('Das gewählte Abo ist leider nicht mehr buchbar, da es schon belegt ist.')
+        $scope.loadUtilization();
+        $('#subscriptionReservationModal').modal('hide');
+      }
+    }
+
+    $scope.changeSubReservationPriceOverride = function() {
+      $scope.subReservationPrice = $scope.calculatedSubReservationPrice;
+    }
+
+    $scope.selectSubReservationCustomer = function() {
+      $scope.subReservationCustomerId = $scope.subReservationCustomerName.id;
+      $scope.subReservationCustomerSelected = true;
+      $scope.createSubReservationCustomer = false;
+      $scope.createSubReservationCustomerEmail = '';
+      $scope.calculateSubscriptionReservationPrice();
+    }
+
+    $scope.deselectSubReservationCustomer = function() {
+      $scope.subReservationCustomerId = null;
+      $scope.subReservationCustomerName = '';
+      $scope.subReservationCustomerSelected = false;
+      $scope.calculateSubscriptionReservationPrice();
+    }
+
+    $scope.calculateSubscriptionReservationPrice = function() {
+      if ($scope.selectedSubscription != null && $scope.selectedSubWeekDay != null &&
+          $scope.selectedSubStartTime != null && $scope.selectedSubCourt != null) {
+
+        var customerId = UserService.loggedInUser.id;
+        if ($scope.subReservationCustomerId != null) {
+          customerId = $scope.subReservationCustomerId;
+        }
+
+        CpService.getSubscriptionReservationPrice(customerId, $scope.selectedSubscription.id, $scope.selectedSubStartTime,
+          $scope.subscriptionUnits, convertIntWeekDayToString($scope.selectedSubWeekDay)).then(function(result) {
+            $scope.calculatedSubReservationPrice = result.data;
+          });
+      }
+      else {
+        $scope.calculatedSubReservationPrice = null;
       }
     }
 

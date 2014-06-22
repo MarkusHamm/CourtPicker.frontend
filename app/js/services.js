@@ -455,6 +455,10 @@ angular.module('myApp.services', ['ngResource'])
         return $http({method: 'GET', url: '/tck-roger/api/getSingleReservationPrice',
           params: {'customerId': customerId, 'courtId': courtId, 'fromDateTime': fromDateTime, 'toDateTime': toDateTime}});
       },
+      getSubscriptionReservationPrice: function(customerId, subscriptionId, fromTime, bookingUnits, weekDay) {
+        return $http({method: 'GET', url: '/tck-roger/api/getSubscriptionReservationPrice',
+          params: {'customerId': customerId, 'subscriptionId': subscriptionId, 'fromTime': fromTime, 'bookingUnits': bookingUnits, 'weekDay': weekDay}});
+      },
       singleReservation: function(customerId, courtId, fromDateTime, toDateTime, displayName, comment) {
         return $http({method: 'POST', url: '/tck-roger/api/singleReservation',
           params: {'customerId': customerId, 'courtId': courtId, 'fromDateTime': fromDateTime, 'toDateTime': toDateTime,
@@ -467,6 +471,11 @@ angular.module('myApp.services', ['ngResource'])
             'createUserAccount': createUserAccount, 'createUserAccountEmail': createUserAccountEmail, 'reservingCustomerId': reservingCustomerId, 'courtId': courtId,
             'fromDateTime': fromDateTime, 'toDateTime': toDateTime, 'overridePrice': overridePrice, 'customPrice': customPrice,
             'displayName': displayName, 'comment': comment}});
+      },
+      subscriptionReservation: function(subscriptionId, customerId, courtId, weekDay, startTime, bookingUnits, displayName, comment) {
+        return $http({method: 'POST', url: '/tck-roger/api/subscriptionReservation',
+          params: {'subscriptionId': subscriptionId, 'customerId': customerId, 'courtId': courtId, 'weekDay': weekDay, 'startTime': startTime,
+                   'bookingUnits': bookingUnits, 'displayName': displayName, 'comment': comment}});
       },
       getSingleReservationInfosForCustomer: function(customerId) {
         return $http({method: 'GET', url: '/tck-roger/api/getSingleReservationInfosForCustomer', params: {'customerId': customerId}});
