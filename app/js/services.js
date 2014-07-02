@@ -477,6 +477,13 @@ angular.module('myApp.services', ['ngResource'])
           params: {'subscriptionId': subscriptionId, 'customerId': customerId, 'courtId': courtId, 'weekDay': weekDay, 'startTime': startTime,
                    'bookingUnits': bookingUnits, 'displayName': displayName, 'comment': comment}});
       },
+      subscriptionReservationAdmin: function(customerInputType, customerId, customerName, createUserAccount, createUserAccountEmail, subscriptionId,
+                                             reservingCustomerId, courtId, weekDay, startTime, bookingUnits, overridePrice, customPrice, displayName, comment) {
+        return $http({method: 'POST', url: '/tck-roger/api/subscriptionReservationAdmin',
+          params: {'customerInputType': customerInputType, 'customerId': customerId, 'customerName': customerName, 'createUserAccount': createUserAccount,
+            'createUserAccountEmail': createUserAccountEmail, 'subscriptionId': subscriptionId, 'reservingCustomerId': reservingCustomerId, 'courtId': courtId, 'weekDay': weekDay,
+            'startTime': startTime, 'bookingUnits': bookingUnits, 'overridePrice': overridePrice, 'customPrice': customPrice, 'displayName': displayName, 'comment': comment}});
+      },
       getSingleReservationInfosForCustomer: function(customerId) {
         return $http({method: 'GET', url: '/tck-roger/api/getSingleReservationInfosForCustomer', params: {'customerId': customerId}});
       },

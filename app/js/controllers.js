@@ -917,14 +917,19 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.makeSingleReservation = function() {
       if (UserService.hasAuthority("ADMIN")) {
         var customerInputType = $scope.reservationCustomerId == null ? "NAME" : "ID";
-        var reservingUser = getUser($scope.reservationCustomerId);
+        var displayName = $scope.reservationCustomerName;
+        if ($scope.reservationCustomerId)  {
+          var reservingUser = getUser($scope.reservationCustomerId);
+          displayName = reservingUser.firstName + ' ' + reservingUser.lastName;
+        }
+
         CpService.singleReservationAdmin(customerInputType, $scope.reservationCustomerId, $scope.reservationCustomerName,
           $scope.createReservationCustomer, $scope.createReservationCustomerEmail, UserService.loggedInUser.id,
           $scope.freeCourtSelected.id,
           $scope.scopeDate + ' ' + $scope.selectedTimeSlots[0].fromTime,
           $scope.scopeDate + ' ' + $scope.selectedTimeSlots[$scope.selectedTimeSlots.length-1].toTime,
           $scope.overrideReservationPrice, $scope.reservationPrice,
-          reservingUser.firstName + ' ' + reservingUser.lastName, $scope.comment
+          displayName, $scope.comment
         ).then(processSingleReservationResult);
       }
       else {
@@ -1123,13 +1128,13 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       $scope.subReservationPrice = null;
       $scope.subReservationCustomerId = null;
       $scope.subReservationCustomerName = '';
-      $scope.subRservationCustomerSelected = false;
+      $scope.subReservationCustomerSelected = false;
       $scope.createSubReservationCustomer = false;
       $scope.createSubReservationCustomerEmail = '';
     }
 
     $scope.showSubscriptionModal = function() {
-      initSubscriptionDialog()
+      initSubscriptionDialog();
       $scope.selectSubscription($scope.subscriptions[0]);
       $('#subscriptionReservationModal').modal('show');
     }
@@ -1140,6 +1145,14 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
 
       CpService.getSubscriptionAvailability($scope.selectedSubscription.id, $scope.subscriptionUnits).then(function(result) {
         $scope.subscriptionAvailability = result.data;
+        // preselect at subscription selection
+        $scope.selectSubWeekDay(0);
+        if ($scope.availableSubStartTimes.length > 0) {
+          $scope.selectSubStartTime($scope.availableSubStartTimes[0]);
+          if ($scope.availableSubCourts.length > 0) {
+            $scope.selectedSubCourt = $scope.availableSubCourts[0];
+          }
+        }
         $scope.calculateSubscriptionReservationPrice();
       });
     }
@@ -1168,6 +1181,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     $scope.selectSubStartTime = function(startTime) {
+      $scope.selectedSubStartTime = startTime;
       $scope.availableSubCourts = [];
       var availableSubCourtIds = [];
 
@@ -1222,15 +1236,20 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
 
     $scope.makeSubscriptionReservation = function() {
       if (UserService.hasAuthority("ADMIN")) {
-        var customerInputType = $scope.reservationCustomerId == null ? "NAME" : "ID";
-        var reservingUser = getUser($scope.reservationCustomerId);
-        CpService.singleReservationAdmin(customerInputType, $scope.reservationCustomerId, $scope.reservationCustomerName,
-          $scope.createReservationCustomer, $scope.createReservationCustomerEmail, UserService.loggedInUser.id,
-          $scope.freeCourtSelected.id,
-          $scope.scopeDate + ' ' + $scope.selectedTimeSlots[0].fromTime,
-          $scope.scopeDate + ' ' + $scope.selectedTimeSlots[$scope.selectedTimeSlots.length-1].toTime,
-          $scope.overrideReservationPrice, $scope.reservationPrice,
-          reservingUser.firstName + ' ' + reservingUser.lastName, $scope.comment
+        var customerInputType = $scope.subReservationCustomerId == null ? "NAME" : "ID";
+        var displayName = $scope.subReservationCustomerName;
+        if ($scope.subReservationCustomerId)  {
+          var reservingUser = getUser($scope.subReservationCustomerId);
+          displayName = reservingUser.firstName + ' ' + reservingUser.lastName;
+        }
+
+        CpService.subscriptionReservationAdmin(customerInputType, $scope.subReservationCustomerId, $scope.subReservationCustomerName,
+          $scope.createSubReservationCustomer, $scope.createSubReservationCustomerEmail, $scope.selectedSubscription.id,
+          UserService.loggedInUser.id, $scope.selectedSubCourt.id,
+          convertIntWeekDayToString($scope.selectedSubWeekDay),
+          $scope.selectedSubStartTime, $scope.subscriptionUnits,
+          $scope.overrideSubReservationPrice, $scope.subReservationPrice,
+          displayName, $scope.subComment
         ).then(processSubscriptionReservationResult);
       }
       else {
@@ -1287,6 +1306,9 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
         CpService.getSubscriptionReservationPrice(customerId, $scope.selectedSubscription.id, $scope.selectedSubStartTime,
           $scope.subscriptionUnits, convertIntWeekDayToString($scope.selectedSubWeekDay)).then(function(result) {
             $scope.calculatedSubReservationPrice = result.data;
+            if (!$scope.overrideSubReservationPrice) {
+              $scope.subReservationPrice = $scope.calculatedSubReservationPrice;
+            }
           });
       }
       else {
