@@ -366,6 +366,13 @@ a:hover {
     line-height: 30px;
 }
 
+.reserved-subscription-color {
+    background-color: #f79d3c;
+    color:#ffffff;
+    height:30px;
+    line-height: 30px;
+}
+
 .one-third-reserved-color {
     background-color: #efca1d;
     color:#ffffff;

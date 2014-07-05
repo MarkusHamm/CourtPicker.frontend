@@ -63,7 +63,8 @@
                 </div>
                 <div ng-repeat="timeSlot in utilization.timeSlots">
                     <div ng-class="{'past-color': timeSlot.isPast,
-                                    'reserved-color': !timeSlot.isPast && timeSlot.occupied,
+                                    'reserved-color': !timeSlot.isPast && timeSlot.occupied && timeSlot.occupyType != 'SUBSCRIPTION',
+                                    'reserved-subscription-color': !timeSlot.isPast && timeSlot.occupied && timeSlot.occupyType == 'SUBSCRIPTION',
                                     'notreserved-color': !timeSlot.isPast && !timeSlot.occupied && timeSlot.utilization < 0.33,
                                     'one-third-reserved-color': !timeSlot.isPast && !timeSlot.occupied && timeSlot.utilization >= 0.33 && timeSlot.utilization < 0.66,
                                     'two-third-reserved-color': !timeSlot.isPast && !timeSlot.occupied && timeSlot.utilization >= 0.66,
@@ -245,7 +246,6 @@
                                 </div>
                             </div>
                         </div>
-                        {{subscriptionReservationForm.$error.required}}
                         <div class="row">
                             <div class="col-xs-1"><b>Kommentar</b></div>
                             <div class="col-xs-10">
