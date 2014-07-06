@@ -1832,6 +1832,195 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     init();
   }])
 
+  .controller('AdminSubscriptionReservationsController', ['$scope', '$rootScope', 'CpService', 'RESTCourtCategory', 'RESTSubscription', 'RESTPaymentOption', 'DateService', function($scope, $rootScope, CpService, RESTCourtCategory, RESTSubscription, RESTPaymentOption, DateService) {
+    $scope.dateService = DateService;
+
+    $scope.allReservations = [];
+    $scope.reservations = [];
+    $scope.selectedReservation = null;
+    $scope.courtCategories = [];
+    $scope.subscriptions = [];
+
+    $scope.filterCourtCategory = null;
+    $scope.filterSubscription = null;
+    $scope.filterDateFrom = '';
+    $scope.filterDateTo = '';
+    $scope.filterCustomer = '';
+    $scope.filterComment = '';
+    $scope.filterPaid = '';
+
+    $scope.paymentOptions = [];
+    $scope.overridePrice = false;
+    $scope.customPrice = 0;
+    $scope.selectedPaymentOptionId = -1;
+
+    $scope.openCancelReservationDialog = function(res) {
+      $scope.selectedReservation = res;
+      $('#cancelModal').modal('show');
+    }
+
+    $scope.openPayReservationDialog = function(res) {
+      $scope.selectedReservation = res;
+      $scope.overridePrice = false;
+      $scope.customPrice = res.price;
+      $scope.selectedPaymentOptionId = $scope.paymentOptions[0].id;
+      $('#payModal').modal('show');
+    }
+
+    $scope.cancelSelectedReservation = function() {
+      CpService.cancelSubscriptionReservation($scope.selectedReservation.id).then(function(result) {
+        var elementIndex = $scope.reservations.indexOf($scope.selectedReservation);
+        $scope.reservations.splice(elementIndex, 1);
+      });
+      $('#cancelModal').modal('hide');
+    }
+
+    $scope.paySelectedReservation = function() {
+      CpService.paySubscriptionReservation($scope.selectedReservation.id, $scope.selectedPaymentOptionId, $scope.overridePrice, $scope.customPrice).then(function(result) {
+        $scope.selectedReservation.paid = true;
+        $scope.selectedReservation.paymentDate = new Date().getTime();
+        $scope.selectedReservation.paymentOptionId = $scope.selectedPaymentOptionId;
+        if ($scope.overridePrice) {
+          $scope.selectedReservation.price = $scope.customPrice;
+        }
+      });
+      $('#payModal').modal('hide');
+    }
+
+    $scope.changeOverridePrice = function() {
+      $scope.customPrice = $scope.selectedReservation.price;
+    }
+
+    $scope.selectCourtCategory = function() {
+      if ($scope.filterCourtCategory == null) {
+        $scope.subscriptions = RESTSubscription.getAllByInstance({cpInstanceId: $rootScope.cpInstance.id});
+      }
+      else {
+        $scope.subscriptions = RESTSubscription.getAll({courtCategoryId: $scope.filterCourtCategory.id});
+      }
+
+      $scope.filterSubscription = null;
+      $scope.applyFilter();
+    }
+
+    $scope.resetFilterDateFrom = function() {
+      $scope.filterDateFrom = '';
+      $scope.applyFilter();
+    }
+
+    $scope.resetFilterDateTo = function() {
+      $scope.filterDateTo = '';
+      $scope.applyFilter();
+    }
+
+    $scope.applyFilter = function() {
+      $scope.reservations = [];
+      for (var i=0; i<$scope.allReservations.length; i++) {
+        var res = $scope.allReservations[i];
+        if (doesReservationMatchCourtCategoryFilter(res, $scope.filterCourtCategory) &&
+          doesReservationMatchSubscriptionFilter(res, $scope.filterSubscription) &&
+          doesReservationMatchDateFilter(res, $scope.filterDateFrom, $scope.filterDateTo) &&
+          doesReservationMatchCustomerFilter(res, $scope.filterCustomer) &&
+          doesReservationMatchCommentFilter(res, $scope.filterComment) &&
+          doesReservationMatchPaidFilter(res, $scope.filterPaid)) {
+          $scope.reservations.push(res);
+        }
+      }
+    }
+
+    var doesReservationMatchCourtCategoryFilter = function(reservation, filterCourtCategory) {
+      if (filterCourtCategory == null || reservation.courtCategoryId == filterCourtCategory.id) {
+        return true;
+      }
+      return false;
+    }
+
+    var doesReservationMatchSubscriptionFilter = function(reservation, filterSubscription) {
+      if (filterSubscription == null || reservation.subscriptionId == filterSubscription.id) {
+        return true;
+      }
+      return false;
+    }
+
+    var doesReservationMatchDateFilter = function(reservation, dateFrom, dateTo) {
+      if (dateFrom.length == 0 && dateTo.length == 0) {
+        return true;
+      }
+
+      // only from date set
+      if (dateTo.length == 0) {
+        var filterDateFrom = $scope.dateService.parseDateTimeString(dateFrom + ' 00:00');
+        var reservationDate = DateService.parseDateString(reservation.periodEnd);
+        if (reservationDate >= filterDateFrom) {
+          return true;
+        }
+        return false;
+      }
+      // only to date set
+      if (dateFrom.length == 0) {
+        var filterDateTo = $scope.dateService.parseDateTimeString(dateTo + ' 23:59');
+        var reservationDate = DateService.parseDateString(reservation.periodStart);
+        if (reservationDate <= filterDateTo) {
+          return true;
+        }
+        return false;
+      }
+      // both dates set
+      var filterDateFrom = $scope.dateService.parseDateTimeString(dateFrom + ' 00:00');
+      var filterDateTo = $scope.dateService.parseDateTimeString(dateTo + ' 23:59');
+      var reservationDateFrom = DateService.parseDateString(reservation.periodStart);
+      var reservationDateTo = DateService.parseDateString(reservation.periodEnd);
+      if (reservationDateTo >= filterDateFrom && reservationDateFrom <= filterDateTo) {
+        return true;
+      }
+
+      return false;
+    }
+
+    var doesReservationMatchCustomerFilter = function(reservation, filterCustomer) {
+      if (filterCustomer.length==0) {
+        return true;
+      }
+      var customerStr = reservation.customerFirstName + ' ' + reservation.customerLastName + ' (' + reservation.customerUserName + ')';
+      if (customerStr.toUpperCase().indexOf(filterCustomer.toUpperCase()) > -1) {
+        return true;
+      }
+      return false;
+    }
+
+    var doesReservationMatchCommentFilter = function(reservation, filterComment) {
+      if (filterComment.length == 0) {
+        return true;
+      }
+      if (reservation.comment.toUpperCase().indexOf(filterComment.toUpperCase()) > -1) {
+        return true;
+      }
+      return false;
+    }
+
+    var doesReservationMatchPaidFilter = function(reservation, filterPaid) {
+      if (filterPaid.length == 0) {
+        return true;
+      }
+      if (filterPaid == 'YES' && reservation.paid || filterPaid == 'NO' && !reservation.paid) {
+        return true;
+      }
+      return false;
+    }
+
+    var init = function() {
+      CpService.getSubscriptionReservationInfosForCpInstance($rootScope.cpInstance.id).then(function(result) {
+        $scope.allReservations = result.data;
+        $scope.reservations = $scope.allReservations
+      });
+      $scope.courtCategories = RESTCourtCategory.getAll({cpInstanceId: $rootScope.cpInstance.id});
+      $scope.subscriptions = RESTSubscription.getAllByInstance({cpInstanceId: $rootScope.cpInstance.id});
+      $scope.paymentOptions = RESTPaymentOption.getAll({cpInstanceId: $rootScope.cpInstance.id});
+    }
+
+    init();
+  }])
+
   .controller('AdminPaymentOptionsController', ['$scope', 'RESTPaymentOption', '$rootScope', function($scope, RESTPaymentOption, $rootScope) {
     $scope.paymentOptions = [];
     $scope.formPaymentOption = null;

@@ -331,6 +331,7 @@ angular.module('myApp.services', ['ngResource'])
     return $resource('/tck-roger/api/:action', {},
       {
         getAll: {method:'GET', params:{action:'getSubscriptions', courtCategoryId: 1}, isArray:true},
+        getAllByInstance: {method:'GET', params:{action:'getSubscriptionsByInstance', cpInstanceId: 1}, isArray:true},
         save: {method:'POST', params:{action:'saveSubscription'}, isArray:false},
         remove: {method:'POST', params:{action:'deleteSubscription', id: -1}, isArray:false}
       });
