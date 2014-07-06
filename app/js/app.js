@@ -19,6 +19,7 @@ angular.module('courtpickerApp', ['myApp.filters', 'myApp.services', 'myApp.dire
     $routeProvider.when('/adminPaymentOptions', {templateUrl: 'partials/adminPaymentOptions.html', resolve: initialResolve, requiresInstance: true, title: 'Courtpicker Admin Area', includeStyle: 'includes/stylesBootstrap.html'});
     $routeProvider.when('/adminPermissions', {templateUrl: 'partials/adminPermissions.html', resolve: initialResolve, requiresInstance: true, title: 'Courtpicker Admin Area', includeStyle: 'includes/stylesBootstrap.html'});
     $routeProvider.when('/customerReservations', {templateUrl: 'partials/customerReservations.html', resolve: initialResolve, requiresInstance: true, title: 'Courtpicker Customer Area', includeStyle: 'includes/stylesBootstrap.html'});
+    $routeProvider.when('/customerSubReservations', {templateUrl: 'partials/customerSubReservations.html', resolve: initialResolve, requiresInstance: true, title: 'Courtpicker Customer Area', includeStyle: 'includes/stylesBootstrap.html'});
     $routeProvider.when('/customerUserData', {templateUrl: 'partials/customerUserData.html', resolve: initialResolve, requiresInstance: true, title: 'Courtpicker Customer Area', includeStyle: 'includes/stylesBootstrap.html'});
     $routeProvider.when('/error', {templateUrl: 'partials/error.html', requiresInstance: false, title: 'Courtpicker Error', includeStyle: 'includes/stylesBootstrap.html'});
     $routeProvider.otherwise({redirectTo: '/configureCourts'});

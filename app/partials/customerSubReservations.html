@@ -1,0 +1,74 @@
+<ng-include src="'includes/headerCustomerArea.html'" onload="selectedView='SUBRESERVATIONS'"></ng-include>
+
+<div class="container" ng-controller="CustomerSubscriptionReservationsController">
+    <div class="page-header" style="margin-top: 0;">
+        <h1>Meine Reservierungen</h1>
+    </div>
+
+    <form name="filterForm" novalidate class="form-horizontal" role="form">
+        <fieldset>
+            <legend>Filter</legend>
+            <div class="form-group">
+                <label for="filterInstance" class="col-xs-2 control-label">Anlage</label>
+                <div class="col-xs-3">
+                    <select id="filterInstance" name="filterInstance" class="form-control"
+                            ng-model="filterInstance" ng-options="i.name for i in usedInstances" ng-change="applyFilter()">
+                        <option value="">Alle</option>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+    <div class="spacer25"></div>
+
+    <table id="reservationsTable" class="table table-hover">
+        <thead>
+        <tr>
+            <th>Anlage</th>
+            <th>Abo</th>
+            <th>Platzart</th>
+            <th>Platz</th>
+            <th>Zeit</th>
+            <th>Von - Bis</th>
+            <th>Preis</th>
+            <th><b>Actions</b></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="res in reservations">
+            <td>{{res.instanceName}}</td>
+            <td>{{res.subscriptionName}}</td>
+            <td>{{res.courtCategoryName}}</td>
+            <td>{{res.courtName}}</td>
+            <td>{{dateService.getWeekDayString(res.periodStart)}}, {{res.fromTime}} - {{res.toTime}}</td>
+            <td>{{res.periodStart}} - {{res.periodEnd}}</td>
+            <td>{{res.price}}</td>
+            <td>
+                <button type="button" ng-click="openCancelReservationDialog(res)" class="btn btn-xs btn-danger" ng-show="!dateService.isBeforeNow(res.periodStart + ' ' + res.fromTime)">
+                    <span class="glyphicon glyphicon-remove"></span> Cancel
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div id="cancelModal" class="modal fade">
+        <div class="modal-dialog small-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h2 class="modal-title">Abo stornieren</h2>
+                </div>
+                <div class="modal-body">
+                    Sind sie sicher das sie dieses Abo unwiderruflich stornieren wollen?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="cancelSelectedReservation()">Stornieren</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+</div>

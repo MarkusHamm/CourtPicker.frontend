@@ -1527,6 +1527,68 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     init();
   }])
 
+  .controller('CustomerSubscriptionReservationsController', ['$scope', '$rootScope', 'CpService', 'UserService', 'DateService', function($scope, $rootScope, CpService, UserService, DateService) {
+    $scope.dateService = DateService;
+    $scope.selectedReservation = null;
+    $scope.allReservations = [];
+    $scope.reservations = [];
+    $scope.usedInstances = [];
+    $scope.filterInstance = null;
+
+    $scope.openCancelReservationDialog = function(res) {
+      $scope.selectedReservation = res;
+      $('#cancelModal').modal('show');
+    }
+
+    $scope.cancelSelectedReservation = function() {
+      CpService.cancelSubscriptionReservation($scope.selectedReservation.id).then(function(result) {
+        var elementIndex = $scope.reservations.indexOf($scope.selectedReservation);
+        $scope.reservations.splice(elementIndex, 1);
+      });
+      $('#cancelModal').modal('hide');
+    }
+
+    $scope.applyFilter = function() {
+      $scope.reservations = [];
+      for (var i=0; i<$scope.allReservations.length; i++) {
+        var res = $scope.allReservations[i];
+        if (doesReservationMatchInstanceFilter(res, $scope.filterInstance)) {
+          $scope.reservations.push(res);
+        }
+      }
+    }
+
+    var doesReservationMatchInstanceFilter = function(reservation, filterInstance) {
+      if (filterInstance == null || reservation.instanceId == filterInstance.id) {
+        return true;
+      }
+
+      return false;
+    }
+
+    var init = function() {
+      CpService.getSubscriptionReservationInfosForCustomer(UserService.loggedInUser.id).then(function(result) {
+        $scope.allReservations = result.data;
+        $scope.reservations = $scope.allReservations
+        identifyUsedInstances($scope.reservations);
+      });
+    }
+
+    var identifyUsedInstances = function(reservations) {
+      var addedInstanceIds = [];
+
+      for (var i=0; i<reservations.length; i++) {
+        var res = reservations[i];
+        if (addedInstanceIds.indexOf(res.instanceId) == -1) {
+          $scope.usedInstances.push({id: res.instanceId, name: res.instanceName});
+          addedInstanceIds.push(res.instanceId);
+        }
+      }
+    }
+
+    init();
+  }])
+
   .controller('CustomerUserDataController', ['$scope', '$rootScope', '$timeout', 'CpService', 'UserService', function($scope, $rootScope, $timeout, CpService, UserService) {
     $scope.updateUserSuccessMsg = '';
     $scope.updateUserErrorMsg = '';

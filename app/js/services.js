@@ -275,6 +275,20 @@ angular.module('myApp.services', ['ngResource'])
       return (i < 10) ? "0" + i : "" + i;
     }
 
+    dateService.getWeekDayString = function(dateString) {
+      var date = dateService.parseDateString(dateString);
+      var dayOfWeek = date.getDay();
+
+      if (dayOfWeek == 0) return "Mo";
+      if (dayOfWeek == 1) return "Di";
+      if (dayOfWeek == 2) return "Mi";
+      if (dayOfWeek == 3) return "Do";
+      if (dayOfWeek == 4) return "Fr";
+      if (dayOfWeek == 5) return "Sa";
+      if (dayOfWeek == 6) return "So";
+      return "??";
+    }
+
     return dateService;
   })
 
@@ -490,11 +504,24 @@ angular.module('myApp.services', ['ngResource'])
       getSingleReservationInfosForCpInstance: function(cpInstanceId) {
         return $http({method: 'GET', url: '/tck-roger/api/getSingleReservationInfosForCpInstance', params: {'cpInstanceId': cpInstanceId}});
       },
+      getSubscriptionReservationInfosForCustomer: function(customerId) {
+        return $http({method: 'GET', url: '/tck-roger/api/getSubscriptionReservationInfosForCustomer', params: {'customerId': customerId}});
+      },
+      getSubscriptionReservationInfosForCpInstance: function(cpInstanceId) {
+        return $http({method: 'GET', url: '/tck-roger/api/getSubscriptionReservationInfosForCpInstance', params: {'cpInstanceId': cpInstanceId}});
+      },
       cancelSingleReservation: function(reservationId) {
         return $http({method: 'POST', url: '/tck-roger/api/cancelSingleReservation', params: {'reservationId': reservationId}});
       },
       paySingleReservation: function(reservationId, paymentOptionId, overridePrice, customPrice) {
         return $http({method: 'POST', url: '/tck-roger/api/paySingleReservation',
+          params: {'reservationId': reservationId, 'paymentOptionId': paymentOptionId, 'overridePrice': overridePrice, 'customPrice': customPrice}});
+      },
+      cancelSubscriptionReservation: function(reservationId) {
+        return $http({method: 'POST', url: '/tck-roger/api/cancelSubscriptionReservation', params: {'reservationId': reservationId}});
+      },
+      paySubscriptionReservation: function(reservationId, paymentOptionId, overridePrice, customPrice) {
+        return $http({method: 'POST', url: '/tck-roger/api/paySubscriptionReservation',
           params: {'reservationId': reservationId, 'paymentOptionId': paymentOptionId, 'overridePrice': overridePrice, 'customPrice': customPrice}});
       },
       getCurrentSubscriptions: function(courtCategoryId) {
