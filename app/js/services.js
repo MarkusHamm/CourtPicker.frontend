@@ -108,7 +108,7 @@ angular.module('myApp.services', ['ngResource'])
     obj.login = function(username, password) {
       var deferred = $q.defer();
 
-      CpService.getUserByCredentials(username, password).then(function(userResult) {
+      CpService.login(username, password).then(function(userResult) {
         // login failed
         if (userResult.data == null || userResult.data == '') {
           obj.logout();
@@ -134,6 +134,7 @@ angular.module('myApp.services', ['ngResource'])
     }
 
     obj.logout = function() {
+      CpService.logout();
       UserService.isLoggedIn = false;
       UserService.loggedInUser = null;
       UserService.authorities = [];
@@ -414,9 +415,12 @@ angular.module('myApp.services', ['ngResource'])
       updateUser: function(user) {
         return $http({method: 'POST', url: '/tck-roger/api/updateUser', data: user});
       },
-      getUserByCredentials: function(username, password) {
-        return $http({method: 'GET', url: '/tck-roger/api/getUserByCredentials',
+      login: function(username, password) {
+        return $http({method: 'POST', url: '/tck-roger/api/login',
                       params: {'username': username, 'password': password}});
+      },
+      logout: function() {
+        return $http({method: 'POST', url: '/tck-roger/api/logout', params: {}});
       },
       changeUserPassword: function(userId, oldPassword, newPassword) {
         return $http({method: 'POST', url: '/tck-roger/api/changeUserPassword',

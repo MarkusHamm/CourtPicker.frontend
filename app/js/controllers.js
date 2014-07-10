@@ -615,7 +615,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
 
     $scope.processRegistration = function() {
       if ($scope.registrationType == $scope.registrationTypes.EXISTINGUSER) {
-        CpService.getUserByCredentials($scope.formExistingUser.userName, $scope.formExistingUser.password).then(function(response) {
+        CpService.login($scope.formExistingUser.userName, $scope.formExistingUser.password).then(function(response) {
           if (response.data == null || response.data == '') {
             $scope.errorMessageExistingUser = 'Ungültige Login Daten';
           }
