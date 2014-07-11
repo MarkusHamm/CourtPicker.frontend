@@ -6,30 +6,26 @@
 // Demonstrate how to register services
 // In this case it is a simple value service.
 angular.module('myApp.services', ['ngResource'])
-  .factory('UserService', function($cookies, $rootScope){
-    var userInfo = {};
+  .factory('UserService', function($rootScope, CpService){
+    var initialized = false;
 
-    var authCookie = $cookies.AUTH_FE;
-    if (authCookie == null) {
-      userInfo = {
-        isLoggedIn: false,
-        loggedInUser: null,
-        authorities: [],
-        statusMessage: ''
-      };
-      $cookies.AUTH_FE = angular.toJson(userInfo);
-    }
-    else {
-      userInfo = angular.fromJson(authCookie);
-    }
+    var userInfo = {
+      isLoggedIn: false,
+      loggedInUser: null,
+      authorities: [],
+      statusMessage: ''
+    };
 
-    userInfo.getInstanceAuthorities = function() {
-      if (userInfo.authorities[$rootScope.cpInstance.id]) {
-        return userInfo.authorities[$rootScope.cpInstance.id];
-      }
-      else {
-        return [];
-      }
+    if (!initialized) {
+      CpService.getAuthStatus($rootScope.cpInstance.id).then(function(result) {
+        console.log(result.data);
+        // to remain object references
+        userInfo.isLoggedIn = result.data.loggedIn;
+        userInfo.loggedInUser = result.data.loggedInUser;
+        userInfo.authorities = result.data.authorities;
+        userInfo.status = '';
+      });
+      initialized = true;
     }
 
     userInfo.hasAuthority = function(authority) {
@@ -102,7 +98,7 @@ angular.module('myApp.services', ['ngResource'])
     return obj;
   })
 
-  .factory('LoginService', function(CpService, UserService, $rootScope, $cookies, $timeout, $q) {
+  .factory('LoginService', function(CpService, UserService, $rootScope, $timeout, $q) {
     var obj = {};
 
     obj.login = function(username, password) {
@@ -112,7 +108,6 @@ angular.module('myApp.services', ['ngResource'])
         // login failed
         if (userResult.data == null || userResult.data == '') {
           obj.logout();
-          $cookies.AUTH_FE = angular.toJson(UserService);
           UserService.statusMessage = 'Ungültige Login Daten';
           $timeout(function() { UserService.statusMessage = ''; }, 5000);
           deferred.resolve(false);
@@ -124,7 +119,6 @@ angular.module('myApp.services', ['ngResource'])
             UserService.loggedInUser = userResult.data;
             UserService.authorities = authoritiesResult.data;
             UserService.statusMessage = '';
-            $cookies.AUTH_FE = angular.toJson(UserService);
             deferred.resolve(true);
           });
         }
@@ -139,7 +133,6 @@ angular.module('myApp.services', ['ngResource'])
       UserService.loggedInUser = null;
       UserService.authorities = [];
       UserService.statusMessage = '';
-      $cookies.AUTH_FE = angular.toJson(UserService);
     }
 
     obj.register = function(user) {
@@ -421,6 +414,10 @@ angular.module('myApp.services', ['ngResource'])
       },
       logout: function() {
         return $http({method: 'POST', url: '/tck-roger/api/logout', params: {}});
+      },
+      getAuthStatus: function(cpInstanceId) {
+        return $http({method: 'GET', url: '/tck-roger/api/getAuthStatus',
+          params: {'cpInstanceId': cpInstanceId}});
       },
       changeUserPassword: function(userId, oldPassword, newPassword) {
         return $http({method: 'POST', url: '/tck-roger/api/changeUserPassword',
