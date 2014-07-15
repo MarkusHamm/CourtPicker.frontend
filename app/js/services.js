@@ -272,14 +272,15 @@ angular.module('myApp.services', ['ngResource'])
     dateService.getWeekDayString = function(dateString) {
       var date = dateService.parseDateString(dateString);
       var dayOfWeek = date.getDay();
+      console.log(dayOfWeek);
 
-      if (dayOfWeek == 0) return "Mo";
-      if (dayOfWeek == 1) return "Di";
-      if (dayOfWeek == 2) return "Mi";
-      if (dayOfWeek == 3) return "Do";
-      if (dayOfWeek == 4) return "Fr";
-      if (dayOfWeek == 5) return "Sa";
-      if (dayOfWeek == 6) return "So";
+      if (dayOfWeek == 1) return "Mo";
+      if (dayOfWeek == 2) return "Di";
+      if (dayOfWeek == 3) return "Mi";
+      if (dayOfWeek == 4) return "Do";
+      if (dayOfWeek == 5) return "Fr";
+      if (dayOfWeek == 6) return "Sa";
+      if (dayOfWeek == 0) return "So";
       return "??";
     }
 
