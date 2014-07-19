@@ -471,8 +471,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       $scope.courtCategories = RESTCourtCategory.getAll({cpInstanceId: $rootScope.cpInstance.id}, function(){
         $scope.initVariables($scope.courtCategories);
       });
-      // FIXME
-      $scope.userGroups = RESTUserGroup.getAll({cpInstanceId: 1/*$rootScope.cpInstance.id*/});
+      $scope.userGroups = RESTUserGroup.getAll({cpInstanceId: $rootScope.cpInstance.id});
     }
 
     $scope.initVariables = function(courtCategories) {
