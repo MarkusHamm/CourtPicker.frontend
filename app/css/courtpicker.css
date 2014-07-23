@@ -368,6 +368,7 @@ a:hover {
     white-space: nowrap;
     overflow: hidden;
     padding: 0 4px;
+    cursor: default;
 }
 
 .reserved-subscription-color {
