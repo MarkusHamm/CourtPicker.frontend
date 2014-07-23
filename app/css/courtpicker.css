@@ -364,6 +364,10 @@ a:hover {
     color:#ffffff;
     height:30px;
     line-height: 30px;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0 4px;
 }
 
 .reserved-subscription-color {
