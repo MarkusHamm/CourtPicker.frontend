@@ -876,12 +876,14 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       $scope.reservationCustomerSelected = true;
       $scope.createReservationCustomer = false;
       $scope.createReservationCustomerEmail = '';
+      updateReservationPrice();
     }
 
     $scope.deselectReservationCustomer = function() {
       $scope.reservationCustomerId = null;
       $scope.reservationCustomerName = '';
       $scope.reservationCustomerSelected = false;
+      updateReservationPrice();
     }
 
     /*
@@ -1109,7 +1111,12 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     var updateReservationPrice = function() {
-      CpService.getSingleReservationPrice(UserService.loggedInUser.id, $scope.freeCourtSelected.id,
+      var customerId = UserService.loggedInUser.id;
+      if ($scope.reservationCustomerId != null) {
+        customerId = $scope.reservationCustomerId;
+      }
+
+      CpService.getSingleReservationPrice(customerId, $scope.freeCourtSelected.id,
         $scope.scopeDate + ' ' + $scope.selectedTimeSlots[0].fromTime,
         $scope.scopeDate + ' ' + $scope.selectedTimeSlots[$scope.selectedTimeSlots.length-1].toTime)
         .then(function(result) {

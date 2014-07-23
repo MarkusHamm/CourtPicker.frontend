@@ -36,7 +36,7 @@
             </div>
 
             <div ng-show="subscriptions.length > 0">
-                <button class="button" ng-click="showSubscriptionModal()">Abo buchen</button>
+                <button class="button" ng-click="showSubscriptionModal()" ng-disabled="!userInfo.isLoggedIn">Abo buchen</button>
             </div>
 
             <div ng-show="selectedView == viewTypes.COURTVIEW">
