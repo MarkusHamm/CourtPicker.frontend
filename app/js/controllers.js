@@ -811,6 +811,19 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.createReservationCustomerEmail = '';
     $scope.comment = '';
 
+    $scope.selectViewCourtView = function() {
+      $scope.selectedView = $scope.viewTypes.COURTVIEW;
+
+      // preselect the first 5 courts (if nothing is selected yet)
+      if ($scope.courtViewSelectedCourts.length == 0) {
+        for (var i=0; i<$scope.courts.length && i<5; i++) {
+          $scope.courtViewSelectedCourts.push($scope.courts[i]);
+        }
+      }
+
+      $scope.loadUtilization();
+    }
+
     $scope.selectWeekViewCourt = function() {
       $scope.loadUtilization();
     }

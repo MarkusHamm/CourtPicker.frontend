@@ -17,7 +17,7 @@
                         ng-class="{'buttonLight': selectedView != viewTypes.WEEKVIEW, 'buttonLightSelected': selectedView == viewTypes.WEEKVIEW}">
                     Wochenübersicht
                 </button>
-                <button type="button" style="float: right;" ng-click="selectedView = viewTypes.COURTVIEW; loadUtilization();"
+                <button type="button" style="float: right;" ng-click="selectViewCourtView()"
                         ng-class="{'buttonLight': selectedView != viewTypes.COURTVIEW, 'buttonLightSelected': selectedView == viewTypes.COURTVIEW}">
                     Tagesdetail
                 </button>
