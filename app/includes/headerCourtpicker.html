@@ -30,7 +30,7 @@
                 </div>
 
                 <!-- login form -->
-                <div id="loginmenu" ng-show="displayLoginForm">
+                <div id="loginmenu" ng-show="displayLoginForm" my-hide-on-outside-click="resetLoginForm()" my-hide-on-outside-click-exception-id="loginbutton">
                     <h2>Login</h2>
                     <form name="loginform" novalidate>
                         <div class="row">
@@ -66,7 +66,7 @@
                 </div>
 
                 <!-- password forgotten form -->
-                <div id="forgotpasswordmenu" ng-show="displayForgotPasswordForm">
+                <div id="forgotpasswordmenu" ng-show="displayForgotPasswordForm" my-hide-on-outside-click="resetForgotPasswordForm()">
                     <h2>Passwort Vergessen?</h2>
 
                     <form name="forgotpasswordform" novalidate ng-show="!displayForgotPasswordRequestStatus">

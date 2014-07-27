@@ -110,9 +110,7 @@ angular.module('myApp.directives', []).
           });
         });
         timepicker.on('show.timepicker', function() {
-          scope.$apply(function(ev) {
             timepicker.timepicker('setTime', ngModel.$modelValue);
-          });
         });
         return timepicker;
       }
@@ -255,4 +253,22 @@ angular.module('myApp.directives', []).
         });
       }
     };
+  })
+
+  .directive('myHideOnOutsideClick', function($document){
+    return {
+      restrict: 'A',
+      link: function(scope, elem, attr, ctrl) {
+        elem.bind('click', function(e) {
+          e.stopPropagation();
+        });
+        $document.bind('click', function(e) {
+          var exceptionId = attr.myHideOnOutsideClickExceptionId;
+          if (exceptionId != null && exceptionId == e.target.id) {
+            return;
+          }
+          scope.$apply(attr.myHideOnOutsideClick);
+        })
+      }
+    }
   });

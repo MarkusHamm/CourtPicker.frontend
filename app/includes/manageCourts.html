@@ -72,7 +72,7 @@
                     <div class="input-group">
                         <input type="text" name="courtCategoryBookFrom" placeholder="name" ng-model="formCourtCategory.bookableFromTime" ng-trim="true"
                                class="form-control" required ng-pattern="/^([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-9]|[0-5][0-9])$/"
-                               data-show-meridian="false" data-minute-step="60" my-timepicker/>
+                               data-show-meridian="false" data-minute-step="30" my-timepicker/>
                         <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                     </div>
                     <span class="error" ng-show="courtCategoryForm.courtCategoryBookFrom.$error.required && courtCategoryForm.courtCategoryBookFrom.$dirty">Required!</span>
@@ -83,7 +83,7 @@
                     <div class="input-group">
                         <input type="text" name="courtCategoryBookTo" placeholder="name" ng-model="formCourtCategory.bookableToTime" ng-trim="true"
                                class="form-control" required ng-pattern="/^([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-9]|[0-5][0-9])$/"
-                               data-show-meridian="false" data-minute-step="60" my-timepicker/>
+                               data-show-meridian="false" data-minute-step="30" my-timepicker/>
                         <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                     </div>
                     <span class="error" ng-show="courtCategoryForm.courtCategoryBookTo.$error.required && courtCategoryForm.courtCategoryBookTo.$dirty">Required!</span>
