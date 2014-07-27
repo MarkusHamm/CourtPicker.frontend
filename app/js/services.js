@@ -135,13 +135,15 @@ angular.module('myApp.services', ['ngResource'])
     }
 
     obj.register = function(user) {
-      CpService.registerUser(user.userName, user.password, user.email, user.firstName, user.lastName).then(function(success) {
-          UserService.statusMessage = 'User erfolgreich angelegt - bitte aktivieren';
-          $timeout(function() { UserService.statusMessage = ''; }, 3000);
-      },
-      function(error) {
-        UserService.statusMessage = 'Fehler beim anlegen des Users';
-        $timeout(function() { UserService.statusMessage = ''; }, 5000);
+      CpService.registerUser(user.userName, user.password, user.email, user.firstName, user.lastName).then(function(result) {
+          if (result.data == 'true') {
+            UserService.statusMessage = 'User erfolgreich angelegt - bitte aktivieren';
+            $timeout(function() { UserService.statusMessage = ''; }, 3000);
+          }
+          else {
+            UserService.statusMessage = 'Fehler beim anlegen des Users';
+            $timeout(function() { UserService.statusMessage = ''; }, 5000);
+          }
       });
     }
 
@@ -551,7 +553,17 @@ angular.module('myApp.services', ['ngResource'])
             params: {'userEmail': userEmail, 'excludeCurrentUserId': excludeCurrentUserId}});
       }
     };
-  });
+  })
+
+  // redirect to error page if any service call throws an exception
+  .factory('cpHttpResponseInterceptor',['$q','$location',function($q,$location) {
+    return {
+      'responseError': function(rejection){
+        $location.path('/error');
+        return $q.reject(rejection);
+      }
+    }
+  }]);
 
 //	.factory('CpService', function($resource){
 //		return $resource('/tck-roger/api/:action', {}, 

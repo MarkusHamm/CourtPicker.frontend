@@ -4,7 +4,7 @@ var initialResolve = {'initialResolveDone': function($rootScope) { return $rootS
 
 // Declare app level module which depends on filters, and services
 angular.module('courtpickerApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'myApp.controllers', 'ngRoute'])
-  .config(['$routeProvider', function($routeProvider) {
+  .config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
     $routeProvider.when('/courtpicker', {templateUrl: 'partials/courtpicker.html', resolve: initialResolve, requiresInstance: true, title: 'Courtpicker', includeStyle: 'includes/stylesCourtpicker.html'});
     $routeProvider.when('/activateUser', {templateUrl: 'partials/activateUser.html', resolve: initialResolve, requiresInstance: false, title: 'Courtpicker', includeStyle: 'includes/stylesBootstrap.html'});
     $routeProvider.when('/configureRates', {templateUrl: 'partials/configureRates.html', resolve: initialResolve, requiresInstance: true, title: 'Courtpicker Configurator', includeStyle: 'includes/stylesBootstrap.html'});
@@ -22,8 +22,11 @@ angular.module('courtpickerApp', ['myApp.filters', 'myApp.services', 'myApp.dire
     $routeProvider.when('/customerReservations', {templateUrl: 'partials/customerReservations.html', resolve: initialResolve, requiresInstance: true, title: 'Courtpicker Customer Area', includeStyle: 'includes/stylesBootstrap.html'});
     $routeProvider.when('/customerSubReservations', {templateUrl: 'partials/customerSubReservations.html', resolve: initialResolve, requiresInstance: true, title: 'Courtpicker Customer Area', includeStyle: 'includes/stylesBootstrap.html'});
     $routeProvider.when('/customerUserData', {templateUrl: 'partials/customerUserData.html', resolve: initialResolve, requiresInstance: true, title: 'Courtpicker Customer Area', includeStyle: 'includes/stylesBootstrap.html'});
-    $routeProvider.when('/error', {templateUrl: 'partials/error.html', requiresInstance: false, title: 'Courtpicker Error', includeStyle: 'includes/stylesBootstrap.html'});
+    $routeProvider.when('/error', {templateUrl: 'partials/error.html', requiresInstance: false, title: 'Courtpicker Error', includeStyle: 'includes/stylesCourtpicker.html'});
     $routeProvider.otherwise({redirectTo: '/configureCourts'});
+
+    // redirect to error page if any service call throws an exception
+    $httpProvider.interceptors.push('cpHttpResponseInterceptor');
   }])
   
   .run(['$rootScope', 'CpService', 'RESTWebdesign', '$http', '$location', '$q', '$timeout', function($rootScope, CpService, RESTWebdesign, $http, $location, $q, $timeout) {
