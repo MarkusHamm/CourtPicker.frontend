@@ -18,7 +18,6 @@ angular.module('myApp.services', ['ngResource'])
 
     if (!initialized) {
       CpService.getAuthStatus($rootScope.cpInstance.id).then(function(result) {
-        console.log(result.data);
         // to remain object references
         userInfo.isLoggedIn = result.data.loggedIn;
         userInfo.loggedInUser = result.data.loggedInUser;

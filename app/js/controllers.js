@@ -1759,6 +1759,17 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       }
     }
 
+    $scope.getDisplayUserData = function(res) {
+      var userData = res.customerLastName;
+      if (res.customerFirstName != null && res.customerFirstName.length > 0) {
+        userData = res.customerFirstName + ' ' + userData;
+      }
+      if (res.customerUserName != null && res.customerUserName.length > 0) {
+        userData = userData + ' (' + res.customerUserName + ')';
+      }
+      return userData;
+    }
+
     var doesReservationMatchCourtCategoryFilter = function(reservation, filterCourtCategory) {
       if (filterCourtCategory == null || reservation.courtCategoryId == filterCourtCategory.id) {
         return true;
@@ -1945,6 +1956,17 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
           $scope.reservations.push(res);
         }
       }
+    }
+
+    $scope.getDisplayUserData = function(res) {
+      var userData = res.customerLastName;
+      if (res.customerFirstName != null && res.customerFirstName.length > 0) {
+        userData = res.customerFirstName + ' ' + userData;
+      }
+      if (res.customerUserName != null && res.customerUserName.length > 0) {
+        userData = userData + ' (' + res.customerUserName + ')';
+      }
+      return userData;
     }
 
     var doesReservationMatchCourtCategoryFilter = function(reservation, filterCourtCategory) {

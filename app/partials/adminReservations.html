@@ -93,7 +93,7 @@
             <td>{{res.courtCategoryName}}</td>
             <td>{{res.courtName}}</td>
             <td>{{dateService.formatAsTimeSpanString(res.fromDate, res.toDate)}}</td>
-            <td>{{res.customerFirstName}} {{res.customerLastName}} ({{res.customerUserName}})</td>
+            <td>{{getDisplayUserData(res)}}</td>
             <td>{{res.price}}</td>
             <td>{{res.paid}}</td>
             <td>
