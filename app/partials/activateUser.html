@@ -1,9 +1,24 @@
-<ng-include src="'includes/headerAdminArea.html'" onload="selectedView='NONE'"></ng-include>
+<!-- Fixed navbar -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" style="color: #297CBF;">Courtpicker</span>
+        </div>
+    </div>
+</div>
 
 <div class="container" ng-controller="ActivateUserController">
     <div class="page-header" style="margin-top: 0;">
         <h1>Benutzer Aktivierung</h1>
     </div>
 
-    {{msg}}
+    <p>
+        {{msg}}
+    </p>
 </div>

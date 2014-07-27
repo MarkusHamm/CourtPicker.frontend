@@ -948,6 +948,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       }
       else {
         var reservingUser = getUser(UserService.loggedInUser.id);
+        console.log(UserService.loggedInUser.id);
         CpService.singleReservation(UserService.loggedInUser.id, $scope.freeCourtSelected.id,
           $scope.scopeDate + ' ' + $scope.selectedTimeSlots[0].fromTime,
           $scope.scopeDate + ' ' + $scope.selectedTimeSlots[$scope.selectedTimeSlots.length-1].toTime,
