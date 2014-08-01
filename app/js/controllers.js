@@ -760,10 +760,6 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       var userId = $location.$$search.userId;
       var activationCode = $location.$$search.activationCode;
 
-
-      console.log(userId);
-      console.log(activationCode);
-
       CpService.activateUser(userId, activationCode).then(function(result) {
         if (result.data == 'true') {
           $scope.msg = 'Ihr Benutzer wurde erfolgreich aktiviert';
@@ -931,39 +927,21 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.makeSingleReservation = function() {
       if (UserService.hasAuthority("ADMIN")) {
         var customerInputType = $scope.reservationCustomerId == null ? "NAME" : "ID";
-        var displayName = $scope.reservationCustomerName;
-        if ($scope.reservationCustomerId)  {
-          var reservingUser = getUser($scope.reservationCustomerId);
-          displayName = reservingUser.firstName + ' ' + reservingUser.lastName;
-        }
 
         CpService.singleReservationAdmin(customerInputType, $scope.reservationCustomerId, $scope.reservationCustomerName,
           $scope.createReservationCustomer, $scope.createReservationCustomerEmail, UserService.loggedInUser.id,
           $scope.freeCourtSelected.id,
           $scope.scopeDate + ' ' + $scope.selectedTimeSlots[0].fromTime,
           $scope.scopeDate + ' ' + $scope.selectedTimeSlots[$scope.selectedTimeSlots.length-1].toTime,
-          $scope.overrideReservationPrice, $scope.reservationPrice,
-          displayName, $scope.comment
+          $scope.overrideReservationPrice, $scope.reservationPrice, $scope.comment
         ).then(processSingleReservationResult);
       }
       else {
-        var reservingUser = getUser(UserService.loggedInUser.id);
-        console.log(UserService.loggedInUser.id);
         CpService.singleReservation(UserService.loggedInUser.id, $scope.freeCourtSelected.id,
           $scope.scopeDate + ' ' + $scope.selectedTimeSlots[0].fromTime,
-          $scope.scopeDate + ' ' + $scope.selectedTimeSlots[$scope.selectedTimeSlots.length-1].toTime,
-          reservingUser.firstName + ' ' + reservingUser.lastName, $scope.comment
+          $scope.scopeDate + ' ' + $scope.selectedTimeSlots[$scope.selectedTimeSlots.length-1].toTime, $scope.comment
         ).then(processSingleReservationResult);
       }
-    }
-
-    var getUser = function(id) {
-      for (var i=0; i<$scope.users.length; i++) {
-        if ($scope.users[i].id == id) {
-          return $scope.users[i];
-        }
-      }
-      return null;
     }
 
     var processSingleReservationResult = function(result) {
@@ -1257,28 +1235,20 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.makeSubscriptionReservation = function() {
       if (UserService.hasAuthority("ADMIN")) {
         var customerInputType = $scope.subReservationCustomerId == null ? "NAME" : "ID";
-        var displayName = $scope.subReservationCustomerName;
-        if ($scope.subReservationCustomerId)  {
-          var reservingUser = getUser($scope.subReservationCustomerId);
-          displayName = reservingUser.firstName + ' ' + reservingUser.lastName;
-        }
 
         CpService.subscriptionReservationAdmin(customerInputType, $scope.subReservationCustomerId, $scope.subReservationCustomerName,
           $scope.createSubReservationCustomer, $scope.createSubReservationCustomerEmail, $scope.selectedSubscription.id,
           UserService.loggedInUser.id, $scope.selectedSubCourt.id,
           convertIntWeekDayToString($scope.selectedSubWeekDay),
           $scope.selectedSubStartTime, $scope.subscriptionUnits,
-          $scope.overrideSubReservationPrice, $scope.subReservationPrice,
-          displayName, $scope.subComment
+          $scope.overrideSubReservationPrice, $scope.subReservationPrice, $scope.subComment
         ).then(processSubscriptionReservationResult);
       }
       else {
-        var reservingUser = getUser(UserService.loggedInUser.id);
         CpService.subscriptionReservation($scope.selectedSubscription.id,
           UserService.loggedInUser.id, $scope.selectedSubCourt.id,
           convertIntWeekDayToString($scope.selectedSubWeekDay),
-          $scope.selectedSubStartTime, $scope.subscriptionUnits,
-          reservingUser.firstName + ' ' + reservingUser.lastName, $scope.subComment
+          $scope.selectedSubStartTime, $scope.subscriptionUnits, $scope.subComment
         ).then(processSubscriptionReservationResult);
       }
     }

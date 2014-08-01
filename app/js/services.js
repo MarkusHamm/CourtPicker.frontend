@@ -477,30 +477,30 @@ angular.module('myApp.services', ['ngResource'])
         return $http({method: 'GET', url: '/tck-roger/api/getSubscriptionReservationPrice',
           params: {'customerId': customerId, 'subscriptionId': subscriptionId, 'fromTime': fromTime, 'bookingUnits': bookingUnits, 'weekDay': weekDay}});
       },
-      singleReservation: function(customerId, courtId, fromDateTime, toDateTime, displayName, comment) {
+      singleReservation: function(customerId, courtId, fromDateTime, toDateTime, comment) {
         return $http({method: 'POST', url: '/tck-roger/api/singleReservation',
           params: {'customerId': customerId, 'courtId': courtId, 'fromDateTime': fromDateTime, 'toDateTime': toDateTime,
-                   'displayName': displayName, 'comment': comment}});
+                   'comment': comment}});
       },
       singleReservationAdmin: function(customerInputType, customerId, customerName, createUserAccount, createUserAccountEmail,
-                                       reservingCustomerId, courtId, fromDateTime, toDateTime, overridePrice, customPrice, displayName, comment) {
+                                       reservingCustomerId, courtId, fromDateTime, toDateTime, overridePrice, customPrice, comment) {
         return $http({method: 'POST', url: '/tck-roger/api/singleReservationAdmin',
           params: {'customerInputType': customerInputType, 'customerId': customerId, 'customerName': customerName,
             'createUserAccount': createUserAccount, 'createUserAccountEmail': createUserAccountEmail, 'reservingCustomerId': reservingCustomerId, 'courtId': courtId,
             'fromDateTime': fromDateTime, 'toDateTime': toDateTime, 'overridePrice': overridePrice, 'customPrice': customPrice,
-            'displayName': displayName, 'comment': comment}});
+            'comment': comment}});
       },
-      subscriptionReservation: function(subscriptionId, customerId, courtId, weekDay, startTime, bookingUnits, displayName, comment) {
+      subscriptionReservation: function(subscriptionId, customerId, courtId, weekDay, startTime, bookingUnits, comment) {
         return $http({method: 'POST', url: '/tck-roger/api/subscriptionReservation',
           params: {'subscriptionId': subscriptionId, 'customerId': customerId, 'courtId': courtId, 'weekDay': weekDay, 'startTime': startTime,
-                   'bookingUnits': bookingUnits, 'displayName': displayName, 'comment': comment}});
+                   'bookingUnits': bookingUnits, 'comment': comment}});
       },
       subscriptionReservationAdmin: function(customerInputType, customerId, customerName, createUserAccount, createUserAccountEmail, subscriptionId,
-                                             reservingCustomerId, courtId, weekDay, startTime, bookingUnits, overridePrice, customPrice, displayName, comment) {
+                                             reservingCustomerId, courtId, weekDay, startTime, bookingUnits, overridePrice, customPrice, comment) {
         return $http({method: 'POST', url: '/tck-roger/api/subscriptionReservationAdmin',
           params: {'customerInputType': customerInputType, 'customerId': customerId, 'customerName': customerName, 'createUserAccount': createUserAccount,
             'createUserAccountEmail': createUserAccountEmail, 'subscriptionId': subscriptionId, 'reservingCustomerId': reservingCustomerId, 'courtId': courtId, 'weekDay': weekDay,
-            'startTime': startTime, 'bookingUnits': bookingUnits, 'overridePrice': overridePrice, 'customPrice': customPrice, 'displayName': displayName, 'comment': comment}});
+            'startTime': startTime, 'bookingUnits': bookingUnits, 'overridePrice': overridePrice, 'customPrice': customPrice, 'comment': comment}});
       },
       getSingleReservationInfosForCustomer: function(customerId) {
         return $http({method: 'GET', url: '/tck-roger/api/getSingleReservationInfosForCustomer', params: {'customerId': customerId}});
