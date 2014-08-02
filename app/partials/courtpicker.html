@@ -36,7 +36,7 @@
                 <div class="courtSelectLeft" ng-show="selectedView == viewTypes.WEEKVIEW">
                     <b>Plätze:</b> &nbsp;&nbsp;
                     <select ng-model="weekViewSelectedCourt" ng-options="court.name for court in courts" ng-change="selectWeekViewCourt()"
-                            style="min-width: 100px;">
+                            class="minwidth-100">
                         <option value="">Alle</option>
                     </select>
                 </div>
@@ -98,36 +98,37 @@
                 <div class="modal-body">
                     <form name="reservationForm">
                         <div class="row">
-                            <div class="col-xs-2"><b>Platz</b></div>
-                            <button ng-repeat="freeCourt in freeCourts" type="button"
-                                    ng-class="{'buttonLight': freeCourtSelected != freeCourt, 'buttonLightSelected': freeCourtSelected == freeCourt}"
-                                    ng-click="selectFreeCourt(freeCourt)" style="margin-right: 15px;">
-                                {{freeCourt.name}}
-                            </button>
-                        </div>
-                        <div class="row">
                             <div class="col-xs-2"><b>Datum</b></div>
                             <div class="col-xs-2">{{scopeDate}}</div>
                         </div>
+                        <div class="spacer10"></div>
+                        <div class="row">
+                            <div class="col-xs-2"><b>Platz</b></div>
+                            <div class="col-xs-6">
+                                <select ng-model="freeCourtSelected" ng-options="court.name for court in freeCourts" ng-change="selectFreeCourt(court)" class="minwidth-100"></select>
+                            </div>
+                        </div>
+                        <div class="spacer10"></div>
                         <div class="row">
                             <div class="col-xs-2"><b>Von</b></div>
-                            <div class="col-xs-2">{{selectedTimeSlots[0].fromTime}}</div>
-                            <div class="col-xs-2">
-                                <button type="button" class="button" ng-click="setFromTimeLater()" ng-disabled="!fromTimeLaterButtonEnabled()">+</button>
-                                <button type="button" class="button" ng-click="setFromTimeEarlier()" ng-disabled="!fromTimeEarlierButtonEnabled()">-</button>
+                            <div class="col-xs-4">
+                                <button type="button" class="icononly-button" ng-click="setFromTimeEarlier()" ng-disabled="!fromTimeEarlierButtonEnabled()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                {{selectedTimeSlots[0].fromTime}}
+                                <button type="button" class="icononly-button" ng-click="setFromTimeLater()" ng-disabled="!fromTimeLaterButtonEnabled()"><span class="glyphicon glyphicon-chevron-right"></span></button>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-2"><b>Bis</b></div>
-                            <div class="col-xs-2">{{selectedTimeSlots[selectedTimeSlots.length-1].toTime}}</div>
-                            <div class="col-xs-2">
-                                <button type="button" class="button" ng-click="setToTimeLater()" ng-disabled="!toTimeLaterButtonEnabled()">+</button>
-                                <button type="button" class="button" ng-click="setToTimeEarlier()" ng-disabled="!toTimeEarlierButtonEnabled()">-</button>
+                            <div class="col-xs-4">
+                                <button type="button" class="icononly-button" ng-click="setToTimeEarlier()" ng-disabled="!toTimeEarlierButtonEnabled()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                {{selectedTimeSlots[selectedTimeSlots.length-1].toTime}}
+                                <button type="button" class="icononly-button" ng-click="setToTimeLater()" ng-disabled="!toTimeLaterButtonEnabled()"><span class="glyphicon glyphicon-chevron-right"></span></button>
                             </div>
                         </div>
+                        <div class="spacer10"></div>
                         <div class="row">
                             <div class="col-xs-2"><b>Preis</b></div>
-                            <div class="col-xs-2" ng-class="{'strikeText': overrideReservationPrice}">{{calculatedReservationPrice}}</div>
+                            <div class="col-xs-2" ng-class="{'strikeText': overrideReservationPrice}">{{calculatedReservationPrice|currency:'€ '}}</div>
                             <div class="col-xs-2" ng-show="userInfo.hasAuthority('ADMIN')"><input type="checkbox" ng-model="overrideReservationPrice" ng-change="changeReservationPriceOverride()"/> Override</div>
                             <div class="col-xs-2" ng-show="overrideReservationPrice">
                                 <input type="text" ng-model="reservationPrice" name="overrideReservationPrice" ng-pattern="/^[0-9]+(|\.[0-9]|\.[0-9][0-9])$/" required />
@@ -135,6 +136,7 @@
                                 <span class="error" ng-show="reservationForm.overrideReservationPrice.$error.pattern">pattern</span>
                             </div>
                         </div>
+                        <div class="spacer10"></div>
                         <div class="row" ng-show="userInfo.hasAuthority('ADMIN')">
                             <div class="col-xs-1"><b>Kunde</b></div> <br/>
                             <div class="col-xs-10">
@@ -157,16 +159,16 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-1"><b>Kommentar</b></div>
-                            <div class="col-xs-10">
-                                <textarea ng-model="comment" name="comment" cols="50" rows="5"></textarea>
+                            <div class="col-xs-2"><b>Kommentar</b></div>
+                            <div class="col-xs-8">
+                                <textarea ng-model="comment" name="comment" cols="49" rows="2"></textarea>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="button" ng-click="makeSingleReservation()" ng-disabled="reservationForm.$invalid">Buchen</button>
-                    <button type="button" class="button" data-dismiss="modal">Abbrechen</button>
+                    <button type="button" class="button" style="width: 400px;" ng-click="makeSingleReservation()" ng-disabled="reservationForm.$invalid">Buchen</button>
+                    <button type="button" class="button" style="width: 110px;" data-dismiss="modal">Abbrechen</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

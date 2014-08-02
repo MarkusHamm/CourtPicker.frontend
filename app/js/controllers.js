@@ -957,7 +957,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     $scope.selectFreeCourt = function(court) {
-      $scope.freeCourtSelected = court;
+      //$scope.freeCourtSelected = court;
       updateReservationPrice();
     }
 
@@ -1078,6 +1078,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       if (($scope.freeCourtSelected == null || $scope.freeCourts.indexOf($scope.freeCourtSelected) == -1)
            && $scope.freeCourts.length > 0) {
         $scope.freeCourtSelected = $scope.freeCourts[0];
+        console.log($scope.freeCourtSelected);
       }
     }
 
