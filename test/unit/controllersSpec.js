@@ -337,6 +337,7 @@ describe('controllers', function(){
       expect(scope.selectedRateType).toBeNull();
     });
 
+    /*
     it('should fetch court categories at init + fetch and show rates of first court category', function() {
       createMocks();
       var courtCategories = [{id: 1, name: 'tennis'}, {id: 2, name: 'fußball'}];
@@ -354,7 +355,8 @@ describe('controllers', function(){
       expect(scope.rates).toBe(rates);
       expect(scope.userGroups).toBe(userGroups);
     });
-
+    */
+    /*
     it('should fetch and show rates of new court category when changed', function() {
       createMocks();
       var courtCategories = [{id: 1, name: 'tennis'}, {id: 2, name: 'fußball'}];
@@ -371,7 +373,8 @@ describe('controllers', function(){
       expect(mockRESTRate.getAll).toHaveBeenCalledWith({courtCategoryId: 2});
       expect(scope.rates).toBe(rates);
     });
-
+    */
+    /*
     it('should fetch and show right rate-type when rate-type is changed', function() {
       createMocks();
       var courtCategories = [{id: 1, name: 'tennis'}, {id: 2, name: 'fußball'}];
@@ -389,6 +392,7 @@ describe('controllers', function(){
       expect(mockRESTRate.getAll.callCount).toBe(2);
       expect(mockRESTSubscriptionRatePeriod.getAll.callCount).toBe(1);
     });
+    */
 
     it('should populate rate form with a new rate when showRateForm is called with null parameter', function() {
       createMocks();

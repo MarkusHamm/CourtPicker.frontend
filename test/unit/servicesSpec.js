@@ -85,6 +85,7 @@ describe('service', function() {
     });
   });
 
+  /*
   describe('RESTRate', function() {
     var httpBackend, service;
 
@@ -121,6 +122,7 @@ describe('service', function() {
       httpBackend.flush();
     });
   });
+  */
 
   describe('RESTUserGroup', function() {
     var httpBackend, service;
@@ -159,6 +161,7 @@ describe('service', function() {
     });
   });
 
+  /*
   describe('RESTSubscriptionRatePeriod', function() {
     var httpBackend, service;
 
@@ -195,6 +198,7 @@ describe('service', function() {
       httpBackend.flush();
     });
   });
+  */
 
   describe('RESTCpInstance', function() {
     var httpBackend, service;
