@@ -144,7 +144,7 @@ angular.module('myApp.directives', []).
       restrict: 'A',
       require: '?ngModel',
       link: function(scope, element, attrs, ngModel) {
-        element.on('keyup', function(evt) {
+        element.on('keyup blur', function(evt) {
           scope.$apply(function() {
             var shortName = element.val();
             if (shortName == '') {
@@ -171,7 +171,7 @@ angular.module('myApp.directives', []).
       restrict: 'A',
       require: '?ngModel',
       link: function(scope, element, attrs, ngModel) {
-        element.on('keyup', function(evt) {
+        element.on('keyup blur', function(evt) {
           scope.$apply(function() {
             var userName = element.val();
             if (userName == '') {
@@ -205,7 +205,7 @@ angular.module('myApp.directives', []).
       restrict: 'A',
       require: '?ngModel',
       link: function(scope, element, attrs, ngModel) {
-        element.on('keyup', function(evt) {
+        element.on('keyup blur', function(evt) {
           scope.$apply(function() {
             var userEmail = element.val();
             if (userEmail == '') {
