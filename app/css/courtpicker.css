@@ -63,7 +63,7 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     border: 0;
 }
 
-.button:hover {
+.button:hover:enabled {
     background-color: #297CBF;
     background-image: none;
 }
@@ -86,7 +86,7 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     display: inline-block;
 }
 
-.buttonThin:hover {
+.buttonThin:hover:enabled {
     background-color: #297CBF;
     background-image: none;
 }
@@ -104,7 +104,7 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     display: inline-block;
 }
 
-.buttonThinRound:hover {
+.buttonThinRound:hover:enabled {
     background-color: #297CBF;
     background-image: none;
 }
@@ -122,7 +122,7 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     border: 0;
 }
 
-.buttonLight:hover {
+.buttonLight:hover:enabled {
     background-color: #297CBF;
     color: #FFFFFF;
 }
@@ -151,7 +151,7 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     display: inline-block;
 }
 
-.buttonLightThin:hover {
+.buttonLightThin:hover:enabled {
     background-color: #297CBF;
     color: #FFFFFF;
 }
@@ -326,12 +326,25 @@ a:hover {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
+.courtSelect {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.courtSelectLeft {
+}
+
+.courtSelectRight {
+    float: right;
+    margin-right: 12px;
+}
+
 /***** RESERVATION *****/
 
 #reservationViewSelection {
     width: 730px;
     padding: 0;
-    margin: 0 auto 20px;
+    margin: 0 auto 15px;
 }
 
 #reservationCourtSelect {
@@ -515,7 +528,7 @@ a:hover {
     box-shadow: 0 0 5px #fbe255;
 }
 
-#reservationButton:hover {
+#reservationButton:hover:enabled {
     box-shadow: 0 0 5px #94cbf5;
 }
 
