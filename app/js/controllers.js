@@ -1145,7 +1145,8 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       CpService.getSubscriptionAvailability($scope.selectedSubscription.id, $scope.subscriptionUnits).then(function(result) {
         $scope.subscriptionAvailability = result.data;
         // preselect at subscription selection
-        $scope.selectSubWeekDay(0);
+        $scope.selectedSubWeekDay = '0';
+        $scope.selectSubWeekDay();
         if ($scope.availableSubStartTimes.length > 0) {
           $scope.selectSubStartTime($scope.availableSubStartTimes[0]);
           if ($scope.availableSubCourts.length > 0) {
@@ -1157,7 +1158,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     $scope.selectSubWeekDay = function(weekDayIndex) {
-      $scope.selectedSubWeekDay = weekDayIndex;
+      //$scope.selectedSubWeekDay = weekDayIndex;
       $scope.availableSubStartTimes = [];
 
       var availability = $scope.subscriptionAvailability[$scope.selectedSubWeekDay];
@@ -1223,13 +1224,13 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
 
     var convertIntWeekDayToString = function(intWeekDay) {
       switch (intWeekDay) {
-        case 0: return 'MON'; break;
-        case 1: return 'TUE'; break;
-        case 2: return 'WED'; break;
-        case 3: return 'THU'; break;
-        case 4: return 'FRI'; break;
-        case 5: return 'SAT'; break;
-        case 6: return 'SUN'; break;
+        case '0': return 'MON'; break;
+        case '1': return 'TUE'; break;
+        case '2': return 'WED'; break;
+        case '3': return 'THU'; break;
+        case '4': return 'FRI'; break;
+        case '5': return 'SAT'; break;
+        case '6': return 'SUN'; break;
       }
     }
 
