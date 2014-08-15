@@ -141,17 +141,20 @@
                     <form name="paymentOptionForm" novalidate class="form-horizontal" role="form">
                         <div class="form-group">
                             <label class="col-xs-2 control-label">Preis</label>
-                            <div class="col-xs-1" ng-class="{'strikeText': overridePrice}">
-                                {{selectedReservation.price}}
+                            <div class="col-xs-2 form-control-static" ng-class="{'strikeText': overridePrice}">
+                                {{selectedReservation.price | currency:'€ '}}
                             </div>
-                            <div class="col-xs-3">
-                                <input type="checkbox" ng-model="overridePrice" ng-change="changeOverridePrice()"/> override
+                            <div class="col-xs-2">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="overridePrice" ng-change="changeOverridePrice()"/> override
+                                    </label>
+                                </div>
                             </div>
                             <div class="col-xs-4" ng-show="overridePrice">
-                                <input type="text" name="customPrice" class="form-control"
-                                       my-focus-on="overridePrice" ng-model="customPrice" ng-trim="true" ng-pattern="/^[0-9]+(|\.[0-9]|\.[0-9][0-9])$/" required />
-                                <span class="error" ng-show="paymentOptionForm.overridePrice.$error.required">Required!</span>
-                                <span class="error" ng-show="paymentOptionForm.overridePrice.$error.pattern">pattern</span>
+                                <input type="text" name="customPrice" class="form-control" my-decimal-separator-converter
+                                       my-focus-on="overridePrice" ng-model="customPrice" ng-trim="true" ng-pattern="/^[0-9]+(|[\.,][0-9]|[\.,][0-9][0-9])$/" required />
+                                <div class="error" ng-show="paymentOptionForm.customPrice.$error.pattern">Ungültiger Preis</div>
                             </div>
                         </div>
                         <div class="form-group">

@@ -775,7 +775,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     init();
   }])
 
-  .controller('ReservationController', ['$scope', '$rootScope', 'RESTCourtCategory', 'RESTCourt', 'CpService', 'DateService', 'UserService', 'UtilService', function($scope, $rootScope, RESTCourtCategory, RESTCourt, CpService, DateService, UserService, UtilService) {
+  .controller('ReservationController', ['$scope', '$rootScope', 'RESTCourtCategory', 'RESTCourt', 'CpService', 'DateService', 'UserService', 'UtilService', '$filter', function($scope, $rootScope, RESTCourtCategory, RESTCourt, CpService, DateService, UserService, UtilService, $filter) {
     $scope.viewTypes = { WEEKVIEW: 0, COURTVIEW: 1};
     $scope.dateService = DateService;
     $scope.userInfo = UserService;
@@ -1049,7 +1049,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     $scope.changeReservationPriceOverride = function() {
-      $scope.reservationPrice = $scope.calculatedReservationPrice;
+      $scope.reservationPrice = $filter('currency')($scope.calculatedReservationPrice, '');
     }
 
     var updateFreeCourts = function() {
@@ -1268,7 +1268,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     $scope.changeSubReservationPriceOverride = function() {
-      $scope.subReservationPrice = $scope.calculatedSubReservationPrice;
+      $scope.subReservationPrice = $filter('currency')($scope.calculatedSubReservationPrice, '');
     }
 
     $scope.selectSubReservationCustomer = function() {
@@ -1636,7 +1636,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     init();
   }])
 
-  .controller('AdminReservationsController', ['$scope', '$rootScope', 'CpService', 'RESTCourtCategory', 'RESTCourt', 'RESTPaymentOption', 'DateService', function($scope, $rootScope, CpService, RESTCourtCategory, RESTCourt, RESTPaymentOption, DateService) {
+  .controller('AdminReservationsController', ['$scope', '$rootScope', 'CpService', 'RESTCourtCategory', 'RESTCourt', 'RESTPaymentOption', 'DateService', '$filter', function($scope, $rootScope, CpService, RESTCourtCategory, RESTCourt, RESTPaymentOption, DateService, $filter) {
     $scope.dateService = DateService;
 
     $scope.allReservations = [];
@@ -1692,7 +1692,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     $scope.changeOverridePrice = function() {
-      $scope.customPrice = $scope.selectedReservation.price;
+      $scope.customPrice = $filter('currency')($scope.selectedReservation.price, '');
     }
 
     $scope.selectCourtCategory = function() {
@@ -1835,7 +1835,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     init();
   }])
 
-  .controller('AdminSubscriptionReservationsController', ['$scope', '$rootScope', 'CpService', 'RESTCourtCategory', 'RESTSubscription', 'RESTPaymentOption', 'DateService', function($scope, $rootScope, CpService, RESTCourtCategory, RESTSubscription, RESTPaymentOption, DateService) {
+  .controller('AdminSubscriptionReservationsController', ['$scope', '$rootScope', 'CpService', 'RESTCourtCategory', 'RESTSubscription', 'RESTPaymentOption', 'DateService', '$filter', function($scope, $rootScope, CpService, RESTCourtCategory, RESTSubscription, RESTPaymentOption, DateService, $filter) {
     $scope.dateService = DateService;
 
     $scope.allReservations = [];
@@ -1891,7 +1891,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     $scope.changeOverridePrice = function() {
-      $scope.customPrice = $scope.selectedReservation.price;
+      $scope.customPrice = $filter('currency')($scope.selectedReservation.price, '');
     }
 
     $scope.selectCourtCategory = function() {

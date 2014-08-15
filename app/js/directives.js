@@ -255,7 +255,7 @@ angular.module('myApp.directives', []).
     };
   })
 
-  .directive('myHideOnOutsideClick', function($document){
+  .directive('myHideOnOutsideClick', function($document) {
     return {
       restrict: 'A',
       link: function(scope, elem, attr, ctrl) {
@@ -269,6 +269,25 @@ angular.module('myApp.directives', []).
           }
           scope.$apply(attr.myHideOnOutsideClick);
         })
+      }
+    }
+  })
+
+  .directive('myDecimalSeparatorConverter', function() {
+    return {
+      require: 'ngModel',
+      link: function(scope, element, attrs, ngModelController) {
+        ngModelController.$parsers.push(function(data) {
+          if (data != null && data.length > 0) {
+            data = data.replace(/,/g, '.');
+          }
+          return data; //converted
+        });
+
+        ngModelController.$formatters.push(function(data) {
+          //convert data from model format to view format
+          return data; //converted
+        });
       }
     }
   });
