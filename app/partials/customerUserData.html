@@ -5,7 +5,7 @@
         <h1>Benutzerdaten ändern</h1>
     </div>
 
-    <form name="userForm" class="form-horizontal" novalidate>
+    <form name="userForm" class="form-horizontal" ng-submit="updateUser()" novalidate>
         <div class="alert alert-success" ng-show="updateUserSuccessMsg.length > 0">{{updateUserSuccessMsg}}</div>
         <div class="alert alert-danger" ng-show="updateUserErrorMsg.length > 0">{{updateUserErrorMsg}}</div>
         <fieldset>
@@ -15,36 +15,30 @@
                 <div class="col-xs-3">
                     <input type="text" ng-model="formUser.firstName" name="firstName" class="form-control" required />
                 </div>
-                <span class="error" ng-show="userForm.firstName.$invalid && userForm.firstName.$dirty">Required!</span>
-            </div>
-            <div class="form-group">
+
                 <label class="col-xs-2 control-label">Nachname</label>
                 <div class="col-xs-3">
                     <input type="text" ng-model="formUser.lastName" name="lastName" class="form-control" required />
                 </div>
-                <span class="error" ng-show="userForm.lastName.$invalid && userForm.lastName.$dirty">Required!</span>
-            </div>
-            <div class="form-group">
-                <label class="col-xs-2 control-label">E-Mail</label>
-                <div class="col-xs-3">
-                    <input type="email" ng-model="formUser.email" name="email" class="form-control" required my-validate-unique-user-email/>
-                </div>
-                <span class="error" ng-show="userForm.email.$error.required && userForm.email.$dirty">Required!</span>
-                <span class="error" ng-show="userForm.email.$error.email && userForm.email.$dirty">E-Mail Adresse ungütlig</span>
-                <span class="error" ng-show="userForm.email.$error.unique && userForm.email.$dirty">E-Mail vergeben</span>
             </div>
             <div class="form-group">
                 <label class="col-xs-2 control-label">Benutzername</label>
                 <div class="col-xs-3">
                     <input type="text" ng-model="formUser.userName" name="userName" class="form-control" required my-validate-unique-user-name/>
+                    <div class="error" ng-show="userForm.userName.$error.unique && userForm.userName.$dirty">Benutzername bereits vergeben</div>
                 </div>
-                <span class="error" ng-show="userForm.userName.$error.required && userForm.userName.$dirty">Required!</span>
-                <span class="error" ng-show="userForm.userName.$error.unique && userForm.userName.$dirty">Username vergeben</span>
             </div>
         </fieldset>
         <fieldset>
             <legend>Kontakt Daten</legend>
             <div class="form-group">
+                <label class="col-xs-2 control-label">E-Mail</label>
+                <div class="col-xs-3">
+                    <input type="email" ng-model="formUser.email" name="email" class="form-control" required my-validate-unique-user-email/>
+                    <div class="error" ng-show="userForm.email.$error.email && userForm.email.$dirty">E-Mail Adresse ungütlig</div>
+                    <div class="error" ng-show="userForm.email.$error.unique && userForm.email.$dirty">E-Mail vergeben</div>
+                </div>
+
                 <label class="col-xs-2 control-label">Telefon</label>
                 <div class="col-xs-3">
                     <input type="text" ng-model="formUser.phoneNumber" class="form-control" name="phoneNumber" />
@@ -55,8 +49,7 @@
                 <div class="col-xs-3">
                     <input type="text" ng-model="formUser.street" name="street" class="form-control" />
                 </div>
-            </div>
-            <div class="form-group">
+
                 <label class="col-xs-2 control-label">PLZ</label>
                 <div class="col-xs-3">
                     <input type="text" ng-model="formUser.zipCode" name="zipCode" class="form-control" />
@@ -67,8 +60,7 @@
                 <div class="col-xs-3">
                     <input type="text" ng-model="formUser.city" name="city" class="form-control" />
                 </div>
-            </div>
-            <div class="form-group">
+
                 <label class="col-xs-2 control-label">Land</label>
                 <div class="col-xs-3">
                     <input type="text" ng-model="formUser.country" name="country" class="form-control" />
@@ -76,14 +68,16 @@
             </div>
         </fieldset>
         <div class="spacer10"></div>
-        <button type="button" class="btn btn-lg btn-primary" ng-disabled="userForm.$invalid" ng-click="updateUser()">Benutzerdaten ändern</button>
+        <button type="submit" class="btn btn-lg btn-primary" ng-disabled="userForm.$invalid">Benutzerdaten ändern</button>
     </form>
+
+    <div class="spacer20"></div>
 
     <div class="page-header" style="margin-top: 0;">
         <h1>Passwort ändern</h1>
     </div>
 
-    <form name="passwordForm" class="form-horizontal" novalidate>
+    <form name="passwordForm" class="form-horizontal" ng-submit="changePassword()" novalidate>
         <div class="alert alert-success" ng-show="updatePasswordSuccessMsg.length > 0">{{updatePasswordSuccessMsg}}</div>
         <div class="alert alert-danger" ng-show="updatePasswordErrorMsg.length > 0">{{updatePasswordErrorMsg}}</div>
         <div class="form-group">
@@ -91,23 +85,20 @@
             <div class="col-xs-3">
                 <input type="password" ng-model="formPassword.oldPassword" name="oldPassword" class="form-control" required />
             </div>
-            <span class="error" ng-show="passwordForm.oldPassword.$invalid && passwordForm.oldPassword.$dirty">Required!</span>
         </div>
         <div class="form-group">
             <label class="col-xs-2 control-label">Neues Passwort</label>
             <div class="col-xs-3">
                 <input type="password" ng-model="formPassword.newPassword" name="newPassword" class="form-control" required />
             </div>
-            <span class="error" ng-show="passwordForm.newPassword.$invalid && passwordForm.newPassword.$dirty">Required!</span>
-        </div>
-        <div class="form-group">
+
             <label class="col-xs-2 control-label">Neues Passwort Whg</label>
             <div class="col-xs-3">
                 <input type="password" ng-model="formPassword.newPasswordAgain" name="newPasswordAgain" class="form-control" my-pw-match password-match="formPassword.newPassword"/>
+                <div class="error" ng-show="passwordForm.newPasswordAgain.$error.pwmatch && passwordForm.newPasswordAgain.$dirty">Passwörter nicht gleich</div>
             </div>
-            <span class="error" ng-show="passwordForm.newPasswordAgain.$error.pwmatch && passwordForm.newPasswordAgain.$dirty">Passwörter nicht gleich</span>
         </div>
         <div class="spacer10"></div>
-        <button type="button" class="btn btn-lg btn-primary" ng-disabled="passwordForm.$invalid" ng-click="changePassword()">Passwort ändern</button>
+        <button type="submit" class="btn btn-lg btn-primary" ng-disabled="passwordForm.$invalid">Passwort ändern</button>
     </form>
 </div>
