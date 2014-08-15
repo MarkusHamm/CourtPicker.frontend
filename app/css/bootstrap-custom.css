@@ -136,3 +136,8 @@ input.file {
     color: #a94442;
     margin-top: 3px;
 }
+
+/* expand navbar dropdown menu on hover (and not only on click) */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}

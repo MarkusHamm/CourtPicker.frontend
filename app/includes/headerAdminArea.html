@@ -13,13 +13,23 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li ng-class="{active: selectedView=='RESERVATIONS'}"><a href="#adminReservations">Reservierungen</a></li>
-                <li ng-class="{active: selectedView=='SUBRESERVATIONS'}"><a href="#adminSubReservations">Abo Reservierungen</a></li>
-                <li ng-class="{active: selectedView=='USERGROUPS'}"><a href="#adminUserGroups">Benutzergruppen</a></li>
-                <li ng-class="{active: selectedView=='RATES'}"><a href="#adminRates">Tarife</a></li>
-                <li ng-class="{active: selectedView=='DESIGN'}"><a href="#adminDesign">Design</a></li>
-                <li ng-class="{active: selectedView=='COURTS'}"><a href="#adminCourts">Plätze</a></li>
-                <li ng-class="{active: selectedView=='PAYMENTOPTIONS'}"><a href="#adminPaymentOptions">Zahlungsoptionen</a></li>
-                <li ng-class="{active: selectedView=='PERMISSIONS'}"><a href="#adminPermissions">Berechtigungen</a></li>
+                <li ng-class="{active: selectedView=='SUBRESERVATIONS'}"><a href="#adminSubReservations">Abos</a></li>
+                <li class="dropdown" ng-class="{active: selectedView=='RATES' || selectedView=='USERGROUPS' || selectedView=='PAYMENTOPTIONS'}">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">Tarife & Bezahlung <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li ng-class="{active: selectedView=='RATES'}"><a href="#adminRates">Tarife</a></li>
+                        <li ng-class="{active: selectedView=='USERGROUPS'}"><a href="#adminUserGroups">Benutzergruppen</a></li>
+                        <li ng-class="{active: selectedView=='PAYMENTOPTIONS'}"><a href="#adminPaymentOptions">Zahlungsoptionen</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown" ng-class="{active: selectedView=='DESIGN' || selectedView=='COURTS' || selectedView=='PERMISSIONS'}">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">Konfiguration <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li ng-class="{active: selectedView=='DESIGN'}"><a href="#adminDesign">Design</a></li>
+                        <li ng-class="{active: selectedView=='COURTS'}"><a href="#adminCourts">Plätze</a></li>
+                        <li ng-class="{active: selectedView=='PERMISSIONS'}"><a href="#adminPermissions">Berechtigungen</a></li>
+                    </ul>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <a href="#courtpicker">
