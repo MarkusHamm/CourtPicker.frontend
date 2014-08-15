@@ -86,7 +86,6 @@
             <th>Von-Bis</th>
             <th>Kunde</th>
             <th>Preis</th>
-            <th>Bezahlt</th>
             <th><b>Aktionen</b></th>
         </tr>
         </thead>
@@ -99,7 +98,6 @@
             <td>{{res.periodStart}} - {{res.periodEnd}}</td>
             <td>{{getDisplayUserData(res)}}</td>
             <td>{{res.price | currency:'€ '}}</td>
-            <td>{{res.paid}}</td>
             <td>
                 <button type="button" ng-click="openCancelReservationDialog(res)" class="btn btn-xs btn-danger" ng-show="!dateService.isBeforeNow(res.periodStart + ' ' + res.fromTime)">
                     <span class="glyphicon glyphicon-remove"></span> Stornieren
