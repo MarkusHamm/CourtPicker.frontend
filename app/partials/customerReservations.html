@@ -57,7 +57,7 @@
                 <th>Platz</th>
                 <th>Zeit</th>
                 <th>Preis</th>
-                <th><b>Actions</b></th>
+                <th><b>Aktionen</b></th>
             </tr>
         </thead>
         <tbody>
@@ -66,10 +66,10 @@
                 <td>{{res.courtCategoryName}}</td>
                 <td>{{res.courtName}}</td>
                 <td>{{dateService.formatAsTimeSpanString(res.fromDate, res.toDate)}}</td>
-                <td>{{res.price}}</td>
+                <td>{{res.price | currency:'€ '}}</td>
                 <td>
                     <button type="button" ng-click="openCancelReservationDialog(res)" class="btn btn-xs btn-danger" ng-show="!dateService.isBeforeNowTimeStamp(res.fromDate)">
-                        <span class="glyphicon glyphicon-remove"></span> Cancel
+                        <span class="glyphicon glyphicon-remove"></span> Stornieren
                     </button>
                 </td>
             </tr>

@@ -195,7 +195,7 @@ angular.module('myApp.services', ['ngResource'])
       var toDate = new Date(toTimeStamp);
 
       var str = padStr(fromDate.getDate()) + "." + padStr(fromDate.getMonth()+1) + "." + fromDate.getFullYear() +
-        ' ' + padStr(fromDate.getHours()) + ':' + padStr(fromDate.getMinutes()) + " - " +
+        ', ' + padStr(fromDate.getHours()) + ':' + padStr(fromDate.getMinutes()) + " - " +
         padStr(toDate.getHours()) + ':' + padStr(toDate.getMinutes());
       return str;
     }

@@ -2,7 +2,7 @@
 
 <div class="container" ng-controller="CustomerSubscriptionReservationsController">
     <div class="page-header" style="margin-top: 0;">
-        <h1>Meine Abo Reservierungen</h1>
+        <h1>Meine Abos</h1>
     </div>
 
     <form name="filterForm" novalidate class="form-horizontal" role="form">
@@ -32,7 +32,7 @@
             <th>Zeit</th>
             <th>Von - Bis</th>
             <th>Preis</th>
-            <th><b>Actions</b></th>
+            <th><b>Aktionen</b></th>
         </tr>
         </thead>
         <tbody>
@@ -43,10 +43,10 @@
             <td>{{res.courtName}}</td>
             <td>{{dateService.getWeekDayString(res.periodStart)}}, {{res.fromTime}} - {{res.toTime}}</td>
             <td>{{res.periodStart}} - {{res.periodEnd}}</td>
-            <td>{{res.price}}</td>
+            <td>{{res.price | currency:'€ '}}</td>
             <td>
                 <button type="button" ng-click="openCancelReservationDialog(res)" class="btn btn-xs btn-danger" ng-show="!dateService.isBeforeNow(res.periodStart + ' ' + res.fromTime)">
-                    <span class="glyphicon glyphicon-remove"></span> Cancel
+                    <span class="glyphicon glyphicon-remove"></span> Stornieren
                 </button>
             </td>
         </tr>
