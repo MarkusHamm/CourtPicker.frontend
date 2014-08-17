@@ -77,6 +77,14 @@ input.file {
     margin-left: -250px;
 }
 
+.payment-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -160px;
+    margin-left: -300px;
+}
+
 .strikeText {
     text-decoration:line-through;
 }
