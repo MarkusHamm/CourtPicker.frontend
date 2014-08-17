@@ -33,6 +33,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.showCourtCategoryForm = function(courtCategory) {
       if (courtCategory == null) {
         $scope.formCourtCategory = createNewCourtCategory();
+        $scope.courtCategoryForm.$setPristine();
       }
       else {
         $scope.formCourtCategory = angular.copy(courtCategory);
@@ -79,6 +80,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.showCourtForm = function(court) {
       if (court == null) {
         $scope.formCourt = createNewCourt();
+        $scope.courtForm.$setPristine();
       }
       else {
         $scope.formCourt = angular.copy(court);
@@ -134,8 +136,8 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
         cpInstanceId: $rootScope.cpInstance.id,
         name: '',
         orderNr: nextOrderNr,
-        bookableFromTime: '06:00',
-        bookableToTime: '23:00',
+        bookableFromTime: '',
+        bookableToTime: '',
         bookingUnit: 60
       };
     };

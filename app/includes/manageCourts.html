@@ -1,23 +1,30 @@
 <div ng-controller="ConfigureCourtsController">
     <div class="page-header" style="margin-top: 0;">
-        <h1>Instanzdetails</h1>
+        <h1>Anlage</h1>
     </div>
 
     <form name="formInstance" novalidate class="form-horizontal">
         <div class="form-group">
             <label class="col-xs-1 control-label">Name</label>
             <div class="col-xs-3">
-                <input type="text" name="instanceName" placeholder="Name" ng-model="cpInstance.name" ng-trim="true" required
+                <input type="text" name="instanceName" ng-model="cpInstance.name" ng-trim="true" required
                        class="form-control" my-on-blur="saveCpInstanceIfInputValid()" />
-                <span class="error" ng-show="formInstance.instanceName.$error.required && formInstance.instanceName.$dirty">Required!</span>
             </div>
-            <label class="col-xs-1 control-label">Short URL</label>
+            <div class="col-xs-6 form-control-static text-muted">
+                Dieser Name steht in der Kopfzeile ihres CourtPickers
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-1 control-label">URL</label>
             <div class="col-xs-3">
-                <input type="text" name="instanceShortName" placeholder="shortname" ng-model="cpInstance.shortName" ng-trim="true" required
-                       class="form-control" my-on-blur="saveCpInstanceIfInputValid()" my-validate-unique-cp-shortname/>
-                <span class="error" ng-show="courtCategoryForm.courtCategoryName.$invalid && courtCategoryForm.courtCategoryName.$dirty">Required!</span>
-                <span class="error" ng-show="formInstance.instanceShortName.$error.required && formInstance.instanceShortName.$dirty">Required!</span>
-                <span ng-show="formInstance.instanceShortName.$error.unique && formInstance.instanceShortName.$dirty">Shortname already exists.</span>
+                <input type="text" name="instanceShortName" ng-model="cpInstance.shortName" ng-trim="true" required
+                       class="form-control" my-on-blur="saveCpInstanceIfInputValid()" my-validate-unique-cp-shortname
+                       ng-pattern="/^[a-zA-Z0-9]+$/" />
+                <div class="error" ng-show="formInstance.instanceShortName.$error.unique && formInstance.instanceShortName.$dirty">Bereits vergeben</div>
+                <div class="error" ng-show="formInstance.instanceShortName.$error.pattern && formInstance.instanceShortName.$dirty">Nur alphanumerische Zeichen erlaubt</div>
+            </div>
+            <div class="col-xs-6 form-control-static text-muted">
+                Ihr Courtpicker wird unter der URL <b>http://courtpicker.com/{{cpInstance.shortName}}</b> erreichbar sein
             </div>
         </div>
     </form>
@@ -35,12 +42,12 @@
             <td>{{courtCategory.name}}</td>
             <td>
                 <button type="button" ng-click="showCourtCategoryForm(courtCategory)" class="btn btn-xs btn-default">
-                    <span class="glyphicon glyphicon-pencil"></span> Edit
+                    <span class="glyphicon glyphicon-pencil"></span> Bearbeiten
                 </button>
             </td>
             <td>
                 <button type="button" ng-click="deleteCourtCategory(courtCategory)" class="btn btn-xs btn-default">
-                    <span class="glyphicon glyphicon-remove"></span> Delete
+                    <span class="glyphicon glyphicon-remove"></span> Löschen
                 </button>
             </td>
         </tr>
@@ -52,7 +59,7 @@
     </button>
 
     <div ng-show="displayCourtCategoryForm">
-        <div class="spacer10"></div>
+        <div class="spacer30"></div>
         <form name="courtCategoryForm" ng-submit="saveCourtCategory()" novalidate class="form-horizontal">
             <fieldset>
                 <legend>Platzart</legend>
@@ -60,38 +67,34 @@
             <div class="form-group">
                 <label class="col-xs-1 control-label">Name</label>
                 <div class="col-xs-3">
-                    <input type="text" name="courtCategoryName" placeholder="name" ng-model="formCourtCategory.name" ng-trim="true" required
+                    <input type="text" name="courtCategoryName" ng-model="formCourtCategory.name" ng-trim="true" required
                            my-focus-on="displayCourtCategoryForm" class="form-control"/>
-                    <span class="error" ng-show="courtCategoryForm.courtCategoryName.$invalid && courtCategoryForm.courtCategoryName.$dirty">Required!</span>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-1 control-label">Buchbar</label>
                 <div class="col-xs-2">
-                    von
                     <div class="input-group">
-                        <input type="text" name="courtCategoryBookFrom" placeholder="name" ng-model="formCourtCategory.bookableFromTime" ng-trim="true"
+                        <input type="text" name="courtCategoryBookFrom" ng-model="formCourtCategory.bookableFromTime" ng-trim="true"
                                class="form-control" required ng-pattern="/^([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-9]|[0-5][0-9])$/"
                                data-show-meridian="false" data-minute-step="30" my-timepicker/>
                         <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                     </div>
-                    <span class="error" ng-show="courtCategoryForm.courtCategoryBookFrom.$error.required && courtCategoryForm.courtCategoryBookFrom.$dirty">Required!</span>
-                    <span class="error" ng-show="courtCategoryForm.courtCategoryBookFrom.$error.pattern && courtCategoryForm.courtCategoryBookFrom.$dirty">Invalid Time format</span>
+                    <div class="error" ng-show="courtCategoryForm.courtCategoryBookFrom.$error.pattern && courtCategoryForm.courtCategoryBookFrom.$dirty">Ungültige Zeit</div>
                 </div>
+                <div class="col-xs-1 form-group form-control-static" style="text-align: center">bis</div>
                 <div class="col-xs-2">
-                    bis
                     <div class="input-group">
-                        <input type="text" name="courtCategoryBookTo" placeholder="name" ng-model="formCourtCategory.bookableToTime" ng-trim="true"
+                        <input type="text" name="courtCategoryBookTo" ng-model="formCourtCategory.bookableToTime" ng-trim="true"
                                class="form-control" required ng-pattern="/^([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-9]|[0-5][0-9])$/"
                                data-show-meridian="false" data-minute-step="30" my-timepicker/>
                         <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                     </div>
-                    <span class="error" ng-show="courtCategoryForm.courtCategoryBookTo.$error.required && courtCategoryForm.courtCategoryBookTo.$dirty">Required!</span>
-                    <span class="error" ng-show="courtCategoryForm.courtCategoryBookTo.$error.pattern && courtCategoryForm.courtCategoryBookTo.$dirty">Invalid Time format</span>
+                    <div class="error" ng-show="courtCategoryForm.courtCategoryBookTo.$error.pattern && courtCategoryForm.courtCategoryBookTo.$dirty">Ungültige Zeit</div>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-xs-1 control-label">Buchungs Einheit</label>
+                <label class="col-xs-1 control-label">Einheit</label>
                 <div class="col-xs-3">
                     <button type="button" class="btn btn-default"
                             ng-class="{'btn-primary': (formCourtCategory.bookingUnit == 30)}"
@@ -131,12 +134,12 @@
             <td>{{court.name}}</td>
             <td>
                 <button type="button" ng-click="showCourtForm(court)" class="btn btn-xs btn-default">
-                    <span class="glyphicon glyphicon-pencil"></span> Edit
+                    <span class="glyphicon glyphicon-pencil"></span> Bearbeiten
                 </button>
             </td>
             <td>
                 <button type="button" ng-click="deleteCourt(court)" class="btn btn-xs btn-default">
-                    <span class="glyphicon glyphicon-remove"></span> Delete
+                    <span class="glyphicon glyphicon-remove"></span> Löschen
                 </button>
             </td>
         </tr>
@@ -148,20 +151,21 @@
     </button>
 
     <div ng-show="displayCourtForm">
-        <div class="spacer10"></div>
+        <div class="spacer30"></div>
         <form name="courtForm" ng-submit="saveCourt()" novalidate class="form-horizontal">
             <fieldset>
                 <legend>Platz</legend>
                 <div class="form-group">
                     <label class="col-xs-1 control-label">Name</label>
                     <div class="col-xs-3">
-                        <input type="text" name="name" placeholder="name" ng-model="formCourt.name" ng-trim="true" required
+                        <input type="text" name="name" ng-model="formCourt.name" ng-trim="true" required
                                my-focus-on="displayCourtForm" class="form-control"/>
                         <span class="error" ng-show="courtForm.name.$invalid && courtForm.name.$dirty">Required!</span>
                     </div>
                 </div>
                 <button type="submit" name="courtSubmit" ng-disabled="courtForm.$invalid" class="btn btn-primary">Speichern</button>
                 <button type="button" ng-click="hideCourtForm()" class="btn btn-default">Abbrechen</button>
+                <div class="spacer20"></div>
             </fieldset>
         </form>
     </div>
