@@ -5,8 +5,6 @@
         <h1>Benutzergruppen</h1>
     </div>
 
-    <h2>Benutzergruppen</h2>
-
     <table id="ugTable" class="table table-hover" style="width: 800px;">
         <tbody>
         <tr ng-repeat="userGroup in userGroups" ng-click="selectUserGroup(userGroup)"
@@ -14,12 +12,12 @@
             <td>{{userGroup.name}}</td>
             <td>
                 <button type="button" ng-click="showUserGroupForm(userGroup)" class="btn btn-xs btn-default">
-                    <span class="glyphicon glyphicon-pencil"></span> Edit
+                    <span class="glyphicon glyphicon-pencil"></span> Bearbeiten
                 </button>
             </td>
             <td>
                 <button type="button" ng-click="deleteUserGroup(userGroup)" class="btn btn-xs btn-default">
-                    <span class="glyphicon glyphicon-remove"></span> Delete
+                    <span class="glyphicon glyphicon-remove"></span> Löschen
                 </button>
             </td>
         </tr>
@@ -31,7 +29,7 @@
     </button>
 
     <div ng-show="displayUserGroupForm">
-        <div class="spacer10"></div>
+        <div class="spacer30"></div>
         <form name="userGroupForm" ng-submit="saveUserGroup()" novalidate class="form-horizontal">
             <fieldset>
                 <legend>Benutzergruppe</legend>
@@ -39,7 +37,7 @@
             <div class="form-group">
                 <label class="col-xs-1 control-label">Name</label>
                 <div class="col-xs-3">
-                    <input type="text" name="userGroupName" placeholder="name" ng-model="formUserGroup.name" ng-trim="true" required
+                    <input type="text" name="userGroupName" ng-model="formUserGroup.name" ng-trim="true" required
                            my-focus-on="displayUserGroupForm" class="form-control"/>
                     <span class="error" ng-show="userGroupForm.userGroupName.$invalid && userGroupForm.userGroupName.$dirty">Required!</span>
                 </div>
@@ -56,7 +54,7 @@
 
         <div style="float: left;">
             <label for="userGroupUserFilter" class="control-label">Benutzergruppen User</label>
-            <input id="userGroupUserFilter" type="text" placeholder="suche" ng-model="userGroupUserFilter" class="form-control" style="width: 500px; margin-bottom: 5px;">
+            <input id="userGroupUserFilter" type="text" ng-model="userGroupUserFilter" class="form-control" style="width: 500px; margin-bottom: 5px;">
             <div class="selectItemContainer">
                 <div class="selectItem" ng-repeat="user in userGroupUser | filter:userGroupUserFilter | orderBy:'lastName'">{{user.firstName}} {{user.lastName}} ({{user.userName}}), {{user.street}}, {{user.city}}
                     <button type="button" ng-click="removeUserFromUserGroup(user)" class="btn btn-xs btn-danger" style="float: right;">
@@ -70,7 +68,7 @@
 
         <div style="margin-left: 550px;">
             <label for="allUserFilter" class="control-label">Alle User</label>
-            <input id="allUserFilter" type="text" placeholder="suche" ng-model="allUserFilter" class="form-control" style="width: 500px; margin-bottom: 5px;">
+            <input id="allUserFilter" type="text" ng-model="allUserFilter" class="form-control" style="width: 500px; margin-bottom: 5px;">
             <div class="selectItemContainer">
                 <div class="selectItem" ng-repeat="user in allUser | filter:allUserFilter | orderBy:'lastName'">
                     {{user.firstName}} {{user.lastName}} ({{user.userName}}), {{user.street}}, {{user.city}}

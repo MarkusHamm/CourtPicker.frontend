@@ -2122,6 +2122,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.showUserGroupForm = function(userGroup) {
       if (userGroup == null) {
         $scope.formUserGroup = createNewUserGroup();
+        $scope.userGroupForm.$setPristine();
       }
       else {
         $scope.formUserGroup = angular.copy(userGroup);
