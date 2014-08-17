@@ -136,7 +136,7 @@ angular.module('myApp.services', ['ngResource'])
 
     obj.register = function(user) {
       CpService.registerUser(user.userName, user.password, user.email, user.firstName, user.lastName).then(function(result) {
-          if (result.data == 'true') {
+          if (result.data != null && result.data != '') {
             UserService.statusMessage = 'User erfolgreich angelegt - bitte aktivieren';
             $timeout(function() { UserService.statusMessage = ''; }, 3000);
           }

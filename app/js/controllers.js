@@ -618,6 +618,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     $scope.processRegistration = function() {
+      console.log('PROCESS REGISTRATION TYPE : ' + $scope.registrationType);
       if ($scope.registrationType == $scope.registrationTypes.EXISTINGUSER) {
         CpService.login($scope.formExistingUser.userName, $scope.formExistingUser.password).then(function(response) {
           if (response.data == null || response.data == '') {
@@ -634,7 +635,9 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       else {
         CpService.registerUser($scope.formNewUser.userName, $scope.formNewUser.password, $scope.formNewUser.email,
           $scope.formNewUser.firstName, $scope.formNewUser.lastName).then(function(response) {
+            console.log(response);
             var user = response.data;
+            console.log(user);
             CpService.associateUserWithCpInstance($rootScope.cpInstance.id, user.id).then(function(resp) {
               $location.path('/courtpicker');
             })
