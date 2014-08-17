@@ -25,10 +25,12 @@
             <a href="">Abos</a>
         </li>
     </ul>
-    <div class="spacer10"></div>
+    <div class="spacer20"></div>
 
     <!-- rates -->
     <div id="rates" ng-show="selectedRateType == 'RATE'">
+        <h2>Einzelstunden Tarife</h2>
+
         <table id="rateTable" class="table table-hover">
             <thead>
             <tr>
@@ -40,8 +42,8 @@
                 <th>Zeit bis</th>
                 <th>Wochentage</th>
                 <th>Benutzergruppe</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th>Bearbeiten</th>
+                <th>Löschen</th>
             </tr>
             </thead>
             <tbody>
@@ -68,12 +70,12 @@
                 </td>
                 <td>
                     <button type="button" ng-click="showRateForm(rate)" class="btn btn-xs btn-default">
-                        <span class="glyphicon glyphicon-pencil"></span> Edit
+                        <span class="glyphicon glyphicon-pencil"></span> Bearbeiten
                     </button>
                 </td>
                 <td>
                     <button type="button" ng-click="deleteRate(rate)" class="btn btn-xs btn-default">
-                        <span class="glyphicon glyphicon-remove"></span> Delete
+                        <span class="glyphicon glyphicon-remove"></span> Löschen
                     </button>
                 </td>
             </tr>
@@ -84,41 +86,40 @@
             <span class="glyphicon glyphicon-plus"></span> Tarif hinzufügen
         </button>
 
+        <div class="spacer20"></div>
+
         <div ng-show="displayRateForm">
-            <h3>Rate</h3>
+            <h3>Tarif</h3>
             <form name="rateForm" novalidate class="form-horizontal" role="form">
                 <fieldset>
-                    <legend>Basics</legend>
+                    <legend>Basis</legend>
                     <div class="form-group">
                         <label for="rateName" class="col-xs-1 control-label">Name</label>
                         <div class="col-xs-3">
                             <input id="rateName" type="text" name="name" placeholder="name" ng-model="formRate.name"
                                    ng-trim="true" required my-focus-on="displayRateForm" class="form-control"/>
-                            <span class="error" ng-show="rateForm.name.$invalid && rateForm.name.$dirty">Required!</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="ratePrice" class="col-xs-1 control-label">Preis</label>
                         <div class="col-xs-3">
-                            <input id="ratePrice" type="text" name="price" placeholder="price" ng-model="formRate.price"
-                                   ng-trim="true" required ng-pattern="/^[0-9]+\.?[0-9]*$/" class="form-control" />
-                            <span class="error" ng-show="rateForm.price.$invalid && rateForm.price.$dirty">Required!</span>
-                            <span class="error" ng-show="rateForm.price.$error.pattern && rateForm.price.$dirty">Invalid Number (please use . as comma separator)</span>
+                            <input id="ratePrice" type="text" name="price" placeholder="price" ng-model="formRate.price" my-decimal-separator-converter
+                                   ng-trim="true" required ng-pattern="/^[0-9]+(|[\.,][0-9]|[\.,][0-9][0-9])$/" class="form-control" />
+                            <div class="error" ng-show="rateForm.price.$error.pattern && rateForm.price.$dirty">Ungültiger Preis</div>
                         </div>
                     </div>
                 </fieldset>
                 <fieldset>
-                    <legend>contraints</legend>
+                    <legend>Einschränkungen</legend>
                     <div class="form-group">
                         <!-- Datum -->
-                        <label class="col-xs-1 control-label">Datum</label>
-                        <div class="col-xs-1">
+                        <!-- <label class="col-xs-1 control-label">Datum</label>-->
+                        <div class="col-xs-2">
                             <label class="checkbox-inline">
-                                anwenden <input type="checkbox" name="constrainDate" ng-model="formRate.constrainDate" ng-click="clickConstrainDate(formRate)"/>
+                                <b>Datum</b> <input type="checkbox" name="constrainDate" ng-model="formRate.constrainDate" ng-click="clickConstrainDate(formRate)"/>
                             </label>
                         </div>
                         <div class="col-xs-2">
-                            von
                             <div class="input-group">
                                 <input type="text" name="cDateFrom" placeholder="01.01." ng-model="formRate.cDateFrom"
                                        ng-disabled="!formRate.constrainDate" ng-trim="true"
@@ -127,11 +128,10 @@
                                        class="form-control" data-date-format="dd.mm." my-datepicker/>
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                             </div>
-                            <span class="error" ng-show="rateForm.cDateFrom.$error.required && rateForm.cDateFrom.$dirty">Required!</span>
-                            <span class="error" ng-show="rateForm.cDateFrom.$error.pattern && rateForm.cDateFrom.$dirty">Invalid Date format</span>
+                            <div class="error" ng-show="rateForm.cDateFrom.$error.pattern && rateForm.cDateFrom.$dirty">Ungültiges Datum</div>
                         </div>
+                        <div class="col-xs-1 form-group form-control-static" style="text-align: center">bis</div>
                         <div class="col-xs-2">
-                            bis
                             <div class="input-group">
                                 <input type="text" name="cDateTo" placeholder="31.12." ng-model="formRate.cDateTo"
                                        ng-disabled="!formRate.constrainDate" ng-trim="true"
@@ -140,20 +140,17 @@
                                        class="form-control" data-date-format="dd.mm." my-datepicker/>
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                             </div>
-                            <span class="error" ng-show="rateForm.cDateTo.$error.required && rateForm.cDateTo.$dirty">Required!</span>
-                            <span class="error" ng-show="rateForm.cDateTo.$error.pattern && rateForm.cDateTo.$dirty">Invalid Date format</span>
+                            <div class="error" ng-show="rateForm.cDateTo.$error.pattern && rateForm.cDateTo.$dirty">Ungültiges Datum</div>
                         </div>
                     </div>
                     <div class="form-group">
                         <!-- Zeit -->
-                        <label class="col-xs-1 control-label">Zeit</label>
-                        <div class="col-xs-1">
+                        <div class="col-xs-2">
                             <label class="checkbox-inline">
-                                anwenden <input type="checkbox" name="constrainTime" ng-model="formRate.constrainTime" ng-click="clickConstrainTime(formRate)"/>
+                                <b>Zeit</b> <input type="checkbox" name="constrainTime" ng-model="formRate.constrainTime" ng-click="clickConstrainTime(formRate)"/>
                             </label>
                         </div>
                         <div class="col-xs-2">
-                            von
                             <div class="input-group">
                                 <input type="text" name="cTimeFrom" placeholder="08:00" ng-model="formRate.cTimeFrom"
                                        ng-disabled="!formRate.constrainTime" ng-trim="true"
@@ -162,11 +159,10 @@
                                        class="form-control" data-show-meridian="false" data-minute-step="30" my-timepicker/>
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                             </div>
-                            <span class="error" ng-show="rateForm.cTimeFrom.$error.required && rateForm.cTimeFrom.$dirty">Required!</span>
-                            <span class="error" ng-show="rateForm.cTimeFrom.$error.pattern && rateForm.cTimeFrom.$dirty">Invalid Time format</span>
+                            <div class="error" ng-show="rateForm.cTimeFrom.$error.pattern && rateForm.cTimeFrom.$dirty">Ungültige Zeit</div>
                         </div>
+                        <div class="col-xs-1 form-group form-control-static" style="text-align: center">bis</div>
                         <div class="col-xs-2">
-                            bis
                             <div class="input-group">
                                 <input type="text" name="cTimeTo" placeholder="18:00" ng-model="formRate.cTimeTo"
                                        ng-disabled="!formRate.constrainTime" ng-trim="true"
@@ -175,15 +171,13 @@
                                        class="form-control" data-show-meridian="false" data-minute-step="30" my-timepicker/>
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                             </div>
-                            <span class="error" ng-show="rateForm.cTimeTo.$error.required && rateForm.cTimeTo.$dirty">Required!</span>
-                            <span class="error" ng-show="rateForm.cTimeTo.$error.pattern && rateForm.cTimeTo.$dirty">Invalid Time format</span>
+                            <div class="error" ng-show="rateForm.cTimeTo.$error.pattern && rateForm.cTimeTo.$dirty">Ungültige Zeit</div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-xs-1 control-label">Wochentag</label>
-                        <div class="col-xs-1">
+                        <div class="col-xs-2">
                             <label class="checkbox-inline">
-                                anwenden <input type="checkbox" name="constrainWeekDay" ng-model="formRate.constrainWeekDay" ng-click="clickConstrainWeekDay(formRate)"/>
+                                <b>Wochentag</b> <input type="checkbox" name="constrainWeekDay" ng-model="formRate.constrainWeekDay" ng-click="clickConstrainWeekDay(formRate)"/>
                             </label>
                         </div>
                         <div class="col-xs-9" ng-disabled="!formRate.constrainWeekDay">
@@ -219,13 +213,12 @@
                     </div>
 
                     <div class="form-group" ng-show="!showConfiguratorNavigation">
-                        <label class="col-xs-1 control-label">User Gruppen</label>
-                        <div class="col-xs-1">
+                        <div class="col-xs-2">
                             <label class="checkbox-inline">
-                                anwenden <input type="checkbox" name="constrainUserGroup" ng-model="formRate.constrainUserGroup" ng-click="clickConstrainUserGroup(formRate)"/>
+                                <b>Benutzer Gruppen</b> <input type="checkbox" name="constrainUserGroup" ng-model="formRate.constrainUserGroup" ng-click="clickConstrainUserGroup(formRate)"/>
                             </label>
                         </div>
-                        <div class="col-xs-9 form-inline">
+                        <div class="col-xs-9 form-inline" style="margin-top: 3px">
                                             <span ng-repeat="userGroupId in formRate.cUserGroupIds">
                                                 {{getUserGroupName(userGroupId)}}
                                                 <button class="btn btn-xs btn-default" ng-click="removeUserGroupFromRate(userGroupId)"
@@ -233,19 +226,21 @@
                                                     <i class="glyphicon glyphicon-remove"></i>
                                                 </button>
                                             </span>
-                            Add:
+                            <span ng-show="formRate.cUserGroupIds.length > 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Hinzufügen:
                             <select ng-model="userGroupToAdd" ng-options="g.name for g in userGroups" class="form-control input-sm"
                                     ng-disabled="!formRate.constrainUserGroup"></select>
                             <button type="button" ng-click="addUserGroupToRate(userGroupToAdd)" class="btn btn-default btn-sm"
                                     ng-disabled="!formRate.constrainUserGroup">
-                                <span class="glyphicon glyphicon-plus"></span> Add
+                                <span class="glyphicon glyphicon-plus"></span>
                             </button>
                         </div>
                     </div>
                 </fieldset>
 
+                <div class="spacer10"></div>
                 <button type="submit" name="submit" class="btn btn-primary" ng-click="saveRate()" ng-disabled="rateForm.$invalid">Speichern</button>
                 <button type="button" class="btn btn-default" ng-click="hideRateForm()">Abbrechen</button>
+                <div class="spacer10"></div>
             </form>
         </div>
     </div>
@@ -258,12 +253,12 @@
             <thead>
             <tr>
                 <th>Name</th>
-                <th>Period Start</th>
-                <th>Period End</th>
-                <th>Bookable From</th>
-                <th>Bookable To</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th>Periode Beginn</th>
+                <th>Periode Ende</th>
+                <th>Buchbar Von</th>
+                <th>Buchbar Bis</th>
+                <th>Bearbeiten</th>
+                <th>Löschen</th>
             </tr>
             </thead>
             <tbody>
@@ -276,12 +271,12 @@
                 <td>{{subscription.bookableTo}}</td>
                 <td>
                     <button type="button" ng-click="showSubscriptionForm(subscription)" class="btn btn-xs btn-default">
-                        <span class="glyphicon glyphicon-pencil"></span> Edit
+                        <span class="glyphicon glyphicon-pencil"></span> Bearbeiten
                     </button>
                 </td>
                 <td>
                     <button type="button" ng-click="deleteSubscription(subscription)" class="btn btn-xs btn-default">
-                        <span class="glyphicon glyphicon-remove"></span> Delete
+                        <span class="glyphicon glyphicon-remove"></span> Löschen
                     </button>
                 </td>
             </tr>
@@ -292,70 +287,69 @@
             <span class="glyphicon glyphicon-plus"></span> Abo hinzufügen
         </button>
 
+        <div class="spacer20"></div>
+
         <div ng-show="displaySubscriptionForm">
+            <h3>Abo</h3>
             <form name="subscriptionForm" novalidate class="form-horizontal" role="form">
                 <div class="form-group">
                     <label for="sname" class="col-xs-1 control-label">Name</label>
                     <div class="col-xs-3">
                         <input id="sname" type="text" name="sname" placeholder="name" ng-model="formSubscription.name"
                                ng-trim="true" required my-focus-on="displaySubscriptionForm" class="form-control"/>
-                        <span class="error" ng-show="subscriptionForm.sname.$invalid && subscriptionForm.sname.$dirty">Required!</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <!-- Period -->
-                    <label class="col-xs-1 control-label">Period</label>
+                    <label class="col-xs-1 control-label">Periode</label>
                     <div class="col-xs-2">
-                        Start
                         <div class="input-group">
                             <input type="text" name="speriodstart" placeholder="01.01.2014" ng-model="formSubscription.periodStart"
                                    ng-trim="true" required ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\.(0?[1-9]|1[012])\.([0-9]{4})$/"
                                    class="form-control" data-date-format="dd.mm.yyyy" my-datepicker/>
                             <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                         </div>
-                        <span class="error" ng-show="subscriptionForm.speriodstart.$error.required && subscriptionForm.speriodstart.$dirty">Required!</span>
-                        <span class="error" ng-show="subscriptionForm.speriodstart.$error.pattern && subscriptionForm.speriodstart.$dirty">Invalid Date format</span>
+                        <div class="error" ng-show="subscriptionForm.speriodstart.$error.pattern && subscriptionForm.speriodstart.$dirty">Ungültiges Datum</div>
                     </div>
+                    <div class="col-xs-1 form-group form-control-static" style="text-align: center">bis</div>
                     <div class="col-xs-2">
-                        Ende
                         <div class="input-group">
                             <input type="text" name="speriodend" placeholder="31.12." ng-model="formSubscription.periodEnd"
                                    ng-trim="true" required ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\.(0?[1-9]|1[012])\.([0-9]{4})$/"
                                    class="form-control" data-date-format="dd.mm.yyyy" my-datepicker/>
                             <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                         </div>
-                        <span class="error" ng-show="subscriptionForm.speriodend.$error.required && subscriptionForm.speriodend.$dirty">Required!</span>
-                        <span class="error" ng-show="subscriptionForm.speriodend.$error.pattern && subscriptionForm.speriodend.$dirty">Invalid Date format</span>
+                        <div class="error" ng-show="subscriptionForm.speriodend.$error.pattern && subscriptionForm.speriodend.$dirty">Ungültiges Datum</div>
                     </div>
                 </div>
                 <div class="form-group">
                     <!-- Bookable -->
                     <label class="col-xs-1 control-label">Buchbar</label>
                     <div class="col-xs-2">
-                        Von
                         <div class="input-group">
                             <input type="text" name="sbookablefrom" placeholder="01.01.2014" ng-model="formSubscription.bookableFrom"
                                    ng-trim="true" required ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\.(0?[1-9]|1[012])\.([0-9]{4})$/"
                                    class="form-control" data-date-format="dd.mm.yyyy" my-datepicker/>
                             <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                         </div>
-                        <span class="error" ng-show="subscriptionForm.sbookablefrom.$error.required && subscriptionForm.sbookablefrom.$dirty">Required!</span>
-                        <span class="error" ng-show="subscriptionForm.sbookablefrom.$error.pattern && subscriptionForm.sbookablefrom.$dirty">Invalid Date format</span>
+                        <div class="error" ng-show="subscriptionForm.sbookablefrom.$error.pattern && subscriptionForm.sbookablefrom.$dirty">Ungültiges Datum</div>
                     </div>
+                    <div class="col-xs-1 form-group form-control-static" style="text-align: center">bis</div>
                     <div class="col-xs-2">
-                        Bis
                         <div class="input-group">
                             <input type="text" name="sbookableto" placeholder="31.12." ng-model="formSubscription.bookableTo"
                                    ng-trim="true" required ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\.(0?[1-9]|1[012])\.([0-9]{4})$/"
                                    class="form-control" data-date-format="dd.mm.yyyy" my-datepicker/>
                             <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                         </div>
-                        <span class="error" ng-show="subscriptionForm.sbookableto.$error.required && subscriptionForm.sbookableto.$dirty">Required!</span>
-                        <span class="error" ng-show="subscriptionForm.sbookableto.$error.pattern && subscriptionForm.sbookableto.$dirty">Invalid Date format</span>
+                        <div class="error" ng-show="subscriptionForm.sbookableto.$error.pattern && subscriptionForm.sbookableto.$dirty">Ungültiges Datum</div>
                     </div>
                 </div>
+
+                <div class="spacer10"></div>
                 <button type="submit" name="submit" class="btn btn-primary" ng-click="saveSubscription()" ng-disabled="subscriptionForm.$invalid">Speichern</button>
                 <button type="button" class="btn btn-default" ng-click="hideSubscriptionForm()">Abbrechen</button>
+                <div class="spacer20"></div>
             </form>
         </div>
 
@@ -370,8 +364,8 @@
                 <th>Zeit bis</th>
                 <th>Wochentage</th>
                 <th>Benutzergruppe</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th>Bearbeiten</th>
+                <th>Löschen</th>
             </tr>
             </thead>
             <tbody>
@@ -396,12 +390,12 @@
                 </td>
                 <td>
                     <button type="button" ng-click="showSubscriptionRateForm(rate)" class="btn btn-xs btn-default">
-                        <span class="glyphicon glyphicon-pencil"></span> Edit
+                        <span class="glyphicon glyphicon-pencil"></span> Bearbeiten
                     </button>
                 </td>
                 <td>
                     <button type="button" ng-click="deleteSubscriptionRate(rate)" class="btn btn-xs btn-default">
-                        <span class="glyphicon glyphicon-remove"></span> Delete
+                        <span class="glyphicon glyphicon-remove"></span> Löschen
                     </button>
                 </td>
             </tr>
@@ -412,41 +406,39 @@
             <span class="glyphicon glyphicon-plus"></span> Abo Tarif hinzufügen
         </button>
 
+        <div class="spacer20"></div>
+
         <div ng-show="displaySubscriptionRateForm">
-            <h3>Rate</h3>
+            <h3>Abo Tarif</h3>
             <form name="subscriptionRateForm" novalidate class="form-horizontal" role="form">
                 <fieldset>
-                    <legend>Basics</legend>
+                    <legend>Basis</legend>
                     <div class="form-group">
                         <label for="spRateName" class="col-xs-1 control-label">Name</label>
                         <div class="col-xs-3">
                             <input id="spRateName" type="text" name="name" placeholder="name" ng-model="formSubscriptionRate.name"
                                    ng-trim="true" required my-focus-on="displaySubscriptionRateForm" class="form-control"/>
-                            <span class="error" ng-show="subscriptionRateForm.name.$invalid && subscriptionRateForm.name.$dirty">Required!</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="spRatePrice" class="col-xs-1 control-label">Preis</label>
                         <div class="col-xs-3">
-                            <input id="spRatePrice" type="text" name="price" placeholder="price" ng-model="formSubscriptionRate.price"
-                                   ng-trim="true" required ng-pattern="/^[0-9]+\.?[0-9]*$/" class="form-control" />
-                            <span class="error" ng-show="subscriptionRateForm.price.$invalid && subscriptionRateForm.price.$dirty">Required!</span>
-                            <span class="error" ng-show="subscriptionRateForm.price.$error.pattern && subscriptionRateForm.price.$dirty">Invalid Number (please use . as comma separator)</span>
+                            <input id="spRatePrice" type="text" name="price" placeholder="price" ng-model="formSubscriptionRate.price" my-decimal-separator-converter
+                                   ng-trim="true" required ng-pattern="/^[0-9]+(|[\.,][0-9]|[\.,][0-9][0-9])$/" class="form-control" />
+                            <div class="error" ng-show="subscriptionRateForm.price.$error.pattern && subscriptionRateForm.price.$dirty">Ungültiger Preis</div>
                         </div>
                     </div>
                 </fieldset>
                 <fieldset>
-                    <legend>contraints</legend>
+                    <legend>Einschränkungen</legend>
                     <div class="form-group">
                         <!-- Zeit -->
-                        <label class="col-xs-1 control-label">Zeit</label>
-                        <div class="col-xs-1">
+                        <div class="col-xs-2">
                             <label class="checkbox-inline">
-                                anwenden <input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.constrainTime" ng-click="clickConstrainTime(formSubscriptionRate)"/>
+                                <b>Zeit</b> <input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.constrainTime" ng-click="clickConstrainTime(formSubscriptionRate)"/>
                             </label>
                         </div>
                         <div class="col-xs-2">
-                            von
                             <div class="input-group">
                                 <input type="text" name="cTimeFrom" placeholder="08:00" ng-model="formSubscriptionRate.cTimeFrom"
                                        ng-disabled="!formSubscriptionRate.constrainTime" ng-trim="true"
@@ -455,11 +447,10 @@
                                        class="form-control" data-show-meridian="false" data-minute-step="30" my-timepicker/>
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                             </div>
-                            <span class="error" ng-show="subscriptionRateForm.cTimeFrom.$error.required && subscriptionRateForm.cTimeFrom.$dirty">Required!</span>
-                            <span class="error" ng-show="subscriptionRateForm.cTimeFrom.$error.pattern && subscriptionRateForm.cTimeFrom.$dirty">Invalid Time format</span>
+                            <span class="error" ng-show="subscriptionRateForm.cTimeFrom.$error.pattern && subscriptionRateForm.cTimeFrom.$dirty">Ungültige Zeit</span>
                         </div>
+                        <div class="col-xs-1 form-group form-control-static" style="text-align: center">bis</div>
                         <div class="col-xs-2">
-                            bis
                             <div class="input-group">
                                 <input type="text" name="cTimeTo" placeholder="18:00" ng-model="formSubscriptionRate.cTimeTo"
                                        ng-disabled="!formSubscriptionRate.constrainTime" ng-trim="true"
@@ -468,15 +459,13 @@
                                        class="form-control" data-show-meridian="false" data-minute-step="30" my-timepicker/>
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                             </div>
-                            <span class="error" ng-show="subscriptionRateForm.cTimeTo.$error.required && subscriptionRateForm.cTimeTo.$dirty">Required!</span>
-                            <span class="error" ng-show="subscriptionRateForm.cTimeTo.$error.pattern && subscriptionRateForm.cTimeTo.$dirty">Invalid Time format</span>
+                            <div class="error" ng-show="subscriptionRateForm.cTimeTo.$error.pattern && subscriptionRateForm.cTimeTo.$dirty">Invalid Time format</div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-xs-1 control-label">Wochentag</label>
-                        <div class="col-xs-1">
+                        <div class="col-xs-2">
                             <label class="checkbox-inline">
-                                anwenden <input type="checkbox" name="constrainWeekDay" ng-model="formSubscriptionRate.constrainWeekDay" ng-click="clickConstrainWeekDay(formSubscriptionRate)"/>
+                                <b>Wochentag</b> <input type="checkbox" name="constrainWeekDay" ng-model="formSubscriptionRate.constrainWeekDay" ng-click="clickConstrainWeekDay(formSubscriptionRate)"/>
                             </label>
                         </div>
                         <div class="col-xs-9" ng-disabled="!formSubscriptionRate.constrainWeekDay">
@@ -511,20 +500,19 @@
                         </div>
                     </div>
                     <div class="form-group" ng-show="!showConfiguratorNavigation">
-                        <label class="col-xs-1 control-label">User Gruppen</label>
-                        <div class="col-xs-1">
+                        <div class="col-xs-2">
                             <label class="checkbox-inline">
-                                anwenden <input type="checkbox" name="constrainUserGroup" ng-model="formSubscriptionRate.constrainUserGroup" ng-click="clickConstrainUserGroup(formSubscriptionRate)"/>
+                                <b>Benutzer Gruppen</b> <input type="checkbox" name="constrainUserGroup" ng-model="formSubscriptionRate.constrainUserGroup" ng-click="clickConstrainUserGroup(formSubscriptionRate)"/>
                             </label>
                         </div>
-                        <div class="col-xs-9 form-inline">
+                        <div class="col-xs-9 form-inline" style="margin-top: 3px">
                                         <span ng-repeat="userGroupId in formSubscriptionRate.cUserGroupIds" ng-disabled="!formSubscriptionRate.constrainUserGroup">
                                             {{getUserGroupName(userGroupId)}}
                                             <button class="btn btn-xs btn-default" ng-click="removeUserGroupFromSubscriptionRate(userGroupId)">
                                                 <i class="glyphicon glyphicon-remove"></i>
                                             </button>
                                         </span>
-                            Add:
+                            <span ng-show="formSubscriptionRate.cUserGroupIds.length > 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Hinzufügen:
                             <select ng-model="userGroupToAdd" ng-options="g.name for g in userGroups" ng-disabled="!formSubscriptionRate.constrainUserGroup" class="form-control input-sm"></select>
                             <button type="button" ng-click="addUserGroupToSubscriptionRate(userGroupToAdd)" ng-disabled="!formSubscriptionRate.constrainUserGroup" class="btn btn-sm btn-default">
                                 <span class="glyphicon glyphicon-plus"></span> Add
@@ -533,8 +521,10 @@
                     </div>
                 </fieldset>
 
+                <div class="spacer10"></div>
                 <button type="submit" name="submit" class="btn btn-primary" ng-click="saveSubscriptionRate()" ng-disabled="subscriptionRateForm.$invalid">Speichern</button>
                 <button type="button" class="btn btn-default" ng-click="hideSubscriptionRateForm()">Abbrechen</button>
+                <div class="spacer10"></div>
             </form>
         </div>
     </div>

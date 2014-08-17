@@ -241,6 +241,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.showRateForm = function(rate) {
       if (rate == null) {
         $scope.formRate = createNewRate();
+        $scope.rateForm.$setPristine();
       }
       else {
         $scope.formRate = angular.copy(rate);
@@ -303,7 +304,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     $scope.addUserGroupToRate = function(userGroup) {
-      if($scope.formRate.cUserGroupIds.indexOf(userGroup.id) == -1) {
+      if(userGroup != null && $scope.formRate.cUserGroupIds.indexOf(userGroup.id) == -1) {
         $scope.formRate.cUserGroupIds.push(userGroup.id);
       }
     }
@@ -332,6 +333,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.showSubscriptionForm = function(subscription) {
       if (subscription == null) {
         $scope.formSubscription = createNewSubscription();
+        $scope.subscriptionForm.$setPristine();
       }
       else {
         $scope.formSubscription = angular.copy(subscription);
@@ -373,6 +375,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.showSubscriptionRateForm = function(rate) {
       if (rate == null) {
         $scope.formSubscriptionRate = createNewSubscriptionRate();
+        $scope.subscriptionRateForm.$setPristine();
       }
       else {
         $scope.formSubscriptionRate = angular.copy(rate);
