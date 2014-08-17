@@ -7,9 +7,9 @@
 
     <ul class="nav nav-tabs">
         <li class="active"><a href="#header" data-toggle="tab" onclick="return false;">Header</a></li>
-        <li><a href="#basics" data-toggle="tab" onclick="return false;">Basics</a></li>
-        <li><a href="#controls" data-toggle="tab" onclick="return false;">Controls</a></li>
-        <li><a href="#content" data-toggle="tab" onclick="return false;">Content</a></li>
+        <li><a href="#controls" data-toggle="tab" onclick="return false;">Buttons</a></li>
+        <li><a href="#basics" data-toggle="tab" onclick="return false;">Hintergrund</a></li>
+        <li><a href="#content" data-toggle="tab" onclick="return false;">Reservierung</a></li>
     </ul>
 
     <div class="tab-content">
@@ -24,7 +24,7 @@
                                    class="file form-control" onchange="$('#designLogoForm').submit();"/>
                             <div class="fakefile">
                                 <button class="btn btn-default" style="transition: none">
-                                    <span class="glyphicon glyphicon-upload"></span> Upload Logo
+                                    <span class="glyphicon glyphicon-upload"></span> Logo ändern
                                 </button>
                                 &nbsp;&nbsp;(Empfohlenes Format: 100x100 Pixel)
                             </div>
@@ -98,7 +98,7 @@
         <div class="tab-pane" id="controls" style="margin-top: 15px;">
             <form name="designControlsForm" novalidate class="form-horizontal">
                 <div class="form-group">
-                    <label for="controlscolor" class="col-xs-2 control-label">Button Background</label>
+                    <label for="controlscolor" class="col-xs-2 control-label">Button Hintergrund</label>
                     <div class="input-group col-xs-2" style="float: left;">
                         <input id="controlscolor" type="text" name="controlscolor" required ng-change="submitWebdesignIfValid()"
                                ng-model="webdesign.controlsColor" class="form-control" my-colorpicker/>
@@ -124,7 +124,7 @@
                                ng-model="webdesign.ctSelectColor" class="form-control" my-colorpicker/>
                         <span class="input-group-addon"><i class="glyphicon glyphicon-tint"></i></span>
                     </div>
-                    <label for="ctselectfocuscolor" class="col-xs-2 control-label">Platzwahl Focus</label>
+                    <label for="ctselectfocuscolor" class="col-xs-2 control-label">Platzwahl Ausgewählt</label>
                     <div class="input-group col-xs-2" style="float: left;">
                         <input id="ctselectfocuscolor" type="text" name="ctselectfocuscolor" required ng-change="submitWebdesignIfValid()"
                                ng-model="webdesign.ctSelectFocusColor" class="form-control" my-colorpicker/>
@@ -171,7 +171,7 @@
     <!-- DESIGN PREVIEW -->
 
     <div class="page-header" style="margin-top: 0;">
-        <h1>Design Preview</h1>
+        <h1>Vorschau</h1>
     </div>
 
     <iframe src="{{previewWindowUrl}}" width="100%" height="810" id="designpreview" name="designpreview" style="border: 1px solid #dddddd;">
