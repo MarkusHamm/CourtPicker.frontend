@@ -39,7 +39,6 @@
                 <div class="col-xs-3">
                     <input type="text" name="userGroupName" ng-model="formUserGroup.name" ng-trim="true" required
                            my-focus-on="displayUserGroupForm" class="form-control"/>
-                    <span class="error" ng-show="userGroupForm.userGroupName.$invalid && userGroupForm.userGroupName.$dirty">Required!</span>
                 </div>
             </div>
             <button type="submit" name="userGroupSubmit" ng-disabled="userGroupForm.$invalid" class="btn btn-primary">Speichern</button>

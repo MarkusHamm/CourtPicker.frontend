@@ -11,12 +11,12 @@
             <td>{{paymentOption.name}}</td>
             <td>
                 <button type="button" ng-click="showPaymentOptionForm(paymentOption)" class="btn btn-xs btn-default">
-                    <span class="glyphicon glyphicon-pencil"></span> Edit
+                    <span class="glyphicon glyphicon-pencil"></span> Bearbeiten
                 </button>
             </td>
             <td>
                 <button type="button" ng-click="deletePaymentOption(paymentOption)" class="btn btn-xs btn-default">
-                    <span class="glyphicon glyphicon-remove"></span> Delete
+                    <span class="glyphicon glyphicon-remove"></span> Löschen
                 </button>
             </td>
         </tr>
@@ -28,16 +28,15 @@
     </button>
 
     <div ng-show="displayPaymentOptionForm">
-        <div class="spacer10"></div>
+        <div class="spacer30"></div>
         <form name="paymentOptionForm" ng-submit="savePaymentOption()" novalidate class="form-horizontal">
             <fieldset>
                 <legend>Zahlungsoption</legend>
                 <div class="form-group">
                     <label class="col-xs-1 control-label">Name</label>
                     <div class="col-xs-3">
-                        <input type="text" name="name" placeholder="name" ng-model="formPaymentOption.name" ng-trim="true" required
+                        <input type="text" name="name" ng-model="formPaymentOption.name" ng-trim="true" required
                                my-focus-on="displayPaymentOptionForm" class="form-control"/>
-                        <span class="error" ng-show="paymentOptionForm.name.$invalid && paymentOptionForm.name.$dirty">Required!</span>
                     </div>
                 </div>
                 <button type="submit" name="paymentOptionSubmit" ng-disabled="paymentOptionForm.$invalid" class="btn btn-primary">Speichern</button>

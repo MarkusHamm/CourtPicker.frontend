@@ -2047,6 +2047,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.showPaymentOptionForm = function(paymentOption) {
       if (paymentOption == null) {
         $scope.formPaymentOption = createNewPaymentOption();
+        $scope.paymentOptionForm.$setPristine();
       }
       else {
         $scope.formPaymentOption = angular.copy(paymentOption);
