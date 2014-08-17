@@ -53,7 +53,7 @@
 
         <div style="float: left;">
             <label for="userGroupUserFilter" class="control-label">{{selectedUserGroup.name}}</label>
-            <input id="userGroupUserFilter" type="text" ng-model="userGroupUserFilter" class="form-control" style="width: 500px; margin-bottom: 5px;">
+            <input id="userGroupUserFilter" type="text" ng-model="userGroupUserFilter" class="form-control" style="width: 500px; margin-bottom: 5px;" placeholder="suche">
             <div class="selectItemContainer">
                 <div class="selectItem" ng-repeat="user in userGroupUser | filter:userGroupUserFilter | orderBy:'lastName'">{{user.firstName}} {{user.lastName}} ({{user.userName}}), {{user.email}}
                     <button type="button" ng-click="removeUserFromUserGroup(user)" class="btn btn-xs btn-danger" style="float: right;">
@@ -67,7 +67,7 @@
 
         <div style="margin-left: 550px;">
             <label for="allUserFilter" class="control-label">Alle Benutzer</label>
-            <input id="allUserFilter" type="text" ng-model="allUserFilter" class="form-control" style="width: 500px; margin-bottom: 5px;">
+            <input id="allUserFilter" type="text" ng-model="allUserFilter" class="form-control" style="width: 500px; margin-bottom: 5px;" placeholder="suche">
             <div class="selectItemContainer">
                 <div class="selectItem" ng-repeat="user in allUser | filter:allUserFilter | orderBy:'lastName'">
                     {{user.firstName}} {{user.lastName}} ({{user.userName}}), {{user.email}}
