@@ -52,10 +52,10 @@
         <div class="spacer10"></div>
 
         <div style="float: left;">
-            <label for="userGroupUserFilter" class="control-label">Benutzergruppen User</label>
+            <label for="userGroupUserFilter" class="control-label">{{selectedUserGroup.name}}</label>
             <input id="userGroupUserFilter" type="text" ng-model="userGroupUserFilter" class="form-control" style="width: 500px; margin-bottom: 5px;">
             <div class="selectItemContainer">
-                <div class="selectItem" ng-repeat="user in userGroupUser | filter:userGroupUserFilter | orderBy:'lastName'">{{user.firstName}} {{user.lastName}} ({{user.userName}}), {{user.street}}, {{user.city}}
+                <div class="selectItem" ng-repeat="user in userGroupUser | filter:userGroupUserFilter | orderBy:'lastName'">{{user.firstName}} {{user.lastName}} ({{user.userName}}), {{user.email}}
                     <button type="button" ng-click="removeUserFromUserGroup(user)" class="btn btn-xs btn-danger" style="float: right;">
                         <span class="glyphicon glyphicon-remove"></span> Entfernen
                     </button>
@@ -66,11 +66,11 @@
         <!-- <div style="float: left; margin: 320px 15px;"><button class="btn btn-primary">&lt; ADD</button></div> -->
 
         <div style="margin-left: 550px;">
-            <label for="allUserFilter" class="control-label">Alle User</label>
+            <label for="allUserFilter" class="control-label">Alle Benutzer</label>
             <input id="allUserFilter" type="text" ng-model="allUserFilter" class="form-control" style="width: 500px; margin-bottom: 5px;">
             <div class="selectItemContainer">
                 <div class="selectItem" ng-repeat="user in allUser | filter:allUserFilter | orderBy:'lastName'">
-                    {{user.firstName}} {{user.lastName}} ({{user.userName}}), {{user.street}}, {{user.city}}
+                    {{user.firstName}} {{user.lastName}} ({{user.userName}}), {{user.email}}
                     <button type="button" ng-click="addUserToUserGroup(user)" class="btn btn-xs btn-success" style="float: right;" ng-disabled="isUserInSelectedUserGroup(user)">
                         <span class="glyphicon glyphicon-plus"></span> Add
                     </button>
