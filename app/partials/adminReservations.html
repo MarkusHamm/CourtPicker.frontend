@@ -56,7 +56,7 @@
                 <div class="col-xs-3">
                     <input id="filterCustomer" type="text" name="filterCustomer" ng-model="filterCustomer" ng-trim="true" ng-change="applyFilter()" class="form-control"/>
                 </div>
-                <label for="filterComment" class="col-xs-2 control-label">Kommentar</label>
+                <label for="filterComment" class="col-xs-2 control-label">Info</label>
                 <div class="col-xs-3">
                     <input id="filterComment" type="text" name="filterComment" ng-model="filterComment" ng-trim="true" ng-change="applyFilter()" class="form-control"/>
                 </div>
@@ -83,6 +83,7 @@
             <th>Platz</th>
             <th>Zeit</th>
             <th>Kunde</th>
+            <th>Info</th>
             <th>Preis</th>
             <th><b>Aktionen</b></th>
         </tr>
@@ -93,6 +94,7 @@
             <td>{{res.courtName}}</td>
             <td>{{dateService.formatAsTimeSpanString(res.fromDate, res.toDate)}}</td>
             <td>{{getDisplayUserData(res)}}</td>
+            <td><abbr ng-show="res.comment.length > 0" title="{{res.comment}}"><span class="glyphicon glyphicon-flag"></span></abbr></td>
             <td>{{res.price | currency:'€ '}}</td>
             <td>
                 <button type="button" ng-click="openCancelReservationDialog(res)" class="btn btn-xs btn-danger" ng-show="!dateService.isBeforeNowTimeStamp(res.fromDate)">
