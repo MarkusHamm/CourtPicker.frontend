@@ -115,9 +115,7 @@
                         <!-- Datum -->
                         <!-- <label class="col-xs-1 control-label">Datum</label>-->
                         <div class="col-xs-2">
-                            <label class="checkbox-inline">
-                                <b>Datum</b> <input type="checkbox" name="constrainDate" ng-model="formRate.constrainDate" ng-click="clickConstrainDate(formRate)"/>
-                            </label>
+                            <label class="checkbox-inline"><b>Datum</b><input type="checkbox" name="constrainDate" ng-model="formRate.constrainDate" ng-click="clickConstrainDate(formRate)"/></label>
                         </div>
                         <div class="col-xs-2">
                             <div class="input-group">
@@ -146,9 +144,7 @@
                     <div class="form-group">
                         <!-- Zeit -->
                         <div class="col-xs-2">
-                            <label class="checkbox-inline">
-                                <b>Zeit</b> <input type="checkbox" name="constrainTime" ng-model="formRate.constrainTime" ng-click="clickConstrainTime(formRate)"/>
-                            </label>
+                            <label class="checkbox-inline"><b>Zeit</b><input type="checkbox" name="constrainTime" ng-model="formRate.constrainTime" ng-click="clickConstrainTime(formRate)"/></label>
                         </div>
                         <div class="col-xs-2">
                             <div class="input-group">
@@ -176,47 +172,22 @@
                     </div>
                     <div class="form-group">
                         <div class="col-xs-2">
-                            <label class="checkbox-inline">
-                                <b>Wochentag</b> <input type="checkbox" name="constrainWeekDay" ng-model="formRate.constrainWeekDay" ng-click="clickConstrainWeekDay(formRate)"/>
-                            </label>
+                            <label class="checkbox-inline"><b>Wochentag</b><input type="checkbox" name="constrainWeekDay" ng-model="formRate.constrainWeekDay" ng-click="clickConstrainWeekDay(formRate)"/></label>
                         </div>
                         <div class="col-xs-9" ng-disabled="!formRate.constrainWeekDay">
-                            <label class="checkbox-inline">
-                                Mo <input type="checkbox" name="constrainTime" ng-model="formRate.cMon"
-                                          ng-disabled="!formRate.constrainWeekDay"/>
-                            </label>
-                            <label class="checkbox-inline">
-                                Di <input type="checkbox" name="constrainTime" ng-model="formRate.cTue"
-                                          ng-disabled="!formRate.constrainWeekDay"/>
-                            </label>
-                            <label class="checkbox-inline">
-                                Mi <input type="checkbox" name="constrainTime" ng-model="formRate.cWed"
-                                          ng-disabled="!formRate.constrainWeekDay"/>
-                            </label>
-                            <label class="checkbox-inline">
-                                Do <input type="checkbox" name="constrainTime" ng-model="formRate.cThu"
-                                          ng-disabled="!formRate.constrainWeekDay"/>
-                            </label>
-                            <label class="checkbox-inline">
-                                Fr <input type="checkbox" name="constrainTime" ng-model="formRate.cFri"
-                                          ng-disabled="!formRate.constrainWeekDay"/>
-                            </label>
-                            <label class="checkbox-inline">
-                                Sa <input type="checkbox" name="constrainTime" ng-model="formRate.cSat"
-                                          ng-disabled="!formRate.constrainWeekDay"/>
-                            </label>
-                            <label class="checkbox-inline">
-                                So <input type="checkbox" name="constrainTime" ng-model="formRate.cSun"
-                                          ng-disabled="!formRate.constrainWeekDay"/>
-                            </label>
+                            <label class="checkbox-inline">Mo<input type="checkbox" name="constrainTime" ng-model="formRate.cMon" ng-disabled="!formRate.constrainWeekDay"/></label>
+                            <label class="checkbox-inline">Di<input type="checkbox" name="constrainTime" ng-model="formRate.cTue" ng-disabled="!formRate.constrainWeekDay"/></label>
+                            <label class="checkbox-inline">Mi<input type="checkbox" name="constrainTime" ng-model="formRate.cWed" ng-disabled="!formRate.constrainWeekDay"/></label>
+                            <label class="checkbox-inline">Do<input type="checkbox" name="constrainTime" ng-model="formRate.cThu" ng-disabled="!formRate.constrainWeekDay"/></label>
+                            <label class="checkbox-inline">Fr<input type="checkbox" name="constrainTime" ng-model="formRate.cFri" ng-disabled="!formRate.constrainWeekDay"/></label>
+                            <label class="checkbox-inline">Sa<input type="checkbox" name="constrainTime" ng-model="formRate.cSat" ng-disabled="!formRate.constrainWeekDay"/></label>
+                            <label class="checkbox-inline">So<input type="checkbox" name="constrainTime" ng-model="formRate.cSun" ng-disabled="!formRate.constrainWeekDay"/></label>
                         </div>
                     </div>
 
                     <div class="form-group" ng-show="!showConfiguratorNavigation">
                         <div class="col-xs-2">
-                            <label class="checkbox-inline">
-                                <b>Benutzer Gruppen</b> <input type="checkbox" name="constrainUserGroup" ng-model="formRate.constrainUserGroup" ng-click="clickConstrainUserGroup(formRate)"/>
-                            </label>
+                            <label class="checkbox-inline"><b>Benutzergruppen</b><input type="checkbox" name="constrainUserGroup" ng-model="formRate.constrainUserGroup" ng-click="clickConstrainUserGroup(formRate)"/></label>
                         </div>
                         <div class="col-xs-9 form-inline" style="margin-top: 3px">
                                             <span ng-repeat="userGroupId in formRate.cUserGroupIds">
@@ -434,9 +405,7 @@
                     <div class="form-group">
                         <!-- Zeit -->
                         <div class="col-xs-2">
-                            <label class="checkbox-inline">
-                                <b>Zeit</b> <input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.constrainTime" ng-click="clickConstrainTime(formSubscriptionRate)"/>
-                            </label>
+                            <label class="checkbox-inline"><b>Zeit</b><input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.constrainTime" ng-click="clickConstrainTime(formSubscriptionRate)"/></label>
                         </div>
                         <div class="col-xs-2">
                             <div class="input-group">
@@ -464,46 +433,39 @@
                     </div>
                     <div class="form-group">
                         <div class="col-xs-2">
-                            <label class="checkbox-inline">
-                                <b>Wochentag</b> <input type="checkbox" name="constrainWeekDay" ng-model="formSubscriptionRate.constrainWeekDay" ng-click="clickConstrainWeekDay(formSubscriptionRate)"/>
-                            </label>
+                            <label class="checkbox-inline"><b>Wochentag</b><input type="checkbox" name="constrainWeekDay" ng-model="formSubscriptionRate.constrainWeekDay" ng-click="clickConstrainWeekDay(formSubscriptionRate)"/></label>
                         </div>
                         <div class="col-xs-9" ng-disabled="!formSubscriptionRate.constrainWeekDay">
+                            <label class="checkbox-inline">Mo<input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.cMon" ng-disabled="!formSubscriptionRate.constrainWeekDay"/></label>
                             <label class="checkbox-inline">
-                                Mo <input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.cMon"
+                                Di<input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.cTue"
                                           ng-disabled="!formSubscriptionRate.constrainWeekDay"/>
                             </label>
                             <label class="checkbox-inline">
-                                Di <input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.cTue"
+                                Mi<input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.cWed"
                                           ng-disabled="!formSubscriptionRate.constrainWeekDay"/>
                             </label>
                             <label class="checkbox-inline">
-                                Mi <input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.cWed"
+                                Do<input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.cThu"
                                           ng-disabled="!formSubscriptionRate.constrainWeekDay"/>
                             </label>
                             <label class="checkbox-inline">
-                                Do <input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.cThu"
+                                Fr<input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.cFri"
                                           ng-disabled="!formSubscriptionRate.constrainWeekDay"/>
                             </label>
                             <label class="checkbox-inline">
-                                Fr <input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.cFri"
+                                Sa<input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.cSat"
                                           ng-disabled="!formSubscriptionRate.constrainWeekDay"/>
                             </label>
                             <label class="checkbox-inline">
-                                Sa <input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.cSat"
-                                          ng-disabled="!formSubscriptionRate.constrainWeekDay"/>
-                            </label>
-                            <label class="checkbox-inline">
-                                So <input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.cSun"
+                                So<input type="checkbox" name="constrainTime" ng-model="formSubscriptionRate.cSun"
                                           ng-disabled="!formSubscriptionRate.constrainWeekDay"/>
                             </label>
                         </div>
                     </div>
                     <div class="form-group" ng-show="!showConfiguratorNavigation">
                         <div class="col-xs-2">
-                            <label class="checkbox-inline">
-                                <b>Benutzer Gruppen</b> <input type="checkbox" name="constrainUserGroup" ng-model="formSubscriptionRate.constrainUserGroup" ng-click="clickConstrainUserGroup(formSubscriptionRate)"/>
-                            </label>
+                            <label class="checkbox-inline"><b>Benutzergruppen</b><input type="checkbox" name="constrainUserGroup" ng-model="formSubscriptionRate.constrainUserGroup" ng-click="clickConstrainUserGroup(formSubscriptionRate)"/></label>
                         </div>
                         <div class="col-xs-9 form-inline" style="margin-top: 3px">
                                         <span ng-repeat="userGroupId in formSubscriptionRate.cUserGroupIds" ng-disabled="!formSubscriptionRate.constrainUserGroup">
