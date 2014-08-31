@@ -67,7 +67,7 @@
 
                 <!-- password forgotten form -->
                 <div id="forgotpasswordmenu" ng-show="displayForgotPasswordForm" my-hide-on-outside-click="resetForgotPasswordForm()">
-                    <h2>Passwort Vergessen?</h2>
+                    <h2>Passwort vergessen?</h2>
 
                     <form name="forgotpasswordform" novalidate ng-show="!displayForgotPasswordRequestStatus">
                         <p>Bitte geben Sie folgende Daten ein:</p>
@@ -151,8 +151,7 @@
                                 <input type="text" ng-model="registerForm.userName" name="userName" required my-validate-unique-user-name/>
                             </div>
                             <div class="col-xs-4">
-                                <span class="error" ng-show="registrationForm.userName.$error.required && registrationForm.userName.$dirty">Required!</span>
-                                <span class="error" ng-show="registrationForm.userName.$error.unique && registrationForm.userName.$dirty">Username vergeben</span>
+                                <span class="error" ng-show="registrationForm.userName.$error.unique && registrationForm.userName.$dirty">Benutzername vergeben</span>
                             </div>
                         </div>
                         <div class="spacer10"></div>
@@ -161,13 +160,10 @@
                             <div class="col-xs-3">
                                 <input type="password" ng-model="registerForm.password" name="password" required />
                             </div>
-                            <div class="col-xs-4">
-                                <span class="error" ng-show="registrationForm.password.$invalid && registrationForm.password.$dirty">Required!</span>
-                            </div>
                         </div>
                         <div class="spacer5"></div>
                         <div class="row">
-                            <div class="col-xs-3">Passwort bestätigen</div>
+                            <div class="col-xs-3">Passwort Whg</div>
                             <div class="col-xs-3">
                                 <input type="password" ng-model="registerForm.passwordConfirmation" name="passwordConfirmation" my-pw-match password-match="registerForm.password" />
                             </div>
@@ -182,7 +178,6 @@
                                 <input type="email" ng-model="registerForm.email" name="email" required my-validate-unique-user-email/>
                             </div>
                             <div class="col-xs-4">
-                                <span class="error" ng-show="registrationForm.email.$error.required && registrationForm.email.$dirty">Required!</span>
                                 <span class="error" ng-show="registrationForm.email.$error.email && registrationForm.email.$dirty">E-Mail Adresse ungütlig</span>
                                 <span class="error" ng-show="registrationForm.email.$error.unique && registrationForm.email.$dirty">E-Mail vergeben</span>
                             </div>
@@ -193,9 +188,6 @@
                             <div class="col-xs-3">
                                 <input type="text" ng-model="registerForm.firstName" name="firstName" required />
                             </div>
-                            <div class="col-xs-4">
-                                <span class="error" ng-show="registrationForm.firstName.$invalid && registrationForm.firstName.$dirty">Required!</span>
-                            </div>
                         </div>
                         <div class="spacer10"></div>
                         <div class="row">
@@ -203,15 +195,12 @@
                             <div class="col-xs-3">
                                 <input type="text" ng-model="registerForm.lastName" name="lastName" required />
                             </div>
-                            <div class="col-xs-4">
-                                <span class="error" ng-show="registrationForm.lastName.$invalid && registrationForm.lastName.$dirty">Required!</span>
-                            </div>
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="button" ng-click="register()" ng-disabled="registrationForm.$invalid">Registrieren</button>
-                    <button type="button" class="button" data-dismiss="modal" ng-click="registrationForm.$setPristine()">Abbrechen</button>
+                <div class="modal-footer" style="text-align: left;">
+                    <button type="button" class="button" ng-click="register()" ng-disabled="registrationForm.$invalid" style="width: 400px;">Registrieren</button>
+                    <button type="button" class="button" data-dismiss="modal" ng-click="registrationForm.$setPristine()" style="width: 110px;">Abbrechen</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

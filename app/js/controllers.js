@@ -676,16 +676,18 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.forgotPasswordRequestStatus = '';
 
     $scope.showLoginForm = function() {
+      $scope.resetLoginForm();
       $scope.displayLoginForm = true;
     }
 
     $scope.showRegisterForm = function() {
-      $scope.registerForm = createEmptyRegisterForm();
+      $scope.resetRegisterForm();
       $('#registerModal').modal('show');
     }
 
     $scope.showForgotPasswordForm = function() {
       $scope.resetLoginForm();
+      $scope.resetForgotPasswordForm();
       $scope.displayForgotPasswordForm = true;
     }
 
@@ -697,10 +699,12 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.resetLoginForm = function() {
       $scope.displayLoginForm = false;
       $scope.loginForm = {username: '', password: ''};
+      $scope.loginform.$setPristine();
     }
 
     $scope.resetRegisterForm = function() {
       $scope.registerForm = createEmptyRegisterForm();
+      $scope.registrationForm.$setPristine();
     }
 
     $scope.resetForgotPasswordForm = function() {
@@ -708,6 +712,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       $scope.forgotPasswordForm = {firstname: '', lastname: '', email: ''};
       $scope.displayForgotPasswordRequestStatus = false;
       $scope.forgotPasswordRequestStatus = '';
+      $scope.forgotpasswordform.$setPristine();
     }
     /*
     $scope.resetForgotPasswordRequestStatus = function() {
