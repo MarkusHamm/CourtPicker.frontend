@@ -23,7 +23,7 @@ describe('service', function() {
       
     it('getAll calls correct URL and responds correct', function() {
       var arrayResponse = [{data: 'datat1'},{data: 'data2'}];
-      httpBackend.expectGET('/tck-roger/api/getCourtCategories?cpInstanceId=55').respond(angular.toJson(arrayResponse));
+      httpBackend.expectGET('/courtpicker/api/getCourtCategories?cpInstanceId=55').respond(angular.toJson(arrayResponse));
       
       var result = service.getAll({cpInstanceId: 55});
       httpBackend.flush();      
@@ -33,7 +33,7 @@ describe('service', function() {
     it('save calls correct URL and responds correct', function() {
       var inputObj = {data: 'datavalue'};
       var outputObj = {id: 1, data: 'datavalue'};
-      httpBackend.expectPOST('/tck-roger/api/saveCourtCategory', angular.toJson(inputObj)).respond(angular.toJson(outputObj));
+      httpBackend.expectPOST('/courtpicker/api/saveCourtCategory', angular.toJson(inputObj)).respond(angular.toJson(outputObj));
       
       var result = service.save(inputObj);
       httpBackend.flush();      
@@ -41,7 +41,7 @@ describe('service', function() {
     });
 
     it('remove calls correct URL and responds correct', function() {
-      httpBackend.expectPOST('/tck-roger/api/deleteCourtCategory?id=5').respond('');
+      httpBackend.expectPOST('/courtpicker/api/deleteCourtCategory?id=5').respond('');
       
       service.remove({id:5}, '');
       httpBackend.flush();      
@@ -60,7 +60,7 @@ describe('service', function() {
 
     it('getAll calls correct URL and responds correct', function() {
       var arrayResponse = [{data: 'datat1'},{data: 'data2'}];
-      httpBackend.expectGET('/tck-roger/api/getCourts?courtCategoryId=55').respond(angular.toJson(arrayResponse));
+      httpBackend.expectGET('/courtpicker/api/getCourts?courtCategoryId=55').respond(angular.toJson(arrayResponse));
 
       var result = service.getAll({courtCategoryId: 55});
       httpBackend.flush();
@@ -70,7 +70,7 @@ describe('service', function() {
     it('save calls correct URL and responds correct', function() {
       var inputObj = {data: 'datavalue'};
       var outputObj = {id: 1, data: 'datavalue'};
-      httpBackend.expectPOST('/tck-roger/api/saveCourt', angular.toJson(inputObj)).respond(angular.toJson(outputObj));
+      httpBackend.expectPOST('/courtpicker/api/saveCourt', angular.toJson(inputObj)).respond(angular.toJson(outputObj));
 
       var result = service.save(inputObj);
       httpBackend.flush();
@@ -78,7 +78,7 @@ describe('service', function() {
     });
 
     it('remove calls correct URL and responds correct', function() {
-      httpBackend.expectPOST('/tck-roger/api/deleteCourt?id=5').respond('');
+      httpBackend.expectPOST('/courtpicker/api/deleteCourt?id=5').respond('');
 
       service.remove({id:5}, '');
       httpBackend.flush();
@@ -98,7 +98,7 @@ describe('service', function() {
 
     it('getAll calls correct URL and responds correct', function() {
       var arrayResponse = [{data: 'datat1'},{data: 'data2'}];
-      httpBackend.expectGET('/tck-roger/api/getRates?courtCategoryId=55').respond(angular.toJson(arrayResponse));
+      httpBackend.expectGET('/courtpicker/api/getRates?courtCategoryId=55').respond(angular.toJson(arrayResponse));
 
       var result = service.getAll({courtCategoryId: 55});
       httpBackend.flush();
@@ -108,7 +108,7 @@ describe('service', function() {
     it('save calls correct URL and responds correct', function() {
       var inputObj = {data: 'datavalue'};
       var outputObj = {id: 1, data: 'datavalue'};
-      httpBackend.expectPOST('/tck-roger/api/saveRate', angular.toJson(inputObj)).respond(angular.toJson(outputObj));
+      httpBackend.expectPOST('/courtpicker/api/saveRate', angular.toJson(inputObj)).respond(angular.toJson(outputObj));
 
       var result = service.save(inputObj);
       httpBackend.flush();
@@ -116,7 +116,7 @@ describe('service', function() {
     });
 
     it('remove calls correct URL and responds correct', function() {
-      httpBackend.expectPOST('/tck-roger/api/deleteRate?id=5').respond('');
+      httpBackend.expectPOST('/courtpicker/api/deleteRate?id=5').respond('');
 
       service.remove({id:5}, '');
       httpBackend.flush();
@@ -136,7 +136,7 @@ describe('service', function() {
 
     it('getAll calls correct URL and responds correct', function() {
       var arrayResponse = [{data: 'datat1'},{data: 'data2'}];
-      httpBackend.expectGET('/tck-roger/api/getUserGroups?cpInstanceId=55').respond(angular.toJson(arrayResponse));
+      httpBackend.expectGET('/courtpicker/api/getUserGroups?cpInstanceId=55').respond(angular.toJson(arrayResponse));
 
       var result = service.getAll({cpInstanceId: 55});
       httpBackend.flush();
@@ -146,7 +146,7 @@ describe('service', function() {
     it('save calls correct URL and responds correct', function() {
       var inputObj = {data: 'datavalue'};
       var outputObj = {id: 1, data: 'datavalue'};
-      httpBackend.expectPOST('/tck-roger/api/saveUserGroup', angular.toJson(inputObj)).respond(angular.toJson(outputObj));
+      httpBackend.expectPOST('/courtpicker/api/saveUserGroup', angular.toJson(inputObj)).respond(angular.toJson(outputObj));
 
       var result = service.save(inputObj);
       httpBackend.flush();
@@ -154,7 +154,7 @@ describe('service', function() {
     });
 
     it('remove calls correct URL and responds correct', function() {
-      httpBackend.expectPOST('/tck-roger/api/deleteUserGroup?id=5').respond('');
+      httpBackend.expectPOST('/courtpicker/api/deleteUserGroup?id=5').respond('');
 
       service.remove({id:5}, '');
       httpBackend.flush();
@@ -174,7 +174,7 @@ describe('service', function() {
 
     it('getAll calls correct URL and responds correct', function() {
       var arrayResponse = [{data: 'datat1'},{data: 'data2'}];
-      httpBackend.expectGET('/tck-roger/api/getSubscriptionPeriodRates?courtCategoryId=55').respond(angular.toJson(arrayResponse));
+      httpBackend.expectGET('/courtpicker/api/getSubscriptionPeriodRates?courtCategoryId=55').respond(angular.toJson(arrayResponse));
 
       var result = service.getAll({courtCategoryId: 55});
       httpBackend.flush();
@@ -184,7 +184,7 @@ describe('service', function() {
     it('save calls correct URL and responds correct', function() {
       var inputObj = {data: 'datavalue'};
       var outputObj = {id: 1, data: 'datavalue'};
-      httpBackend.expectPOST('/tck-roger/api/saveSubscriptionPeriodRate', angular.toJson(inputObj)).respond(angular.toJson(outputObj));
+      httpBackend.expectPOST('/courtpicker/api/saveSubscriptionPeriodRate', angular.toJson(inputObj)).respond(angular.toJson(outputObj));
 
       var result = service.save(inputObj);
       httpBackend.flush();
@@ -192,7 +192,7 @@ describe('service', function() {
     });
 
     it('remove calls correct URL and responds correct', function() {
-      httpBackend.expectPOST('/tck-roger/api/deleteSubscriptionPeriodRate?id=5').respond('');
+      httpBackend.expectPOST('/courtpicker/api/deleteSubscriptionPeriodRate?id=5').respond('');
 
       service.remove({id:5}, '');
       httpBackend.flush();
@@ -213,7 +213,7 @@ describe('service', function() {
     it('save calls correct URL and responds correct', function() {
       var inputObj = {data: 'datavalue'};
       var outputObj = {id: 1, data: 'datavalue'};
-      httpBackend.expectPOST('/tck-roger/api/saveCpInstance', angular.toJson(inputObj)).respond(angular.toJson(outputObj));
+      httpBackend.expectPOST('/courtpicker/api/saveCpInstance', angular.toJson(inputObj)).respond(angular.toJson(outputObj));
 
       var result = service.save(inputObj);
       httpBackend.flush();
@@ -254,7 +254,7 @@ describe('service', function() {
 
     it('get calls correct URL and responds correct', function() {
       var response = {data: 'datat1'};
-      httpBackend.expectGET('/tck-roger/api/getWebdesign?cpInstanceId=55').respond(angular.toJson(response));
+      httpBackend.expectGET('/courtpicker/api/getWebdesign?cpInstanceId=55').respond(angular.toJson(response));
 
       var result = service.get({cpInstanceId: 55});
       httpBackend.flush();
@@ -264,7 +264,7 @@ describe('service', function() {
     it('save calls correct URL and responds correct', function() {
       var inputObj = {data: 'datavalue'};
       var outputObj = {id: 1, data: 'datavalue'};
-      httpBackend.expectPOST('/tck-roger/api/saveWebdesign', angular.toJson(inputObj)).respond(angular.toJson(outputObj));
+      httpBackend.expectPOST('/courtpicker/api/saveWebdesign', angular.toJson(inputObj)).respond(angular.toJson(outputObj));
 
       var result = service.save(inputObj);
       httpBackend.flush();
