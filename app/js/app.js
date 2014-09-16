@@ -23,14 +23,17 @@ angular.module('courtpickerApp', ['myApp.filters', 'myApp.services', 'myApp.dire
     $routeProvider.when('/customerSubReservations', {templateUrl: 'partials/customerSubReservations.html', resolve: initialResolve, requiresInstance: true, title: 'Courtpicker Customer Area', includeStyle: 'includes/stylesBootstrap.html'});
     $routeProvider.when('/customerUserData', {templateUrl: 'partials/customerUserData.html', resolve: initialResolve, requiresInstance: true, title: 'Courtpicker Customer Area', includeStyle: 'includes/stylesBootstrap.html'});
     $routeProvider.when('/error', {templateUrl: 'partials/error.html', requiresInstance: false, title: 'Courtpicker Error', includeStyle: 'includes/stylesCourtpicker.html'});
-    $routeProvider.otherwise({redirectTo: '/configureCourts'});
+    $routeProvider.otherwise({redirectTo: '/courtpicker'});
 
     // redirect to error page if any service call throws an exception
     $httpProvider.interceptors.push('cpHttpResponseInterceptor');
   }])
   
   .run(['$rootScope', 'CpService', 'RESTWebdesign', '$http', '$location', '$q', '$timeout', function($rootScope, CpService, RESTWebdesign, $http, $location, $q, $timeout) {
-    //$rootScope.
+    var nameParamRegex = /^https?:\/\/[a-zA-Z0-9\-\.]+\/([a-zA-Z0-9]+)\/?.*$/;
+    var url = $location.absUrl();
+    var nameParam = url.replace(nameParamRegex, "$1");
+    console.log('instance name: ' + nameParam);
 
     // resolve for application to run
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
@@ -80,16 +83,14 @@ angular.module('courtpickerApp', ['myApp.filters', 'myApp.services', 'myApp.dire
 
     $http.defaults.headers.common['Accept'] = 'text/plain,application/json';
 
-    var paramName = $location.$$search.name;
-    var paramCreateNew = $location.$$search.createNew;
     // create new instance or get-by-shortname
-    if (paramCreateNew) {
+    if (nameParam != null && nameParam.toLowerCase() == 'createnew') {
       $rootScope.cpInstance = CpService.createNewInstance().then(function(result) {
         $rootScope.cpInstance = result.data;
       });
     }
-    else if (paramName) {
-      $rootScope.cpInstance = CpService.getCpInstanceByShortName(paramName).then(function(result) {
+    else if (nameParam) {
+      $rootScope.cpInstance = CpService.getCpInstanceByShortName(nameParam).then(function(result) {
         if (result.data != null && result.data != '') {
           $rootScope.cpInstance = result.data;
         }
