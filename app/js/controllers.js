@@ -500,7 +500,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.callRestrictorFollowUp = false;
     $scope.iFrameLoadedTheFirstTime = true;
 
-    $scope.previewWindowUrl = 'http://localhost/' + $rootScope.cpInstance.shortName;
+    $scope.previewWindowUrl = '/' + $rootScope.cpInstance.shortName;
 
     $scope.submitWebdesignIfValid = function() {
       if (!$scope.designHeaderForm.$valid || !$scope.designBasicsForm.$valid || !$scope.designControlsForm.$valid || !$scope.designContentForm.$valid) {
