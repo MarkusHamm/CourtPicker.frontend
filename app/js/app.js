@@ -1,6 +1,6 @@
 'use strict';
 
-var initialResolve = {'initialResolveDone': function($rootScope) { return $rootScope.initialResolveDone; } };
+var initialResolve = {'initialResolveDone': ['$rootScope', function($rootScope) { return $rootScope.initialResolveDone; }] };
 
 // Declare app level module which depends on filters, and services
 angular.module('courtpickerApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'myApp.controllers', 'ngRoute'])
