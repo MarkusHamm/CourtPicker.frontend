@@ -633,8 +633,9 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
         });
       }
       else {
-        CpService.registerUser($scope.formNewUser.userName, $scope.formNewUser.password, $scope.formNewUser.email,
-          $scope.formNewUser.firstName, $scope.formNewUser.lastName).then(function(response) {
+        CpService.registerUserExtended($scope.formNewUser.userName, $scope.formNewUser.password, $scope.formNewUser.email,
+          $scope.formNewUser.firstName, $scope.formNewUser.lastName, $scope.formNewUser.phoneNumber, $scope.formNewUser.street,
+          $scope.formNewUser.zipCode, $scope.formNewUser.city, $scope.formNewUser.country).then(function(response) {
             console.log(response);
             var user = response.data;
             console.log(user);

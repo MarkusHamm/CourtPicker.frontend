@@ -403,6 +403,11 @@ angular.module('myApp.services', ['ngResource'])
         return $http({method: 'POST', url: '/courtpicker/api/registerUser',
           params: {'userName': userName, 'password': password, 'email': email, 'firstName': firstName, 'lastName': lastName}});
       },
+      registerUserExtended: function(userName, password, email, firstName, lastName, phoneNumber, street, zipCode, city, country) {
+        return $http({method: 'POST', url: '/courtpicker/api/registerUserExtended',
+          params: {'userName': userName, 'password': password, 'email': email, 'firstName': firstName, 'lastName': lastName,
+                   'phoneNumber': phoneNumber, 'street': street, 'zipCode': zipCode, 'city': city, 'country': country}});
+      },
       activateUser: function(userId, activationCode) {
         return $http({method: 'POST', url: '/courtpicker/api/activateUser',
           params: {'userId': userId, 'activationCode': activationCode}});
