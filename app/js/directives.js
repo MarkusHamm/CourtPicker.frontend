@@ -63,7 +63,11 @@ angular.module('myApp.directives', []).
       restrict: 'A',
       require: '?ngModel',
       link: function(scope, element, attrs, ngModel) {
-        var datepicker = element.datepicker();
+        var datepicker = element.datepicker({
+          'language': 'de',
+          todayBtn: 'linked',
+          weekStart: 1
+        });
         datepicker.on('changeDate', function(newDate) {
           scope.$apply(function() {
             ngModel.$setViewValue(element.val());
