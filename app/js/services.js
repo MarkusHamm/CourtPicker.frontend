@@ -6,10 +6,12 @@
 // Demonstrate how to register services
 // In this case it is a simple value service.
 angular.module('myApp.services', ['ngResource'])
-  .factory('UserService', function($rootScope, CpService){
+  .factory('UserService', function($rootScope, CpService, $q){
     var initialized = false;
+    var deferred = $q.defer();
 
     var userInfo = {
+      resolved: deferred.promise,
       isLoggedIn: false,
       loggedInUser: null,
       authorities: [],
@@ -23,6 +25,7 @@ angular.module('myApp.services', ['ngResource'])
         userInfo.loggedInUser = result.data.loggedInUser;
         userInfo.authorities = result.data.authorities;
         userInfo.status = '';
+        deferred.resolve(true);
       });
       initialized = true;
     }

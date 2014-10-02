@@ -23,6 +23,7 @@ angular.module('courtpickerApp', ['myApp.filters', 'myApp.services', 'myApp.dire
     $routeProvider.when('/customerSubReservations', {templateUrl: 'partials/customerSubReservations.html', resolve: initialResolve, requiresInstance: true, title: 'Courtpicker Customer Area', includeStyle: 'includes/stylesBootstrap.html'});
     $routeProvider.when('/customerUserData', {templateUrl: 'partials/customerUserData.html', resolve: initialResolve, requiresInstance: true, title: 'Courtpicker Customer Area', includeStyle: 'includes/stylesBootstrap.html'});
     $routeProvider.when('/error', {templateUrl: 'partials/error.html', requiresInstance: false, title: 'Courtpicker Error', includeStyle: 'includes/stylesCourtpicker.html'});
+    $routeProvider.when('/errorInstance', {templateUrl: 'partials/errorInstance.html', requiresInstance: false, title: 'Courtpicker Instance not found', includeStyle: 'includes/stylesCourtpicker.html'});
     $routeProvider.otherwise({redirectTo: '/courtpicker'});
 
     // redirect to error page if any service call throws an exception
@@ -58,14 +59,17 @@ angular.module('courtpickerApp', ['myApp.filters', 'myApp.services', 'myApp.dire
 
     // routing success
     $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+      console.log(current);
       $rootScope.title = current.title;
       $rootScope.includeStyle = current.includeStyle;
-      $rootScope.applyInstanceStyle = current.includeStyle.toLocaleLowerCase().indexOf('stylescourtpicker') > -1;
+      if ($rootScope.applyInstanceStyle) {
+        $rootScope.applyInstanceStyle = current.includeStyle.toLocaleLowerCase().indexOf('stylescourtpicker') > -1;
+      }
     });
 
     // routing error
     $rootScope.$on('$routeChangeError', function (event, current, previous) {
-      $location.path('/error');
+      $location.path('/errorInstance');
     });
 
     // prevent "page flickering" which is caused by ng-include (whose content is loaded asynchronously after the other page content is already in place)

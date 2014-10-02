@@ -896,6 +896,12 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       updateReservationPrice();
     }
 
+    $scope.changeReservationCustomer = function() {
+      if (!$scope.createReservationCustomer) {
+        $scope.createReservationCustomerEmail = '';
+      }
+    }
+
     /*
     $scope.oneThirdReserved = function(timeSlot) {
       if (timeSlot.occupied) {
@@ -1300,6 +1306,12 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       $scope.calculateSubscriptionReservationPrice();
     }
 
+    $scope.changeSubReservationCustomer = function() {
+      if (!$scope.createSubReservationCustomer) {
+        $scope.createSubReservationCustomerEmail = '';
+      }
+    }
+
     $scope.calculateSubscriptionReservationPrice = function() {
       if ($scope.selectedSubscription != null && $scope.selectedSubWeekDay != null &&
           $scope.selectedSubStartTime != null && $scope.selectedSubCourt != null) {
@@ -1511,10 +1523,12 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     var init = function() {
-      CpService.getSingleReservationInfosForCustomer(UserService.loggedInUser.id).then(function(result) {
-        $scope.allReservations = result.data;
-        $scope.reservations = $scope.allReservations
-        identifyUsedInstances($scope.reservations);
+      UserService.resolved.then(function() {
+        CpService.getSingleReservationInfosForCustomer(UserService.loggedInUser.id).then(function(result) {
+          $scope.allReservations = result.data;
+          $scope.reservations = $scope.allReservations
+          identifyUsedInstances($scope.reservations);
+        });
       });
     }
 
@@ -1573,10 +1587,12 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     var init = function() {
-      CpService.getSubscriptionReservationInfosForCustomer(UserService.loggedInUser.id).then(function(result) {
-        $scope.allReservations = result.data;
-        $scope.reservations = $scope.allReservations
-        identifyUsedInstances($scope.reservations);
+      UserService.resolved.then(function() {
+        CpService.getSubscriptionReservationInfosForCustomer(UserService.loggedInUser.id).then(function(result) {
+          $scope.allReservations = result.data;
+          $scope.reservations = $scope.allReservations
+          identifyUsedInstances($scope.reservations);
+        });
       });
     }
 
