@@ -498,7 +498,6 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
 
     $scope.callRestrictorActive = false;
     $scope.callRestrictorFollowUp = false;
-    $scope.iFrameLoadedTheFirstTime = true;
 
     $scope.previewWindowUrl = '/' + $rootScope.cpInstance.shortName;
 
@@ -536,20 +535,22 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       }
     }
 
-    $window.fileUploadDone = function(){
-      if ($scope.iFrameLoadedTheFirstTime) {
-        $scope.iFrameLoadedTheFirstTime = false;
-        return;
+    $window.fileUploadDone = function() {
+      if ($scope.webdesign.id) {
+        CpService.getWebdesignFile($scope.webdesign.id, 'logo').then(function(result) {
+          $scope.cpInstanceStyle.images['logo'] = result.data;
+          setPreviewWindowLogo(result.data);
+        });
       }
-
-      CpService.getWebdesignFile($scope.webdesign.id, 'logo').then(function(result) {
-        $scope.cpInstanceStyle.images['logo'] = result.data;
-        setPreviewWindowLogo(result.data);
-      });
     }
 
     var setPreviewWindowCss = function(cssString) {
+      console.log('CALLED BEFORE');
+      console.log(document.getElementById('designpreview').contentWindow.document);
+      console.log('huhu: ' + xx);
+
       document.getElementById('designpreview').contentWindow.document.getElementById('cpInstanceStyle').innerHTML = cssString;
+      console.log('CALLED AFTER');
     }
 
     var setPreviewWindowLogo = function(logoData) {
