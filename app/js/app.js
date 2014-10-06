@@ -59,10 +59,10 @@ angular.module('courtpickerApp', ['myApp.filters', 'myApp.services', 'myApp.dire
 
     // routing success
     $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
-      console.log(current);
       $rootScope.title = current.title;
       $rootScope.includeStyle = current.includeStyle;
-      if ($rootScope.applyInstanceStyle) {
+
+      if (current.includeStyle) {
         $rootScope.applyInstanceStyle = current.includeStyle.toLocaleLowerCase().indexOf('stylescourtpicker') > -1;
       }
     });
