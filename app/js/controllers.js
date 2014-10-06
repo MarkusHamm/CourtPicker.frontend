@@ -615,7 +615,6 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     $scope.processRegistration = function() {
-      console.log('PROCESS REGISTRATION TYPE : ' + $scope.registrationType);
       if ($scope.registrationType == $scope.registrationTypes.EXISTINGUSER) {
         CpService.login($scope.formExistingUser.userName, $scope.formExistingUser.password).then(function(response) {
           if (response.data == null || response.data == '') {
@@ -633,9 +632,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
         CpService.registerUserExtended($scope.formNewUser.userName, $scope.formNewUser.password, $scope.formNewUser.email,
           $scope.formNewUser.firstName, $scope.formNewUser.lastName, $scope.formNewUser.phoneNumber, $scope.formNewUser.street,
           $scope.formNewUser.zipCode, $scope.formNewUser.city, $scope.formNewUser.country).then(function(response) {
-            console.log(response);
             var user = response.data;
-            console.log(user);
             CpService.associateUserWithCpInstance($rootScope.cpInstance.id, user.id).then(function(resp) {
               $location.path('/courtpicker');
             })
@@ -911,9 +908,6 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       }
 
       var freeCourtPercentage = timeSlot.freeCourtIds.length / numberOfCourts;
-      console.log (timeSlot.fromTime);
-      console.log (timeSlot.toTime);
-      console.log(freeCourtPercentage);
 
       if (freeCourtPercentage <= (2/3) && !(freeCourtPercentage <= (1/3))) {
         return true;
@@ -1095,7 +1089,6 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       if (($scope.freeCourtSelected == null || $scope.freeCourts.indexOf($scope.freeCourtSelected) == -1)
            && $scope.freeCourts.length > 0) {
         $scope.freeCourtSelected = $scope.freeCourts[0];
-        console.log($scope.freeCourtSelected);
       }
     }
 

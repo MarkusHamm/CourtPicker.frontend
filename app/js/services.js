@@ -276,7 +276,6 @@ angular.module('myApp.services', ['ngResource'])
     dateService.getWeekDayString = function(dateString) {
       var date = dateService.parseDateString(dateString);
       var dayOfWeek = date.getDay();
-      console.log(dayOfWeek);
 
       if (dayOfWeek == 1) return "Mo";
       if (dayOfWeek == 2) return "Di";

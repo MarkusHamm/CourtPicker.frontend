@@ -34,7 +34,6 @@ angular.module('courtpickerApp', ['myApp.filters', 'myApp.services', 'myApp.dire
     var nameParamRegex = /^https?:\/\/[a-zA-Z0-9\-\.]+\/([a-zA-Z0-9]+)\/?.*$/;
     var url = $location.absUrl();
     var nameParam = url.replace(nameParamRegex, "$1");
-    console.log('instance name: ' + nameParam);
 
     // resolve for application to run
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
