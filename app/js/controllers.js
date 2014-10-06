@@ -545,7 +545,8 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     var setPreviewWindowCss = function(cssString) {
-      document.getElementById('designpreview').contentWindow.document.getElementById('cpInstanceStyle').innerHTML = cssString;
+      //document.getElementById('designpreview').contentWindow.document.getElementById('cpInstanceStyle').innerHTML = cssString;
+      window.frames['designpreview'].document.getElementById('cpInstanceStyle').innerHTML = cssString;
     }
 
     var setPreviewWindowLogo = function(logoData) {
