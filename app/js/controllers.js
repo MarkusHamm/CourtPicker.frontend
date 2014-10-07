@@ -596,7 +596,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     init();
   }])
 
-  .controller('ConfigureRegistrationController', ['$scope', '$rootScope', '$location', 'CpService', function($scope, $rootScope, $location, CpService) {
+  .controller('ConfigureRegistrationController', ['$scope', '$rootScope', '$location', '$window', 'CpService', function($scope, $rootScope, $location, $window, CpService) {
     $scope.registrationTypes = { NEWUSER: 0, EXISTINGUSER: 1 };
     $scope.registrationType = $scope.registrationTypes.NEWUSER;
     $scope.formExistingUser = {};
@@ -623,7 +623,8 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
           else {
             var user = response.data;
             CpService.associateUserWithCpInstance($rootScope.cpInstance.id, user.id).then(function(resp) {
-              $location.path('/courtpicker');
+              $window.location.href = '/' + $rootScope.cpInstance.shortName;
+              //$location.path('/courtpicker');
             })
           }
         });
@@ -634,7 +635,8 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
           $scope.formNewUser.zipCode, $scope.formNewUser.city, $scope.formNewUser.country).then(function(response) {
             var user = response.data;
             CpService.associateUserWithCpInstance($rootScope.cpInstance.id, user.id).then(function(resp) {
-              $location.path('/courtpicker');
+              $window.location.href = '/' + $rootScope.cpInstance.shortName;
+              //$location.path('/courtpicker');
             })
           },
           function(error) {
