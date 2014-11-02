@@ -1,11 +1,16 @@
 <div ng-controller="ConfigureCourtsController">
+    <p ng-show="showConfiguratorNavigation">
+        Auf dieser Seite kannst Du den Namen Deiner Anlage bzw. Deines Vereins festlegen sowie die Plätze die Du mit Deinem CourtPicker verwalten willst. <br/>
+        Folge den Anweisungen unten. Klicke dann auf "Weiter" um die Reservierungstarife zu definieren.
+    </p>
+
     <div class="page-header" style="margin-top: 0;">
         <h1>Anlage</h1>
     </div>
 
     <form name="formInstance" novalidate class="form-horizontal">
         <div class="form-group">
-            <label class="col-xs-1 control-label">Name</label>
+            <label class="col-xs-2 control-label">Name Deiner Anlage</label>
             <div class="col-xs-3">
                 <input type="text" name="instanceName" ng-model="cpInstance.name" ng-trim="true" required
                        class="form-control" my-on-blur="saveCpInstanceIfInputValid()" />
@@ -15,7 +20,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-xs-1 control-label">URL</label>
+            <label class="col-xs-2 control-label">CourtPicker URL</label>
             <div class="col-xs-3">
                 <input type="text" name="instanceShortName" ng-model="cpInstance.shortName" ng-trim="true" required
                        class="form-control" my-on-blur="saveCpInstanceIfInputValid()" my-validate-unique-cp-shortname
@@ -32,6 +37,11 @@
     <div class="page-header">
         <h1>Plätze</h1>
     </div>
+
+    <p ng-show="showConfiguratorNavigation">
+        Erstelle zuerst die Platzarten die Du verwalten willst, z.B. Tennis, Badminton, Squash. <br/>
+        Danach kannst du eine der erstellten Platzarten anklicken und einzelne Plätze für diese Platzart hinzufügen.
+    </p>
 
     <h2>Platzarten</h2>
 
@@ -70,6 +80,9 @@
                     <input type="text" name="courtCategoryName" ng-model="formCourtCategory.name" ng-trim="true" required
                            my-focus-on="displayCourtCategoryForm" class="form-control"/>
                 </div>
+                <div class="col-xs-6 form-control-static text-muted">
+                    Der Name soll die Art de Platzes ausdrücken. z.B. Tennis, Basketball, Fussball, etc.
+                </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-1 control-label">Buchbar</label>
@@ -92,6 +105,10 @@
                     </div>
                     <div class="error" ng-show="courtCategoryForm.courtCategoryBookTo.$error.pattern && courtCategoryForm.courtCategoryBookTo.$dirty">Ungültige Zeit</div>
                 </div>
+                <div class="col-xs-6 form-control-static text-muted">
+                    Gibt an, innerhalb welcher Uhrzeiten ein Platz dieser Platzart reserviert werden kann.
+                </div>
+
             </div>
             <div class="form-group">
                 <label class="col-xs-1 control-label">Einheit</label>
@@ -116,6 +133,9 @@
                             ng-click="formCourtCategory.bookingUnit = 120">
                         2h
                     </button>
+                </div>
+                <div class="col-xs-6 form-control-static text-muted">
+                    Gibt an, in welchen Einheiten ein Platz dieser Platzart reserviert werden kann.
                 </div>
             </div>
 
