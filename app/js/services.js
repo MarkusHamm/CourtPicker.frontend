@@ -138,7 +138,7 @@ angular.module('myApp.services', ['ngResource'])
     }
 
     obj.register = function(user) {
-      CpService.registerUser(user.userName, user.password, user.email, user.firstName, user.lastName).then(function(result) {
+      CpService.registerUser(user.userName, user.password, user.email, user.firstName, user.lastName, $rootScope.cpInstance.shortName).then(function(result) {
           if (result.data != null && result.data != '') {
             UserService.statusMessage = 'User erfolgreich angelegt - bitte aktivieren';
             $timeout(function() { UserService.statusMessage = ''; }, 3000);
@@ -401,14 +401,14 @@ angular.module('myApp.services', ['ngResource'])
       getWebdesignFile: function(webdesignId, type) {
         return $http({method: 'GET', url: '/courtpicker/api/getWebdesignFile', params: {'webdesignId': webdesignId, 'type': type}});
       },
-      registerUser: function(userName, password, email, firstName, lastName) {
+      registerUser: function(userName, password, email, firstName, lastName, registerInstanceShortName) {
         return $http({method: 'POST', url: '/courtpicker/api/registerUser',
-          params: {'userName': userName, 'password': password, 'email': email, 'firstName': firstName, 'lastName': lastName}});
+          params: {'userName': userName, 'password': password, 'email': email, 'firstName': firstName, 'lastName': lastName, 'registerInstanceShortName': registerInstanceShortName}});
       },
-      registerUserExtended: function(userName, password, email, firstName, lastName, phoneNumber, street, zipCode, city, country) {
+      registerUserExtended: function(userName, password, email, firstName, lastName, phoneNumber, street, zipCode, city, country, registerInstanceShortName) {
         return $http({method: 'POST', url: '/courtpicker/api/registerUserExtended',
           params: {'userName': userName, 'password': password, 'email': email, 'firstName': firstName, 'lastName': lastName,
-                   'phoneNumber': phoneNumber, 'street': street, 'zipCode': zipCode, 'city': city, 'country': country}});
+                   'phoneNumber': phoneNumber, 'street': street, 'zipCode': zipCode, 'city': city, 'country': country, 'registerInstanceShortName': registerInstanceShortName}});
       },
       activateUser: function(userId, activationCode) {
         return $http({method: 'POST', url: '/courtpicker/api/activateUser',

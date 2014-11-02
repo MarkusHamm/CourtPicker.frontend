@@ -632,7 +632,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       else {
         CpService.registerUserExtended($scope.formNewUser.userName, $scope.formNewUser.password, $scope.formNewUser.email,
           $scope.formNewUser.firstName, $scope.formNewUser.lastName, $scope.formNewUser.phoneNumber, $scope.formNewUser.street,
-          $scope.formNewUser.zipCode, $scope.formNewUser.city, $scope.formNewUser.country).then(function(response) {
+          $scope.formNewUser.zipCode, $scope.formNewUser.city, $scope.formNewUser.country, $rootScope.cpInstance.shortName).then(function(response) {
             var user = response.data;
             CpService.associateUserWithCpInstance($rootScope.cpInstance.id, user.id).then(function(resp) {
               $window.location.href = '/' + $rootScope.cpInstance.shortName;
