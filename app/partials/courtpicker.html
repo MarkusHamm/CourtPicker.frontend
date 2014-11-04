@@ -42,43 +42,47 @@
                 </div>
 
                 <div class="courtSelectLeft" ng-show="selectedView == viewTypes.COURTVIEW">
-                    <b>Courts:</b> &nbsp;&nbsp;
-                    <button ng-repeat="court in courts" type="button"
-                            ng-class="{'buttonLight': !isCourtSelectedInCourtView(court), 'buttonLightSelected': isCourtSelectedInCourtView(court)}"
-                            ng-click="toggleCourtViewCourtSelection(court)" style="margin-right: 15px;">
-                        {{court.name}}
-                    </button>
+                    <div style="float: left;"><b>Courts:</b></div>
+                    <div style="margin-left: 65px;">
+                        <button ng-repeat="court in courts" type="button"
+                                ng-class="{'buttonLight': !isCourtSelectedInCourtView(court), 'buttonLightSelected': isCourtSelectedInCourtView(court)}"
+                                ng-click="toggleCourtViewCourtSelection(court)" style="margin-right: 15px; margin-bottom: 3px;">
+                            {{court.name}}
+                        </button>
+                    </div>
                 </div>
 
                 <div style="clear: both;"></div>
             </div>
 
-            <div class="time-column">
-                <div class="not-selected-day-label">&nbsp;</div>
-                <div ng-repeat="timeSlot in timeSlots">
-                    <div class="times">{{timeSlot.fromTime}}</div>
-                    <div class="timeslot-spacer"></div>
-                </div>
-            </div>
-
-            <div class="day-column" ng-repeat="utilization in utilizations">
-                <div ng-class="{'selected-day-label': utilization.isCurrentDate,
-                                'not-selected-day-label': !utilization.isCurrentDate}">
-                    {{utilization.name}}
-                </div>
-                <div ng-repeat="timeSlot in utilization.timeSlots">
-                    <div ng-class="{'past-color': timeSlot.isPast,
-                                    'reserved-color': !timeSlot.isPast && timeSlot.occupied,
-                                    'notreserved-color': !timeSlot.isPast && !timeSlot.occupied && timeSlot.utilization < 0.33,
-                                    'one-third-reserved-color': !timeSlot.isPast && !timeSlot.occupied && timeSlot.utilization >= 0.33 && timeSlot.utilization < 0.66,
-                                    'two-third-reserved-color': !timeSlot.isPast && !timeSlot.occupied && timeSlot.utilization >= 0.66,
-                                    'notreserved-color-clickable': !timeSlot.isPast && !timeSlot.occupied && userInfo.isLoggedIn}"
-                         ng-click="clickTimeSlot(timeSlot, utilization.timeSlots, utilization.date)">
-                        <span ng-show="userInfo.hasAuthority('ADMIN') && !timeSlot.isPast && timeSlot.occupyType == 'SUBSCRIPTION'" class="glyphicon glyphicon-repeat" title="{{timeSlot.caption}}"></span>
-                        <span ng-show="userInfo.hasAuthority('ADMIN') && !timeSlot.isPast" title="{{timeSlot.caption}}">{{timeSlot.caption}}</span>
+            <div ng-repeat="utilization in utilizations" class="reservation-column">
+                <div class="time-column" ng-if="$index % 7 == 0">
+                    <div class="not-selected-day-label">&nbsp;</div>
+                    <div ng-repeat="timeSlot in timeSlots">
+                        <div class="times">{{timeSlot.fromTime}}</div>
+                        <div class="timeslot-spacer"></div>
                     </div>
-                    <div ng-class="{'timeslot-spacer': timeSlot.maxSlots <= 1 || timeSlot.isPast,
-                                    'timeslot-spacer-two-reservable': timeSlot.maxSlots > 1 && !timeSlot.isPast}"></div>
+                </div>
+
+                <div class="day-column">
+                    <div ng-class="{'selected-day-label': utilization.isCurrentDate,
+                                    'not-selected-day-label': !utilization.isCurrentDate}">
+                        {{utilization.name}}
+                    </div>
+                    <div ng-repeat="timeSlot in utilization.timeSlots">
+                        <div ng-class="{'past-color': timeSlot.isPast,
+                                        'reserved-color': !timeSlot.isPast && timeSlot.occupied,
+                                        'notreserved-color': !timeSlot.isPast && !timeSlot.occupied && timeSlot.utilization < 0.33,
+                                        'one-third-reserved-color': !timeSlot.isPast && !timeSlot.occupied && timeSlot.utilization >= 0.33 && timeSlot.utilization < 0.66,
+                                        'two-third-reserved-color': !timeSlot.isPast && !timeSlot.occupied && timeSlot.utilization >= 0.66,
+                                        'notreserved-color-clickable': !timeSlot.isPast && !timeSlot.occupied && userInfo.isLoggedIn}"
+                             ng-click="clickTimeSlot(timeSlot, utilization.timeSlots, utilization.date)">
+                            <span ng-show="userInfo.hasAuthority('ADMIN') && !timeSlot.isPast && timeSlot.occupyType == 'SUBSCRIPTION'" class="glyphicon glyphicon-repeat" title="{{timeSlot.caption}}"></span>
+                            <span ng-show="userInfo.hasAuthority('ADMIN') && !timeSlot.isPast" title="{{timeSlot.caption}}">{{timeSlot.caption}}</span>
+                        </div>
+                        <div ng-class="{'timeslot-spacer': timeSlot.maxSlots <= 1 || timeSlot.isPast,
+                                        'timeslot-spacer-two-reservable': timeSlot.maxSlots > 1 && !timeSlot.isPast}"></div>
+                    </div>
                 </div>
             </div>
         </div>

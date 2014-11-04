@@ -494,10 +494,16 @@ a:hover {
     line-height: 30px;
     text-align: left;
     vertical-align: middle;
-    padding-right: 10px;
+    padding-right: 15px;
+}
+
+.reservation-column {
+    display: inline-block;
+    margin-bottom: 10px;
 }
 
 .time-column {
+    float: left;
     margin: 0;
     display: inline-block;
 }
@@ -507,7 +513,7 @@ a:hover {
     text-align:center;
     margin: 0px 2px;
     width:130px;
-    height: 82px;
+    /*height: 82px;*/
     display: inline-block;
 }
 

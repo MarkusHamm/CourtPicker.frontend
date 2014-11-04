@@ -125,6 +125,13 @@
         Sie können CourtPicker 30 Tage lang gratis testen. <br/>
         Danach würde Ihre konfigurierte Instanz {{monthlyFee}}€ pro Monat kosten (<a href="" ng-click="showPriceTable()">Preistabelle</a>). <br/>
     </p>
+    <div class="spacer15"></div>
+    <p>
+        <label>
+            <input type="checkbox" ng-model="agbsAccepted">
+            Ich akzeptiere die <a href="" ng-click="showAgbModal()">AGBs</a> und die <a href="" ng-click="showDatasecurityModal()">Datenschutzerklärung</a>
+        </label>
+    </p>
 
     <div class="spacer20"></div>
     <a href="#/configureDesign" class="btn btn-lg btn-default">Zurück</a>
@@ -133,14 +140,152 @@
 </div>
 
 <div id="priceTableModal" class="modal fade cpModal">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h2 class="modal-title">CourtPicker Preise</h2>
             </div>
             <div class="modal-body">
-                TO BE FILLED
+                <p>
+                    Je nach Platzanzahl bestimmt sich der Preis für Deinen CourtPicker. Wähle in der folgenden Tabelle die Platzanzahl aus,
+                    die Du mit CourtPicker verwalten willst (egal welche Platzkategorie). In der Zelle unter der Platzanzahl findest Du dann Deinen Preis.
+                    <br>
+                    <br>
+                </p>
+                <table class="table table-hover">
+                    <tr class="active">
+                        <th>Platzanzahl
+                        </th>
+                        <th>1
+                        </th>
+                        <th>2
+                        </th>
+                        <th>3
+                        </th>
+                        <th>4
+                        </th>
+                        <th>5
+                        </th>
+                        <th>6
+                        </th>
+                        <th>7
+                        </th>
+                        <th>8
+                        </th>
+                        <th>9
+                        </th>
+                        <th>10
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>Preis
+                        </td>
+                        <td>20 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>24 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>28 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>32 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>36 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>42 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>48 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>54 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>60 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>66 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                    </tr>
+                    <tr class="active">
+                        <th>Platzanzahl
+                        </th>
+                        <th>11
+                        </th>
+                        <th>12
+                        </th>
+                        <th>13
+                        </th>
+                        <th>14
+                        </th>
+                        <th>15
+                        </th>
+                        <th>16
+                        </th>
+                        <th>17
+                        </th>
+                        <th>18
+                        </th>
+                        <th>19
+                        </th>
+                        <th>20
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>Preis
+                        </td>
+                        <td>74 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>82 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>90 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>98 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>106 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>114 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>122 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>130 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>138 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                        <td>146 <font style="font-size:10px;">&euro;</font>
+                        </td>
+                    </tr>
+                </table>
+                <p>
+                    Alle unsere Preisangaben sind Nettopreise und verstehen sich zzgl. UmSt.
+                    Es fallen keine zusätzlichen Domain-, Hosting- oder Providerkosten an.
+                    Laufende Produktwartung ist inkludiert.
+                </p>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="agbModal" class="modal fade cpModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: 0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <iframe width="100%" height="600" style="border: 0;" name="agb" id="agb" src="/agb.htm?textonly=true">
+                    &lt;p&gt;Ihr Browser kann leider keine eingebetteten Frames anzeigen&lt;/p&gt;
+                </iframe>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="datasecurityModal" class="modal fade cpModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: 0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <iframe width="100%" height="600" style="border: 0;" name="agb" id="agb" src="/datasecuritystatement.htm?textonly=true">
+                    &lt;p&gt;Ihr Browser kann leider keine eingebetteten Frames anzeigen&lt;/p&gt;
+                </iframe>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

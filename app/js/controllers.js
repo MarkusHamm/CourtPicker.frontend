@@ -603,12 +603,13 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.formNewUser = {};
     $scope.errorMessageNewUser = '';
     $scope.errorMessageExistingUser = '';
+    $scope.agbsAccepted = false;
 
     $scope.isNextButtonEnabled = function() {
       if ($scope.registrationType == $scope.registrationTypes.NEWUSER &&
-          $scope.newUserForm.$valid ||
+          $scope.newUserForm.$valid && $scope.agbsAccepted ||
           $scope.registrationType == $scope.registrationTypes.EXISTINGUSER &&
-          $scope.existingUserForm.$valid) {
+          $scope.existingUserForm.$valid && $scope.agbsAccepted) {
           return true;
       }
       return false;
@@ -647,6 +648,14 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
 
     $scope.showPriceTable = function() {
       $('#priceTableModal').modal('show');
+    }
+
+    $scope.showAgbModal = function() {
+      $('#agbModal').modal('show');
+    }
+
+    $scope.showDatasecurityModal = function() {
+      $('#datasecurityModal').modal('show');
     }
 
     var init = function() {
