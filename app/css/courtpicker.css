@@ -505,7 +505,7 @@ a:hover {
 .time-column {
     float: left;
     margin: 0;
-    display: inline-block;
+    display: block;
 }
 
 .day-column {
@@ -515,6 +515,15 @@ a:hover {
     width:130px;
     /*height: 82px;*/
     display: inline-block;
+}
+
+.day-column-withtime {
+    vertical-align:top;
+    text-align:center;
+    margin: 0px 2px 0px 57px;
+    width:130px;
+    /*height: 82px;*/
+    display: block;
 }
 
 .selected-day-label {

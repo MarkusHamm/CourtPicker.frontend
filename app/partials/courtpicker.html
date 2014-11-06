@@ -64,7 +64,7 @@
                     </div>
                 </div>
 
-                <div class="day-column">
+                <div ng-class="{'day-column-withtime': $index % 7 == 0, 'day-column': $index % 7 > 0}">
                     <div ng-class="{'selected-day-label': utilization.isCurrentDate,
                                     'not-selected-day-label': !utilization.isCurrentDate}">
                         {{utilization.name}}
