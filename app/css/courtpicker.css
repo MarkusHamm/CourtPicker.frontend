@@ -500,6 +500,7 @@ a:hover {
 .reservation-column {
     display: inline-block;
     margin-bottom: 10px;
+    overflow: hidden;
 }
 
 .time-column {
@@ -524,6 +525,7 @@ a:hover {
     width:130px;
     /*height: 82px;*/
     display: block;
+    overflow: hidden;
 }
 
 .selected-day-label {
