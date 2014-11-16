@@ -525,7 +525,7 @@ a:hover {
     width:130px;
     /*height: 82px;*/
     display: block;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .selected-day-label {
