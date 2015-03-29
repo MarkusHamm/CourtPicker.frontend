@@ -6,7 +6,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
 
   /* --------------------- CONFIGURATOR ----------------------- */
 
-  .controller('ConfigureCourtsController', ['$scope', 'RESTCourtCategory', 'RESTCourt', 'RESTCpInstance', '$rootScope', function($scope, RESTCourtCategory, RESTCourt, RESTCpInstance, $rootScope) {
+  .controller('ConfigureCourtsController', ['$scope', 'RESTCourtCategory', 'RESTCourt', 'RESTCpInstance', 'UtilService', '$rootScope', function($scope, RESTCourtCategory, RESTCourt, RESTCpInstance, UtilService, $rootScope) {
     // TODO: (maybe in REST-stuff) check backend status
 
     $scope.courtCategories = [];
@@ -49,7 +49,11 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.saveCourtCategory = function() {
       var isAdd = ($scope.formCourtCategory.id == null);
 
-      $scope.formCourtCategory = RESTCourtCategory.save($scope.formCourtCategory);
+      $scope.formCourtCategory = RESTCourtCategory.save($scope.formCourtCategory, function(result) {
+        if (isAdd) {
+          result.courtCount = 0;
+        }
+      });
       $scope.displayCourtCategoryForm = false;
 
       // new
@@ -74,8 +78,28 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     };
     
     $scope.getAllCourtCategories = function() {
-      $scope.courtCategories = RESTCourtCategory.getAll({cpInstanceId: $rootScope.cpInstance.id});
+      $scope.tmpCourtCategoriesToCourts = new Array();
+      $scope.courtCategories = RESTCourtCategory.getAll({cpInstanceId: $rootScope.cpInstance.id}, function() {
+        for(var i=0; i<$scope.courtCategories.length; i++) {
+          var courtCategory = $scope.courtCategories[i];
+          $scope.tmpCourtCategoriesToCourts[courtCategory.id] = RESTCourt.getAll({courtCategoryId: courtCategory.id}, function(courts, xx, i) {
+            updateCourtCount();
+          });
+        }
+      });
     };
+
+    $scope.hasCourtsAssigned = function(courtCategory) {
+      return (typeof courtCategory.courtCount === "undefined" || courtCategory.courtCount > 0);
+    }
+
+    var updateCourtCount = function() {
+      for (var index in $scope.tmpCourtCategoriesToCourts) {
+        var count = $scope.tmpCourtCategoriesToCourts[index].length;
+        var courtCategory = UtilService.getObjectById(index, $scope.courtCategories);
+        courtCategory.courtCount = count;
+      }
+    }
 
     $scope.showCourtForm = function(court) {
       if (court == null) {
@@ -98,6 +122,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       // new
       if (isAdd) {
         $scope.courts.push($scope.formCourt);
+        $scope.selectedCourtCategory.courtCount++;
       }
       // edit existing
       else {
@@ -113,12 +138,18 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       RESTCourt.remove({id: court.id}, '');
       var removeIndex = $scope.courts.indexOf(court);
       $scope.courts.splice(removeIndex, 1);
+      $scope.selectedCourtCategory.courtCount--;
     };
 
     $scope.saveCpInstanceIfInputValid = function() {
       if ($scope.formInstance.$valid) {
         $rootScope.cpInstance = RESTCpInstance.save($rootScope.cpInstance);
       }
+    }
+
+    $scope.showCourtsModal = function(courtCategory) {
+      $scope.selectCourtCategory(courtCategory);
+      $('#courtsModal').modal('show');
     }
 
     var createNewCourtCategory = function() {
@@ -138,7 +169,8 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
         orderNr: nextOrderNr,
         bookableFromTime: '',
         bookableToTime: '',
-        bookingUnit: 60
+        bookingUnit: 60,
+        courtCount: 0
       };
     };
 

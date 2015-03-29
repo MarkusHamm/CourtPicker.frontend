@@ -1,7 +1,7 @@
 <div ng-controller="ConfigureCourtsController">
     <p ng-show="showConfiguratorNavigation">
-        Auf dieser Seite kannst Du den Namen Deiner Anlage bzw. Deines Vereins festlegen sowie die Plätze die Du mit Deinem CourtPicker verwalten willst. <br/>
-        Folge den Anweisungen unten. Klicke dann auf "Weiter" um die Reservierungstarife zu definieren.
+        Auf dieser Seite können Sie den Namen Ihrer Anlage bzw. Ihres Vereins festlegen sowie die Plätze die Sie mit Ihrem CourtPicker verwalten wollen. <br/>
+        Folgen Sie den Anweisungen unten und klicken Sie dann auf "Weiter" um die Reservierungstarife zu definieren.
     </p>
 
     <div class="page-header" style="margin-top: 0;">
@@ -10,7 +10,7 @@
 
     <form name="formInstance" novalidate class="form-horizontal">
         <div class="form-group">
-            <label class="col-xs-2 control-label">Name Deiner Anlage</label>
+            <label class="col-xs-2 control-label">Name Ihrer Anlage*</label>
             <div class="col-xs-3">
                 <input type="text" name="instanceName" ng-model="cpInstance.name" ng-trim="true" required
                        class="form-control" my-on-blur="saveCpInstanceIfInputValid()" />
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-xs-2 control-label">CourtPicker URL</label>
+            <label class="col-xs-2 control-label">Anzeigename*</label>
             <div class="col-xs-3">
                 <input type="text" name="instanceShortName" ng-model="cpInstance.shortName" ng-trim="true" required
                        class="form-control" my-on-blur="saveCpInstanceIfInputValid()" my-validate-unique-cp-shortname
@@ -28,22 +28,20 @@
                 <div class="error" ng-show="formInstance.instanceShortName.$error.unique && formInstance.instanceShortName.$dirty">Bereits vergeben</div>
                 <div class="error" ng-show="formInstance.instanceShortName.$error.pattern && formInstance.instanceShortName.$dirty">Nur alphanumerische Zeichen erlaubt</div>
             </div>
-            <div class="col-xs-6 form-control-static text-muted">
+            <div class="col-xs-6 form-control-static text-muted" ng-show="cpInstance.shortName">
                 Ihr Courtpicker wird unter der URL <b>http://courtpicker.com/{{cpInstance.shortName}}</b> erreichbar sein
             </div>
         </div>
     </form>
 
     <div class="page-header">
-        <h1>Plätze</h1>
+        <h1>Platzarten</h1>
     </div>
 
     <p ng-show="showConfiguratorNavigation">
-        Erstelle zuerst die Platzarten die Du verwalten willst, z.B. Tennis, Badminton, Squash. <br/>
-        Danach kannst du eine der erstellten Platzarten anklicken und einzelne Plätze für diese Platzart hinzufügen.
+        Erstellen Sie zuerst die Platzarten die Sie verwalten wollen, z.B. Tennis, Badminton, Squash. <br/>
+        Danach können Sie Plätze für diese Platzart hinzufügen.
     </p>
-
-    <h2>Platzarten</h2>
 
     <table id="ccTable" class="table table-hover" style="width: 800px;">
         <tbody>
@@ -58,6 +56,11 @@
             <td>
                 <button type="button" ng-click="deleteCourtCategory(courtCategory)" class="btn btn-xs btn-default">
                     <span class="glyphicon glyphicon-remove"></span> Löschen
+                </button>
+            </td>
+            <td>
+                <button type="button" ng-click="showCourtsModal(courtCategory)" class="btn btn-xs btn-default" ng-class="{'btn-danger': !hasCourtsAssigned(courtCategory)}">
+                    <span class="glyphicon glyphicon-search"></span> {{courtCategory.name}}plätze bearbeiten
                 </button>
             </td>
         </tr>
@@ -146,53 +149,68 @@
 
     <div class="spacer20"></div>
 
-    <h2>Plätze</h2>
-
-    <table id="cTable" class="table table-hover" style="width: 800px;">
-        <tbody>
-        <tr ng-repeat="court in courts" ng-click="selectCourt(court)" ng-class="{active: isCourtCategorySelected(courtCategory)}">
-            <td>{{court.name}}</td>
-            <td>
-                <button type="button" ng-click="showCourtForm(court)" class="btn btn-xs btn-default">
-                    <span class="glyphicon glyphicon-pencil"></span> Bearbeiten
-                </button>
-            </td>
-            <td>
-                <button type="button" ng-click="deleteCourt(court)" class="btn btn-xs btn-default">
-                    <span class="glyphicon glyphicon-remove"></span> Löschen
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <button ng-click="showCourtForm()" ng-disabled="selectedCourtCategory == null" class="btn btn-default">
-        <span class="glyphicon glyphicon-plus"></span> Platz hinzufügen
-    </button>
-
-    <div ng-show="displayCourtForm">
-        <div class="spacer30"></div>
-        <form name="courtForm" ng-submit="saveCourt()" novalidate class="form-horizontal">
-            <fieldset>
-                <legend>Platz</legend>
-                <div class="form-group">
-                    <label class="col-xs-1 control-label">Name</label>
-                    <div class="col-xs-3">
-                        <input type="text" name="name" ng-model="formCourt.name" ng-trim="true" required
-                               my-focus-on="displayCourtForm" class="form-control"/>
-                        <span class="error" ng-show="courtForm.name.$invalid && courtForm.name.$dirty">Required!</span>
-                    </div>
-                </div>
-                <button type="submit" name="courtSubmit" ng-disabled="courtForm.$invalid" class="btn btn-primary">Speichern</button>
-                <button type="button" ng-click="hideCourtForm()" class="btn btn-default">Abbrechen</button>
-                <div class="spacer20"></div>
-            </fieldset>
-        </form>
-    </div>
-
     <div ng-show="showConfiguratorNavigation">
         <div class="spacer30"></div>
         <a href="#/configureRates" class="btn btn-lg btn-primary" ng-disabled="formInstance.$invalid">Weiter</a>
         <div class="spacer10"></div>
     </div>
+
+    <div id="courtsModal" class="modal fade cpModal">
+        <div class="modal-dialog reservation-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h2 class="modal-title">{{selectedCourtCategory.name}}plätze</h2>
+                </div>
+                <div class="modal-body">
+                    <table id="cTable" class="table table-hover">
+                        <tbody>
+                        <tr ng-repeat="court in courts" ng-click="selectCourt(court)" ng-class="{active: isCourtCategorySelected(courtCategory)}">
+                            <td>{{court.name}}</td>
+                            <td>
+                                <button type="button" ng-click="showCourtForm(court)" class="btn btn-xs btn-default">
+                                    <span class="glyphicon glyphicon-pencil"></span> Bearbeiten
+                                </button>
+                                &nbsp;&nbsp;
+                                <button type="button" ng-click="deleteCourt(court)" class="btn btn-xs btn-default">
+                                    <span class="glyphicon glyphicon-remove"></span> Löschen
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <button ng-click="showCourtForm()" ng-disabled="selectedCourtCategory == null" class="btn btn-default">
+                        <span class="glyphicon glyphicon-plus"></span> Platz hinzufügen
+                    </button>
+
+                    <div ng-show="displayCourtForm">
+                        <div class="spacer30"></div>
+                        <form name="courtForm" ng-submit="saveCourt()" novalidate class="form-horizontal">
+                            <fieldset>
+                                <legend>Platz</legend>
+                                <div class="form-group">
+                                    <label class="col-xs-1 control-label">Name</label>
+                                    <div class="col-xs-3">
+                                        <input type="text" name="name" ng-model="formCourt.name" ng-trim="true" required
+                                               my-focus-on="displayCourtForm" class="form-control"/>
+                                        <span class="error" ng-show="courtForm.name.$invalid && courtForm.name.$dirty">Required!</span>
+                                    </div>
+                                </div>
+                                <button type="submit" name="courtSubmit" ng-disabled="courtForm.$invalid" class="btn btn-primary">Speichern</button>
+                                <button type="button" ng-click="hideCourtForm()" class="btn btn-default">Abbrechen</button>
+                                <div class="spacer20"></div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <!--
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+                -->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 </div>
