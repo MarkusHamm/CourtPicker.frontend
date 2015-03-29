@@ -1,7 +1,7 @@
 <div ng-controller="ConfigureCourtsController">
     <p ng-show="showConfiguratorNavigation">
-        Auf dieser Seite können Sie den Namen Ihrer Anlage bzw. Ihres Vereins festlegen sowie die Plätze die Sie mit Ihrem CourtPicker verwalten wollen. <br/>
-        Folgen Sie den Anweisungen unten und klicken Sie dann auf "Weiter" um die Reservierungstarife zu definieren.
+        Legen Sie hier den Namen Ihrer Anlage, sowie die zu verwaltenden Plätze fest.<br/>
+        Folgen Sie den Anweisungen und klicken sie anschließend unten auf "Weiter".
     </p>
 
     <div class="page-header" style="margin-top: 0;">
@@ -39,8 +39,7 @@
     </div>
 
     <p ng-show="showConfiguratorNavigation">
-        Erstellen Sie zuerst die Platzarten die Sie verwalten wollen, z.B. Tennis, Badminton, Squash. <br/>
-        Danach können Sie Plätze für diese Platzart hinzufügen.
+        Erstellen Sie zuerst die zu verwaltenden Platzarten (Tennis, Fußball, Badminton, ...) und danach die zugehörigen Plätze.
     </p>
 
     <table id="ccTable" class="table table-hover" style="width: 800px;">
@@ -49,18 +48,18 @@
             ng-class="{active: isCourtCategorySelected(courtCategory)}">
             <td>{{courtCategory.name}}</td>
             <td>
+                <button type="button" ng-click="showCourtsModal(courtCategory)" class="btn btn-xs btn-default" ng-class="{'btn-danger': !hasCourtsAssigned(courtCategory)}">
+                    <span class="glyphicon glyphicon-search"></span> {{courtCategory.name}}plätze bearbeiten
+                </button>
+            </td>
+            <td>
                 <button type="button" ng-click="showCourtCategoryForm(courtCategory)" class="btn btn-xs btn-default">
-                    <span class="glyphicon glyphicon-pencil"></span> Bearbeiten
+                    <span class="glyphicon glyphicon-pencil"></span> Kategorie Bearbeiten
                 </button>
             </td>
             <td>
                 <button type="button" ng-click="deleteCourtCategory(courtCategory)" class="btn btn-xs btn-default">
-                    <span class="glyphicon glyphicon-remove"></span> Löschen
-                </button>
-            </td>
-            <td>
-                <button type="button" ng-click="showCourtsModal(courtCategory)" class="btn btn-xs btn-default" ng-class="{'btn-danger': !hasCourtsAssigned(courtCategory)}">
-                    <span class="glyphicon glyphicon-search"></span> {{courtCategory.name}}plätze bearbeiten
+                    <span class="glyphicon glyphicon-remove"></span> Kategorie Löschen
                 </button>
             </td>
         </tr>
