@@ -165,3 +165,7 @@ input:focus.ng-invalid.ng-dirty {
 .modal-lg {
     width: 900px;
 }
+
+.dropdown-menu {
+    z-index: 2000;
+}

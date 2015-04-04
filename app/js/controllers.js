@@ -195,8 +195,8 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.getAllCourtCategories();
   }])
 
-  .controller('ConfigureRatesController', ['$scope', 'RESTCourtCategory', 'RESTSingleRate', 'RESTUserGroup', 'RESTSubscription', 'RESTSubscriptionRate', '$rootScope',
-                                   function($scope, RESTCourtCategory, RESTSingleRate, RESTUserGroup, RESTSubscription, RESTSubscriptionRate, $rootScope) {
+  .controller('ConfigureRatesController', ['$scope', 'RESTCourtCategory', 'RESTSingleRate', 'RESTUserGroup', 'RESTSubscription', 'RESTSubscriptionRate', 'UtilService', '$rootScope',
+                                   function($scope, RESTCourtCategory, RESTSingleRate, RESTUserGroup, RESTSubscription, RESTSubscriptionRate, UtilService, $rootScope) {
     $scope.courtCategories = [];
     $scope.selectedCourtCategory = null;
     // can be either 'RATE' or 'SUBSCRIPTIONRATE'
@@ -224,10 +224,34 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
 
     $scope.selectTypeSubscriptionRate = function() {
       $scope.selectedRateType = 'SUBSCRIPTIONRATE';
-      $scope.subscriptions = RESTSubscription.getAll({courtCategoryId: $scope.selectedCourtCategory.id});
+      $scope.getAllSubscriptions();
       $scope.displaySubscriptionRateForm = false;
       $scope.selectedSubscription = null;
       $scope.subscriptionRates = [];
+    }
+
+    $scope.getAllSubscriptions = function() {
+      $scope.tmpSubscriptionToSubscriptionRates = new Array();
+      $scope.subscriptions = RESTSubscription.getAll({courtCategoryId: $scope.selectedCourtCategory.id}, function() {
+        for(var i=0; i<$scope.subscriptions.length; i++) {
+          var subscription = $scope.subscriptions[i];
+          $scope.tmpSubscriptionToSubscriptionRates[subscription.id] = RESTSubscriptionRate.getAll({subscriptionId: subscription.id}, function() {
+            updateSubscriptionRateCount();
+          });
+        }
+      });
+    }
+
+    var updateSubscriptionRateCount = function() {
+      for (var index in $scope.tmpSubscriptionToSubscriptionRates) {
+        var count = $scope.tmpSubscriptionToSubscriptionRates[index].length;
+        var subscription = UtilService.getObjectById(index, $scope.subscriptions);
+        subscription.rateCount = count;
+      }
+    }
+
+    $scope.hasSubscriptionRatesAssigned = function(subscription) {
+      return (typeof subscription.rateCount === "undefined" || subscription.rateCount > 0);
     }
 
     $scope.selectCourtCategory = function(courtCategory) {
@@ -377,10 +401,15 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     $scope.saveSubscription = function(subscription) {
-      $scope.formSubscription = RESTSubscription.save($scope.formSubscription);
+      var isAdd = ($scope.formSubscription.id == null);
+
+      $scope.formSubscription = RESTSubscription.save($scope.formSubscription, function(result) {
+        if (isAdd) {
+          result.rateCount = 0;
+        }
+      });
       $scope.displaySubscriptionForm = false;
 
-      var isAdd = ($scope.formSubscription.id == null);
       // new
       if (isAdd) {
         $scope.subscriptions.push($scope.formSubscription);
@@ -427,6 +456,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       // new
       if (isAdd) {
         $scope.subscriptionRates.push($scope.formSubscriptionRate);
+        $scope.selectedSubscription.rateCount++;
       }
       // edit existing
       else {
@@ -438,6 +468,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       RESTSubscriptionRate.remove({id: rate.id}, '');
       var removeIndex = $scope.subscriptionRates.indexOf(rate);
       $scope.subscriptionRates.splice(removeIndex, 1);
+      $scope.selectedSubscription.rateCount--;
     };
 
     $scope.hideSubscriptionRateForm = function() {
@@ -453,7 +484,8 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
         periodEnd: '',
         bookableFrom: '',
         bookableTo: '',
-        orderNr: 1
+        orderNr: 1,
+        rateCount: 0
       }
     }
 
@@ -490,6 +522,11 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       if(removeIndex != -1) {
         $scope.formSubscriptionRate.cUserGroupIds.splice(removeIndex, 1);
       }
+    }
+
+    $scope.showSubscriptionRateModal = function(subscription) {
+      $scope.selectSubscription(subscription);
+      $('#subscriptionRateModal').modal('show');
     }
 
     // -- init --
