@@ -70,12 +70,13 @@
                         {{utilization.name}}
                     </div>
                     <div ng-repeat="timeSlot in utilization.timeSlots">
-                        <div ng-class="{'past-color': timeSlot.isPast,
-                                        'reserved-color': !timeSlot.isPast && timeSlot.occupied,
-                                        'notreserved-color': !timeSlot.isPast && !timeSlot.occupied && timeSlot.utilization < 0.33,
-                                        'one-third-reserved-color': !timeSlot.isPast && !timeSlot.occupied && timeSlot.utilization >= 0.33 && timeSlot.utilization < 0.66,
-                                        'two-third-reserved-color': !timeSlot.isPast && !timeSlot.occupied && timeSlot.utilization >= 0.66,
-                                        'notreserved-color-clickable': !timeSlot.isPast && !timeSlot.occupied && userInfo.isLoggedIn}"
+                        <div ng-class="{
+                                        'reserved-color': timeSlot.occupied,
+                                        'notreserved-color': !timeSlot.occupied && timeSlot.utilization < 0.33,
+                                        'one-third-reserved-color': !timeSlot.occupied && timeSlot.utilization >= 0.33 && timeSlot.utilization < 0.66,
+                                        'two-third-reserved-color': !timeSlot.occupied && timeSlot.utilization >= 0.66,
+                                        'notreserved-color-clickable': !timeSlot.isPast && !timeSlot.occupied && userInfo.isLoggedIn,
+                                        'past-color': timeSlot.isPast}"
                              ng-click="clickTimeSlot(timeSlot, utilization.timeSlots, utilization.date)">
                             <span ng-show="userInfo.hasAuthority('ADMIN') && !timeSlot.isPast && timeSlot.occupyType == 'SUBSCRIPTION'" class="glyphicon glyphicon-repeat" title="{{timeSlot.caption}}"></span>
                             <span ng-show="userInfo.hasAuthority('ADMIN') && !timeSlot.isPast" title="{{timeSlot.caption}}">{{timeSlot.caption}}</span>

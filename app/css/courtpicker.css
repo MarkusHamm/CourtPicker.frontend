@@ -443,8 +443,11 @@ a:hover {
 }
 
 .past-color {
+    /*
     background-color: #efefef;
     height:30px;
+    */
+    opacity: 0.3;
 }
 
 .notreserved-color {
