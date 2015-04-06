@@ -863,7 +863,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     init();
   }])
 
-  .controller('ReservationController', ['$scope', '$rootScope', 'RESTCourtCategory', 'RESTCourt', 'CpService', 'DateService', 'UserService', 'UtilService', '$filter', function($scope, $rootScope, RESTCourtCategory, RESTCourt, CpService, DateService, UserService, UtilService, $filter) {
+  .controller('ReservationController', ['$scope', '$rootScope', 'RESTCourtCategory', 'RESTCourt', 'CpService', 'DateService', 'UserService', 'UtilService', '$filter', '$timeout', function($scope, $rootScope, RESTCourtCategory, RESTCourt, CpService, DateService, UserService, UtilService, $filter, $timeout) {
     $scope.viewTypes = { WEEKVIEW: 0, COURTVIEW: 1};
     $scope.dateService = DateService;
     $scope.userInfo = UserService;
@@ -894,6 +894,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     $scope.createReservationCustomer = false;
     $scope.createReservationCustomerEmail = '';
     $scope.comment = '';
+    $scope.showBookingFeedback = false;
 
     $scope.selectViewCourtView = function() {
       $scope.selectedView = $scope.viewTypes.COURTVIEW;
@@ -1038,7 +1039,8 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     var processSingleReservationResult = function(result) {
       if (result.data != 'false') {
         $scope.loadUtilization(); // reload
-        $('#reservationModal').modal('hide');
+        $scope.showBookingFeedback = true;
+        $timeout(function() { $('#reservationModal').modal('hide'); }, 6000);
       }
       else {
         alert('Die gewählte Stunde wurde bereits reserviert')
@@ -1348,7 +1350,8 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     var processSubscriptionReservationResult = function(result) {
       if (result.data != 'false') {
         $scope.loadUtilization(); // reload
-        $('#subscriptionReservationModal').modal('hide');
+        $scope.showBookingFeedback = true;
+        $timeout(function() { $('#subscriptionReservationModal').modal('hide'); }, 6000);
       }
       else {
         alert('Das gewählte Abo ist leider nicht mehr buchbar, da es schon belegt ist.')
@@ -1493,6 +1496,13 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       CpService.getAllUserExtract().then(function(result) {
         $scope.users = result.data;
       });
+
+      $('#reservationModal').on('hidden.bs.modal', function (e) {
+        $scope.showBookingFeedback = false;
+      })
+      $('#subscriptionReservationModal').on('hidden.bs.modal', function (e) {
+        $scope.showBookingFeedback = false;
+      })
     }
 
     init();

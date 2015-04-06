@@ -102,7 +102,23 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h2 class="modal-title">Platz buchen</h2>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" ng-show="showBookingFeedback">
+                    <p class="text-success">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        Ihre Buchung war erfolgreich! <br/>
+                        <span class="glyphicon" aria-hidden="true"></span>
+                        Sie erhalten in kürze eine Bestätigungs E-Mail.
+                    </p>
+                    <p class="text-muted">
+                        <span class="glyphicon glyphicon-euro" aria-hidden="true"></span>
+                        Die Bezahlung erfolgt vor Ort.
+                    </p>
+                    <p class="text-muted">
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                        Ihre Buchungen können Sie jederzeit im Kundenbereich verwalten.
+                    </p>
+                </div>
+                <div class="modal-body" ng-show="!showBookingFeedback">
                     <form name="reservationForm">
                         <div class="row">
                             <div class="col-xs-2"><b>Datum</b></div>
@@ -180,7 +196,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" ng-show="!showBookingFeedback">
                     <button type="button" class="button" style="width: 400px;" ng-click="makeSingleReservation()" ng-disabled="reservationForm.$invalid">Buchen</button>
                     <button type="button" class="button" style="width: 110px;" data-dismiss="modal">Abbrechen</button>
                 </div>
@@ -195,7 +211,23 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h2 class="modal-title">Abo buchen</h2>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" ng-show="showBookingFeedback">
+                    <p class="text-success">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        Ihre Abo Buchung war erfolgreich! <br/>
+                        <span class="glyphicon" aria-hidden="true"></span>
+                        Sie erhalten in kürze eine Bestätigungs E-Mail.
+                    </p>
+                    <p class="text-muted">
+                        <span class="glyphicon glyphicon-euro" aria-hidden="true"></span>
+                        Die Bezahlung erfolgt vor Ort.
+                    </p>
+                    <p class="text-muted">
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                        Ihre Buchungen können Sie jederzeit im Kundenbereich verwalten.
+                    </p>
+                </div>
+                <div class="modal-body" ng-show="!showBookingFeedback">
                     <form name="subscriptionReservationForm">
                         <div class="row">
                             <div class="col-xs-2"><b>Abo</b></div>
@@ -295,7 +327,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" ng-show="!showBookingFeedback">
                     <button type="button" class="button" style="width: 400px;" ng-click="makeSubscriptionReservation()" ng-disabled="subscriptionReservationForm.$invalid">Buchen</button>
                     <button type="button" class="button" style="width: 110px;" data-dismiss="modal">Abbrechen</button>
                 </div>
