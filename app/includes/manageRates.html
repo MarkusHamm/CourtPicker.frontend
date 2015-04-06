@@ -397,9 +397,8 @@
                             <span class="glyphicon glyphicon-plus"></span> Abo Tarif hinzufügen
                         </button>
 
-                        <div class="spacer20"></div>
-
                         <div ng-show="displaySubscriptionRateForm">
+                            <div class="spacer20"></div>
                             <h3>Abo Tarif</h3>
                             <form name="subscriptionRateForm" novalidate class="form-horizontal" role="form">
                                 <fieldset>
@@ -506,9 +505,11 @@
                                 <div class="spacer10"></div>
                                 <button type="submit" name="submit" class="btn btn-primary" ng-click="saveSubscriptionRate()" ng-disabled="subscriptionRateForm.$invalid">Speichern</button>
                                 <button type="button" class="btn btn-default" ng-click="hideSubscriptionRateForm()">Abbrechen</button>
-                                <div class="spacer10"></div>
                             </form>
                         </div>
+
+                        <div class="spacer25"></div>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Schließen</button>
                     </div>
                 </div>
                 <!--
