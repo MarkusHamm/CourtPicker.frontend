@@ -118,7 +118,13 @@
                         Ihre Buchungen können Sie jederzeit im Kundenbereich verwalten.
                     </p>
                 </div>
-                <div class="modal-body" ng-show="!showBookingFeedback">
+                <div class="modal-body" ng-show="calculatedReservationPrice == -1">
+                    <p>
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                        Diese Stunde ist nicht buchbar, da kein Tarif für sie definiert ist.
+                    </p>
+                </div>
+                <div class="modal-body" ng-show="!showBookingFeedback && calculatedReservationPrice != -1">
                     <form name="reservationForm">
                         <div class="row">
                             <div class="col-xs-2"><b>Datum</b></div>
@@ -196,7 +202,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer" ng-show="!showBookingFeedback">
+                <div class="modal-footer" ng-show="!showBookingFeedback && calculatedReservationPrice != -1">
                     <button type="button" class="button" style="width: 400px;" ng-click="makeSingleReservation()" ng-disabled="reservationForm.$invalid">Buchen</button>
                     <button type="button" class="button" style="width: 110px;" data-dismiss="modal">Abbrechen</button>
                 </div>
@@ -211,7 +217,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h2 class="modal-title">Abo buchen</h2>
                 </div>
-                <div class="modal-body" ng-show="showBookingFeedback">
+                <div class="modal-body" ng-show="showBookingFeedback && calculatedSubReservationPrice != -1">
                     <p class="text-success">
                         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                         Ihre Abo Buchung war erfolgreich! <br/>
@@ -280,54 +286,63 @@
                             <div class="col-xs-4"><select ng-model="selectedSubCourt" ng-options="court.name for court in availableSubCourts" ng-change="selectSubCourt()" class="minwidth-200" required></select></div>
                         </div>
                         <div class="spacer10"></div>
-                        <div class="row">
-                            <div class="col-xs-2"><b>Preis</b></div>
-                            <div class="col-xs-2" ng-class="{'strikeText': overrideSubReservationPrice}">{{calculatedSubReservationPrice|currency:'€ '}}</div>
-                            <div class="col-xs-2" ng-show="userInfo.hasAuthority('ADMIN')" style="padding: 0;">
-                                <label>
-                                    <input type="checkbox" ng-model="overrideSubReservationPrice" ng-change="changeSubReservationPriceOverride()"/> anpassen
-                                </label>
+                        <div ng-show="calculatedSubReservationPrice != -1">
+                            <div class="row">
+                                <div class="col-xs-2"><b>Preis</b></div>
+                                <div class="col-xs-2" ng-class="{'strikeText': overrideSubReservationPrice}">{{calculatedSubReservationPrice|currency:'€ '}}</div>
+                                <div class="col-xs-2" ng-show="userInfo.hasAuthority('ADMIN')" style="padding: 0;">
+                                    <label>
+                                        <input type="checkbox" ng-model="overrideSubReservationPrice" ng-change="changeSubReservationPriceOverride()"/> anpassen
+                                    </label>
+                                </div>
+                                <div class="col-xs-4" ng-show="overrideSubReservationPrice">
+                                    <input type="text" ng-model="subReservationPrice" name="overrideSubReservationPrice" my-decimal-separator-converter
+                                           ng-pattern="/^[0-9]+(|[\.,][0-9]|[\.,][0-9][0-9])$/" ng-required="userInfo.hasAuthority('ADMIN') && overrideSubReservationPrice" style="width: 100%;" />
+                                    <span class="error" ng-show="subscriptionReservationForm.overrideSubReservationPrice.$error.pattern">Ungültiger Preis</span>
+                                </div>
                             </div>
-                            <div class="col-xs-4" ng-show="overrideSubReservationPrice">
-                                <input type="text" ng-model="subReservationPrice" name="overrideSubReservationPrice" my-decimal-separator-converter
-                                       ng-pattern="/^[0-9]+(|[\.,][0-9]|[\.,][0-9][0-9])$/" ng-required="userInfo.hasAuthority('ADMIN') && overrideSubReservationPrice" style="width: 100%;" />
-                                <span class="error" ng-show="subscriptionReservationForm.overrideSubReservationPrice.$error.pattern">Ungültiger Preis</span>
+                            <div class="row" ng-show="userInfo.hasAuthority('ADMIN')">
+                                <div class="spacer10"></div>
+                                <div class="col-xs-2"><b>Kunde</b></div>
+                                <div class="col-xs-8" style="width: 422px">
+                                    <input type="text" ng-model="subReservationCustomerName" name="subReservationCustomer"
+                                           typeahead="user as user.firstName + ' ' + user.lastName + ' (' + user.userName + '), ' + user.email for user in users | userFilter: $viewValue"
+                                           typeahead-on-select="selectSubReservationCustomer()"
+                                           ng-disabled="subReservationCustomerSelected" ng-required="userInfo.hasAuthority('ADMIN')" style="width: 93%;" />
+                                    <span class="glyphicon glyphicon-remove" style="cursor: default" ng-show="subReservationCustomerSelected" ng-click="deselectSubReservationCustomer()"></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row" ng-show="userInfo.hasAuthority('ADMIN')">
+                            <div class="row" ng-show="userInfo.hasAuthority('ADMIN') && !subReservationCustomerSelected && !subscriptionReservationForm.subReservationCustomer.$error.required">
+                                <div class="spacer5"></div>
+                                <div class="col-xs-2">&nbsp;</div>
+                                <div class="col-xs-4">
+                                    <label>
+                                        <input type="checkbox" ng-model="createSubReservationCustomer" ng-change="changeSubReservationCustomer()"/> Benutzer anlegen
+                                    </label>
+                                </div>
+                                <div class="col-xs-4" ng-show="createSubReservationCustomer">
+                                    <input type="email" ng-model="createSubReservationCustomerEmail" name="createSubReservationCustomerEmail" ng-required="createSubReservationCustomer" placeholder="E-Mail" style="width: 100%;"/>
+                                    <span class="error" ng-show="subscriptionReservationForm.createSubReservationCustomerEmail.$error.email && subscriptionReservationForm.createSubReservationCustomerEmail.$dirty">Ungültige E-Mail Adresse</span>
+                                </div>
+                            </div>
                             <div class="spacer10"></div>
-                            <div class="col-xs-2"><b>Kunde</b></div>
-                            <div class="col-xs-8" style="width: 422px">
-                                <input type="text" ng-model="subReservationCustomerName" name="subReservationCustomer"
-                                       typeahead="user as user.firstName + ' ' + user.lastName + ' (' + user.userName + '), ' + user.email for user in users | userFilter: $viewValue"
-                                       typeahead-on-select="selectSubReservationCustomer()"
-                                       ng-disabled="subReservationCustomerSelected" ng-required="userInfo.hasAuthority('ADMIN')" style="width: 93%;" />
-                                <span class="glyphicon glyphicon-remove" style="cursor: default" ng-show="subReservationCustomerSelected" ng-click="deselectSubReservationCustomer()"></span>
+                            <div class="row">
+                                <div class="col-xs-2"><b>Kommentar</b></div>
+                                <div class="col-xs-8" style="width: 422px;">
+                                    <textarea ng-model="subComment" name="comment" rows="2" style="width: 100%;"></textarea>
+                                </div>
                             </div>
                         </div>
-                        <div class="row" ng-show="userInfo.hasAuthority('ADMIN') && !subReservationCustomerSelected && !subscriptionReservationForm.subReservationCustomer.$error.required">
-                            <div class="spacer5"></div>
-                            <div class="col-xs-2">&nbsp;</div>
-                            <div class="col-xs-4">
-                                <label>
-                                    <input type="checkbox" ng-model="createSubReservationCustomer" ng-change="changeSubReservationCustomer()"/> Benutzer anlegen
-                                </label>
-                            </div>
-                            <div class="col-xs-4" ng-show="createSubReservationCustomer">
-                                <input type="email" ng-model="createSubReservationCustomerEmail" name="createSubReservationCustomerEmail" ng-required="createSubReservationCustomer" placeholder="E-Mail" style="width: 100%;"/>
-                                <span class="error" ng-show="subscriptionReservationForm.createSubReservationCustomerEmail.$error.email && subscriptionReservationForm.createSubReservationCustomerEmail.$dirty">Ungültige E-Mail Adresse</span>
-                            </div>
-                        </div>
-                        <div class="spacer10"></div>
-                        <div class="row">
-                            <div class="col-xs-2"><b>Kommentar</b></div>
-                            <div class="col-xs-8" style="width: 422px;">
-                                <textarea ng-model="subComment" name="comment" rows="2" style="width: 100%;"></textarea>
+                        <div ng-show="calculatedSubReservationPrice == -1">
+                            <div class="row">
+                                <div class="col-xs-11">
+                                    Dieses Abo ist nicht buchbar, da für den angegebenen Zeitraum kein Tarif definiert ist.
+                                </div>
                             </div>
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer" ng-show="!showBookingFeedback">
+                <div class="modal-footer" ng-show="!showBookingFeedback && calculatedSubReservationPrice != -1">
                     <button type="button" class="button" style="width: 400px;" ng-click="makeSubscriptionReservation()" ng-disabled="subscriptionReservationForm.$invalid">Buchen</button>
                     <button type="button" class="button" style="width: 110px;" data-dismiss="modal">Abbrechen</button>
                 </div>

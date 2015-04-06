@@ -1040,7 +1040,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       if (result.data != 'false') {
         $scope.loadUtilization(); // reload
         $scope.showBookingFeedback = true;
-        $timeout(function() { $('#reservationModal').modal('hide'); }, 6000);
+        $timeout(function() { $('#reservationModal').modal('hide'); }, 5000);
       }
       else {
         alert('Die gewählte Stunde wurde bereits reserviert')
@@ -1351,7 +1351,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       if (result.data != 'false') {
         $scope.loadUtilization(); // reload
         $scope.showBookingFeedback = true;
-        $timeout(function() { $('#subscriptionReservationModal').modal('hide'); }, 6000);
+        $timeout(function() { $('#subscriptionReservationModal').modal('hide'); }, 5000);
       }
       else {
         alert('Das gewählte Abo ist leider nicht mehr buchbar, da es schon belegt ist.')
