@@ -105,6 +105,9 @@
                 <button type="button" ng-click="openPayReservationDialog(res);" class="btn btn-xs btn-success" ng-show="!res.paid">
                     <span class="glyphicon glyphicon-euro"></span> Bezahlen
                 </button>
+                <button type="button" ng-click="undoReservationPayment(res);" class="btn btn-xs btn-default" ng-show="res.paid">
+                    <span class="glyphicon glyphicon-trash"></span> Zahlung
+                </button>
             </td>
         </tr>
         </tbody>

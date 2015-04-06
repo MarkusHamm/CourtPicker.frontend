@@ -1801,6 +1801,15 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       $('#payModal').modal('hide');
     }
 
+    $scope.undoReservationPayment = function(reservation) {
+      CpService.undoPaymentSingleReservation(reservation.id).then(function(result) {
+        reservation.paid = false;
+        reservation.paymentDate = null;
+        reservation.paymentOptionId = null;
+        reservation.price = result.data.calculatedPrice;
+      });
+    }
+
     $scope.changeOverridePrice = function() {
       $scope.customPrice = $filter('currency')($scope.selectedReservation.price, '');
     }
@@ -1998,6 +2007,15 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
         }
       });
       $('#payModal').modal('hide');
+    }
+
+    $scope.undoReservationPayment = function(reservation) {
+      CpService.undoPaymentSubscriptionReservation(reservation.id).then(function(result) {
+        reservation.paid = false;
+        reservation.paymentDate = null;
+        reservation.paymentOptionId = null;
+        reservation.price = result.data.calculatedPrice;
+      });
     }
 
     $scope.changeOverridePrice = function() {

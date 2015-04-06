@@ -528,12 +528,20 @@ angular.module('myApp.services', ['ngResource'])
         return $http({method: 'POST', url: '/courtpicker/api/paySingleReservation',
           params: {'reservationId': reservationId, 'paymentOptionId': paymentOptionId, 'overridePrice': overridePrice, 'customPrice': customPrice}});
       },
+      undoPaymentSingleReservation: function(reservationId) {
+        return $http({method: 'POST', url: '/courtpicker/api/undoPaymentSingleReservation',
+          params: {'reservationId': reservationId}});
+      },
       cancelSubscriptionReservation: function(reservationId) {
         return $http({method: 'POST', url: '/courtpicker/api/cancelSubscriptionReservation', params: {'reservationId': reservationId}});
       },
       paySubscriptionReservation: function(reservationId, paymentOptionId, overridePrice, customPrice) {
         return $http({method: 'POST', url: '/courtpicker/api/paySubscriptionReservation',
           params: {'reservationId': reservationId, 'paymentOptionId': paymentOptionId, 'overridePrice': overridePrice, 'customPrice': customPrice}});
+      },
+      undoPaymentSubscriptionReservation: function(reservationId) {
+        return $http({method: 'POST', url: '/courtpicker/api/undoPaymentSubscriptionReservation',
+          params: {'reservationId': reservationId}});
       },
       getCurrentSubscriptions: function(courtCategoryId) {
         return $http({method: 'GET', url: '/courtpicker/api/getCurrentSubscriptions',
