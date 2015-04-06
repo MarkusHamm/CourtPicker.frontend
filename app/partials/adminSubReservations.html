@@ -79,6 +79,7 @@
     <table id="reservationsTable" class="table table-hover">
         <thead>
         <tr>
+            <th>#</th>
             <th>Abo</th>
             <th>Platzart</th>
             <th>Platz</th>
@@ -92,6 +93,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="res in reservations">
+            <td>{{res.id}}</td>
             <td>{{res.subscriptionName}}</td>
             <td>{{res.courtCategoryName}}</td>
             <td>{{res.courtName}}</td>
@@ -147,7 +149,7 @@
                             <div class="col-xs-2">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" ng-model="overridePrice" ng-change="changeOverridePrice()"/> override
+                                        <input type="checkbox" ng-model="overridePrice" ng-change="changeOverridePrice()"/> anpassen
                                     </label>
                                 </div>
                             </div>

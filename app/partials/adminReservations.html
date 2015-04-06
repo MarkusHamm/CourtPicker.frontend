@@ -79,6 +79,7 @@
     <table id="reservationsTable" class="table table-hover">
         <thead>
         <tr>
+            <th>#</th>
             <th>Platzart</th>
             <th>Platz</th>
             <th>Zeit</th>
@@ -90,6 +91,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="res in reservations">
+            <td>{{res.id}}</td>
             <td>{{res.courtCategoryName}}</td>
             <td>{{res.courtName}}</td>
             <td>{{dateService.formatAsTimeSpanString(res.fromDate, res.toDate)}}</td>
@@ -143,7 +145,7 @@
                             <div class="col-xs-2">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" ng-model="overridePrice" ng-change="changeOverridePrice()"/> überschr.
+                                        <input type="checkbox" ng-model="overridePrice" ng-change="changeOverridePrice()"/> anpassen
                                     </label>
                                 </div>
                             </div>

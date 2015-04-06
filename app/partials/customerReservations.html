@@ -52,6 +52,7 @@
     <table id="reservationsTable" class="table table-hover">
         <thead>
             <tr>
+                <th>#</th>
                 <th>Anlage</th>
                 <th>Platzart</th>
                 <th>Platz</th>
@@ -62,6 +63,7 @@
         </thead>
         <tbody>
             <tr ng-repeat="res in reservations">
+                <td>{{res.id}}</td>
                 <td>{{res.instanceName}}</td>
                 <td>{{res.courtCategoryName}}</td>
                 <td>{{res.courtName}}</td>
