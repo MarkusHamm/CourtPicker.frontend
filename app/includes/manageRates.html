@@ -111,7 +111,7 @@
                     </div>
                 </fieldset>
                 <fieldset>
-                    <legend>Einschränkungen</legend>
+                    <legend>Einschränkungen <span class="text-muted">(Tarif nur unter gewissen Bedingungen anzuwenden)</span></legend>
                     <div class="form-group">
                         <!-- Datum -->
                         <!-- <label class="col-xs-1 control-label">Datum</label>-->
@@ -227,6 +227,7 @@
                 <th>Name</th>
                 <th>Abo-Zeitraum</th>
                 <th>Buchungs-Zeitraum</th>
+                <th>Tarife</th>
                 <th>Bearbeiten</th>
                 <th>Löschen</th>
             </tr>
@@ -238,6 +239,8 @@
                 <td>{{subscription.periodStart}} - {{subscription.periodEnd}}</td>
                 <td>{{subscription.bookableFrom}} - {{subscription.bookableTo}}</td>
                 <td>
+                    <span class="text-danger" ng-show="!hasSubscriptionRatesAssigned(subscription)">Bitte Tarife definieren</span>
+                    <span class="glyphicon glyphicon-arrow-right text-danger" style="font-weight: bold;" ng-show="!hasSubscriptionRatesAssigned(subscription)"></span>
                     <button type="button" ng-click="showSubscriptionRateModal(subscription)" class="btn btn-xs btn-default" ng-class="{'btn-danger': !hasSubscriptionRatesAssigned(subscription)}">
                         <span class="glyphicon glyphicon-search"></span> {{subscription.name}} Tarife definieren
                     </button>
@@ -333,13 +336,6 @@
         </div>
     </div>
 
-    <div ng-show="showConfiguratorNavigation">
-        <div class="spacer20"></div>
-        <a href="#/configureCourts" class="btn btn-lg btn-default">Zurück</a>
-        <a href="#/configureDesign" class="btn btn-lg btn-primary">Weiter</a>
-        <div class="spacer10"></div>
-    </div>
-
     <div id="subscriptionRateModal" class="modal fade cpModal">
         <div class="modal-dialog reservation-dialog modal-lg">
             <div class="modal-content">
@@ -420,7 +416,7 @@
                                     </div>
                                 </fieldset>
                                 <fieldset>
-                                    <legend>Einschränkungen</legend>
+                                    <legend>Einschränkungen <span class="text-muted">(Tarif nur unter gewissen Bedingungen anzuwenden)</span></legend>
                                     <div class="form-group">
                                         <!-- Zeit -->
                                         <div class="col-xs-2">
@@ -520,4 +516,11 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <div ng-show="showConfiguratorNavigation">
+        <div class="spacer20"></div>
+        <a href="#/configureCourts" class="btn btn-lg btn-default">Zurück</a>
+        <a href="#/configureDesign" class="btn btn-lg btn-primary" ng-show="courtCategories.length > 0">Weiter</a>
+        <div class="spacer10"></div>
+    </div>
 </div>

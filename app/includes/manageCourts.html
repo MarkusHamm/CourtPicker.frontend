@@ -49,6 +49,8 @@
             ng-class="{active: isCourtCategorySelected(courtCategory)}">
             <td>{{courtCategory.name}}</td>
             <td>
+                <span class="text-danger" ng-show="!hasCourtsAssigned(courtCategory)">Bitte Plätze definieren</span>
+                <span class="glyphicon glyphicon-arrow-right text-danger" style="font-weight: bold;" ng-show="!hasCourtsAssigned(courtCategory)"></span>
                 <button type="button" ng-click="showCourtsModal(courtCategory)" class="btn btn-xs btn-default" ng-class="{'btn-danger': !hasCourtsAssigned(courtCategory)}">
                     <span class="glyphicon glyphicon-search"></span> {{courtCategory.name}}plätze definieren
                 </button>
@@ -84,7 +86,7 @@
                            my-focus-on="displayCourtCategoryForm" class="form-control"/>
                 </div>
                 <div class="col-xs-6 form-control-static text-muted">
-                    Der Name soll die Art de Platzes ausdrücken. z.B. Tennis, Basketball, Fussball, etc.
+                    Art des Platzes, z.B. Tennis, Basketball, Fussball, etc.
                 </div>
             </div>
             <div class="form-group">
@@ -109,7 +111,7 @@
                     <div class="error" ng-show="courtCategoryForm.courtCategoryBookTo.$error.pattern && courtCategoryForm.courtCategoryBookTo.$dirty">Ungültige Zeit</div>
                 </div>
                 <div class="col-xs-6 form-control-static text-muted">
-                    Gibt an, innerhalb welcher Uhrzeiten ein Platz dieser Platzart reserviert werden kann.
+                    z.B. von 09:00 bis 22:00 reservierbar
                 </div>
 
             </div>
@@ -138,7 +140,7 @@
                     </button>
                 </div>
                 <div class="col-xs-6 form-control-static text-muted">
-                    Gibt an, in welchen Einheiten ein Platz dieser Platzart reserviert werden kann.
+                    z.B. stundenweise reservierbar
                 </div>
             </div>
 
