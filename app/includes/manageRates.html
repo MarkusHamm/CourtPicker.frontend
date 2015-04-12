@@ -52,7 +52,7 @@
             <tbody>
             <tr ng-repeat="rate in rates">
                 <td><b>{{rate.name}}</b></td>
-                <td><b>{{rate.price}}</b></td>
+                <td><b>{{rate.price|currency:'€ '}}</b></td>
                 <td>{{rate.cDateFrom}} <span ng-show="rate.cDateFrom">-</span> {{rate.cDateTo}}</td>
                 <td>{{rate.cTimeFrom}} <span ng-show="rate.cTimeFrom">-</span> {{rate.cTimeTo}}</td>
                 <td>
@@ -102,7 +102,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="ratePrice" class="col-xs-1 control-label">Preis *</label>
+                        <label for="ratePrice" class="col-xs-1 control-label">Preis(&euro;) *</label>
                         <div class="col-xs-3">
                             <input id="ratePrice" type="text" name="price" ng-model="formRate.price" my-decimal-separator-converter
                                    ng-trim="true" required ng-pattern="/^[0-9]+(|[\.,][0-9]|[\.,][0-9][0-9])$/" class="form-control" />
@@ -359,7 +359,7 @@
                             <tbody>
                             <tr ng-repeat="rate in subscriptionRates">
                                 <td><b>{{rate.name}}</b></td>
-                                <td><b>{{rate.price}}</b></td>
+                                <td><b>{{rate.price|currency:'€ '}}</b></td>
                                 <td>{{rate.cTimeFrom}} <span ng-show="rate.cTimeFrom">-</span> {{rate.cTimeTo}}</td>
                                 <td>
                                     <span ng-show="rate.cMon">Mo </span>
@@ -407,7 +407,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="spRatePrice" class="col-xs-2 control-label">Preis *</label>
+                                        <label for="spRatePrice" class="col-xs-2 control-label">Preis(&euro;) *</label>
                                         <div class="col-xs-3">
                                             <input id="spRatePrice" type="text" name="price" ng-model="formSubscriptionRate.price" my-decimal-separator-converter
                                                    ng-trim="true" required ng-pattern="/^[0-9]+(|[\.,][0-9]|[\.,][0-9][0-9])$/" class="form-control" />
