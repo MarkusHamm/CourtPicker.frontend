@@ -106,7 +106,7 @@
                 <button type="button" ng-click="openCancelReservationDialog(res)" class="btn btn-xs btn-danger" ng-show="!dateService.isBeforeNow(res.periodStart + ' ' + res.fromTime)">
                     <span class="glyphicon glyphicon-remove"></span> Stornieren
                 </button>
-                <button type="button" ng-click="openPayReservationDialog(res);" class="btn btn-xs btn-success" ng-show="!res.paid">
+                <button type="button" ng-click="openPayReservationDialog(res);" class="btn btn-xs btn-success" ng-show="!res.paid && res.price>0">
                     <span class="glyphicon glyphicon-euro"></span> Bezahlen
                 </button>
                 <button type="button" ng-click="undoReservationPayment(res);" class="btn btn-xs btn-default" ng-show="res.paid">
