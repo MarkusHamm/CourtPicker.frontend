@@ -1,0 +1,55 @@
+<ng-include src="'includes/headerAdminArea.html'" onload="selectedView='SETTINGS'"></ng-include>
+
+<div class="container" ng-controller="AdminSettingsController">
+
+    <div class="page-header" style="margin-top: 0;">
+        <h1>Einstellungen</h1>
+    </div>
+
+    <form name="formSettings" novalidate class="form-horizontal">
+        <div class="form-group">
+            <label class="col-xs-3 control-label">Registrierungs Benachrichtigung</label>
+            <div class="col-xs-2">
+                <label class="checkbox-inline">
+                    <input type="checkbox" ng-model="cpInstance.mailAtRegistration" ng-change="saveCpInstanceIfInputValid()" />
+                </label>
+            </div>
+            <div class="col-xs-6 form-control-static text-muted">
+                Sollen Administratoren ein E-Mail bekommen wenn sich ein neuer Benutzer registriert?
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-3 control-label">Reservierungs Limit</label>
+            <div class="col-xs-1">
+                <label class="checkbox-inline">
+                    <input type="checkbox" ng-model="reservationLim" ng-change="toggleReservationLimit()" />
+                </label>
+            </div>
+            <div class="col-xs-1" ng-show="reservationLim">
+                <input type="text" ng-model="cpInstance.reservationLimit" name="reservationLimit" class="form-control"
+                       ng-pattern="/^-?[0-9]+$/" required style="width: 100%" my-on-blur="saveCpInstanceIfInputValid()"/>
+                <div class="error" ng-show="formSettings.reservationLimit.$error.pattern">Ungültige Zahl</div>
+            </div>
+            <div class="col-xs-6 form-control-static text-muted">
+                Limitieren Sie hier die Höchstanzahl offener Reservierungen eines Benutzers
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-3 control-label">Platzbelegungs sichtbar für</label>
+            <div class="col-xs-2">
+                <select id="" name="reservationlabelvisibility" class="form-control"
+                        ng-model="cpInstance.reservationLabelVisibility" ng-change="saveCpInstanceIfInputValid()">
+                    <option value="ADMIN">Administratoren</option>
+                    <option value="ANYGROUP">Mitglieder</option>
+                    <option value="ALL">Alle</option>
+                </select>
+            </div>
+            <div class="col-xs-6 form-control-static text-muted">
+                Wer darf sehen von wem ein Platz reserviert wurde?
+            </div>
+        </div>
+    </form>
+
+    <div class="spacer10"></div>
+
+</div>

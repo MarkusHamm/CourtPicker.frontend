@@ -2377,4 +2377,32 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
     }
 
     init();
+  }])
+
+  .controller('AdminSettingsController', ['$scope', 'RESTCpInstance', '$rootScope', function($scope, RESTCpInstance, $rootScope) {
+    $scope.reservationLim = false;
+
+    $scope.saveCpInstanceIfInputValid = function() {
+      if ($scope.formSettings.$valid) {
+        $rootScope.cpInstance = RESTCpInstance.save($rootScope.cpInstance);
+      }
+    }
+
+    $scope.toggleReservationLimit = function() {
+      if ($scope.reservationLim) {
+        $rootScope.cpInstance.reservationLimit = 3;
+      }
+      else {
+        $rootScope.cpInstance.reservationLimit = -1;
+      }
+      $scope.saveCpInstanceIfInputValid();
+    }
+
+    var init = function() {
+      if ($rootScope.cpInstance.reservationLimit != -1) {
+        $scope.reservationLim = true;
+      }
+    }
+
+    init();
   }]);
