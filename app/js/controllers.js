@@ -1043,7 +1043,7 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
         $timeout(function() { $('#reservationModal').modal('hide'); }, 5000);
       }
       else {
-        alert('Die gewählte Stunde wurde bereits reserviert')
+        alert('Buchung fehlgeschlagen. Die maximal erlaubte Anzahl von Reservierunge ist bereits erreicht.')
         $scope.loadUtilization();
         $('#reservationModal').modal('hide');
       }
