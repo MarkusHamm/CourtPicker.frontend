@@ -1487,6 +1487,22 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
       }
     }
 
+    $scope.showReservationLabel = function(timeSlot) {
+      if (timeSlot.isPast) {
+        return false;
+      }
+      if ($rootScope.cpInstance.reservationLabelVisibility == 'ALL') {
+        return true;
+      }
+      if ($rootScope.cpInstance.reservationLabelVisibility == 'ANYGROUP' && ($scope.userInfo.userGroupIds.length > 0 || $scope.userInfo.hasAuthority('ADMIN'))) {
+        return true;
+      }
+      if ($rootScope.cpInstance.reservationLabelVisibility == 'ADMIN' && $scope.userInfo.hasAuthority('ADMIN')) {
+        return true;
+      }
+      return false;
+    }
+
     var init = function() {
       $scope.courtCategories = RESTCourtCategory.getAll({cpInstanceId: $rootScope.cpInstance.id}, function() {
         if ($scope.courtCategories.length > 0) {

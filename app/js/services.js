@@ -123,6 +123,9 @@ angular.module('myApp.services', ['ngResource'])
             UserService.statusMessage = '';
             deferred.resolve(true);
           });
+          CpService.getUserGroupIds(userResult.data.id, $rootScope.cpInstance.id).then(function(userGroupIdsResult) {
+            UserService.userGroupIds = userGroupIdsResult.data;
+          });
         }
       });
 
@@ -134,6 +137,7 @@ angular.module('myApp.services', ['ngResource'])
       UserService.isLoggedIn = false;
       UserService.loggedInUser = null;
       UserService.authorities = [];
+      UserService.userGroupIds = [];
       UserService.statusMessage = '';
     }
 
@@ -440,6 +444,10 @@ angular.module('myApp.services', ['ngResource'])
       },
       getAuthorities: function(userId, cpInstanceId) {
         return $http({method: 'GET', url: '/courtpicker/api/getAuthorities',
+                      params: {'userId': userId, 'cpInstanceId': cpInstanceId}});
+      },
+      getUserGroupIds: function(userId, cpInstanceId) {
+        return $http({method: 'GET', url: '/courtpicker/api/getUserGroupIds',
                       params: {'userId': userId, 'cpInstanceId': cpInstanceId}});
       },
       associateUserWithCpInstance: function(cpInstanceId, userId) {

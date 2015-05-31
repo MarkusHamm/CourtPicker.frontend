@@ -79,7 +79,7 @@
                                         'past-color': timeSlot.isPast}"
                              ng-click="clickTimeSlot(timeSlot, utilization.timeSlots, utilization.date)">
                             <span ng-show="userInfo.hasAuthority('ADMIN') && !timeSlot.isPast && timeSlot.occupyType == 'SUBSCRIPTION'" class="glyphicon glyphicon-repeat" title="{{timeSlot.caption}}"></span>
-                            <span ng-show="userInfo.hasAuthority('ADMIN') && !timeSlot.isPast" title="{{timeSlot.caption}}">{{timeSlot.caption}}</span>
+                            <span ng-show="showReservationLabel(timeSlot)" title="{{timeSlot.caption}}">{{timeSlot.caption}}</span>
                         </div>
                         <div ng-class="{'timeslot-spacer': timeSlot.maxSlots <= 1 || timeSlot.isPast,
                                         'timeslot-spacer-two-reservable': timeSlot.maxSlots > 1 && !timeSlot.isPast}"></div>
