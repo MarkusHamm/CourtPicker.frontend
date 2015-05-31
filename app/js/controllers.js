@@ -1105,14 +1105,17 @@ angular.module('myApp.controllers', ['myApp.services', 'ngCookies', 'ui.bootstra
 
     $scope.fromTimeEarlierButtonEnabled = function() {
       var previousSlot = UtilService.getPreviousArrayElement($scope.scopeTimeSlots, $scope.selectedTimeSlots[0]);
-      if (previousSlot != null && !DateService.isBeforeNow($scope.scopeDate + ' ' + previousSlot.fromTime)) {
+
+      if (previousSlot != null && previousSlot.occupied == false && !DateService.isBeforeNow($scope.scopeDate + ' ' + previousSlot.fromTime)) {
         return true;
       }
       return false;
     }
 
     $scope.fromTimeLaterButtonEnabled = function() {
-      if (UtilService.getNextArrayElement($scope.scopeTimeSlots, $scope.selectedTimeSlots[0]) != null) {
+      var nextSlot = UtilService.getNextArrayElement($scope.scopeTimeSlots, $scope.selectedTimeSlots[0]);
+
+      if (nextSlot != null && nextSlot.occupied == false) {
         return true;
       }
       return false;
